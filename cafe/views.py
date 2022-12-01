@@ -13,3 +13,6 @@ def home(request):
 
 def order(request):
     return render(request, 'cafe/order.html')
+
+def main(request):
+    return render(request, 'cafe/screen_saver.html')

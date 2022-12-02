@@ -12,7 +12,7 @@ def home(request):
     return render(request, 'cafe/home.html')
 
 def order(request):
-    return render(request, 'cafe/order.html')
-
-def main(request):
-    return render(request, 'cafe/screen_saver.html')
+    menu_list = Menu.objects.all()
+    print(menu_list)
+    print(menu_list.get(id=1).image)
+    return render(request, 'cafe/order.html', {'menu_all':menu_list})

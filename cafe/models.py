@@ -19,6 +19,12 @@ class Model(models.Model):
         return self.version
     
 class Menu(models.Model):
+    BEVERAGE_TYPE = (('hot_coffee', "Hot Coffee"), 
+                    ('ice_coffee', 'Ice Coffee'), 
+                    ('non_coffee', 'Non Coffee'),
+                    ('smoothie', 'Smoothie'),
+                    ('bread', 'Bread'),
+                    )
     class Meta:
         ordering = ['-id']
         
@@ -26,7 +32,7 @@ class Menu(models.Model):
     price = models.IntegerField('가격', default='0')
     image = models.ImageField(upload_to='menu/images/', null=False)
     
-    
+    type = models.CharField(max_length=20, choices=BEVERAGE_TYPE, default=0)
     created = models.DateField(auto_now_add=True) 
     updated = models.DateTimeField(auto_now=True)
     calorie = models.IntegerField(default=0)

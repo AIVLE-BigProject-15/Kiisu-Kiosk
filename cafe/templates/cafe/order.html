@@ -4,7 +4,6 @@
 
 {% block content %}
 
-<!-- Portfolio Section-->
 <section class="page-section portfolio" id="portfolio">
     <div class="container">
         <!-- Portfolio Section Heading-->
@@ -16,7 +15,7 @@
             <div class="divider-custom-line"></div>
         </div>
         <!-- Portfolio Grid Items-->
-        <div class="row justify-content-center">
+        <div class="row justify-content-center">            
 
             {% for menu in menu_all %}
                 <div class="col-md-6 col-lg-4 mb-5">
@@ -76,7 +75,37 @@
         </div>
     </div>
 </section>
+{% endblock %}
 
 
+{% block cart %}
 
-{% endblock content %}
+<!-- Portfolio Section-->
+<section class="py-5 bg-secondary fixed-bottom" id="cart">
+    <div class="container">
+        <h4 class="fw-bolder text-white">주문한 상품</h4>
+        <!-- Portfolio Grid Items-->
+        <div class="row justify-content-center">
+            
+            
+        </div>
+    </div>
+</section>
+{% comment %} 
+<!-- Navigation-->
+<div class="navbar navbar-expand-lg navbar-dark bg-primary fixed-bottom">
+    <div class="container px-4 px-lg-5">
+        <a class="navbar-brand" href="#!">주문한 상품</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="ml-auto">
+                <li class="nav-item active"><a class="nav-link" href="#!">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
+                <li class="nav-item"><a class="nav-link" href="#!">Services</a></li>
+                <li class="nav-item"><a class="nav-link" href="#!">Contact</a></li>
+            </ul>
+        </div>
+    </div>
+</div> {% endcomment %}
+
+{% endblock %}

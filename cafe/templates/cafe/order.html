@@ -340,6 +340,19 @@
 {% block cart %}
 
 <style>
+    .bottombar {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 1030;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: 0.5rem;
+        padding-bottom: 0rem;
+      }
     .cart-info {
         border-radius: 35px 35px 0px 0px; 
         width: 100%; 
@@ -351,8 +364,8 @@
     #pay-cancel, #pay {
         width: 50%; 
         text-align: center;
-        padding: 1rem 1rem;
-    }
+        padding-top: 1rem;
+-    }
     #pay-cancel {
         color: #fff;
         background-color: #BEBEBE;
@@ -383,9 +396,9 @@
 
 </style>
 <!-- Portfolio Section-->
-<section class="navbar py-3 fixed-bottom">
+<section class="bottombar">
 
-    <div class="cart-info justify-content-center py-3 bg-secondary">
+    <div class="cart-info py-3 bg-secondary">
         <div class="row" id="cart">
             <div class="row" id="headingOne">
                 <button class="btn collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -402,12 +415,12 @@
         </div>
 
     </div>
-    <div class="payment justify-content-center">
+    <div class="payment">
         <div class="row">
-            <div id="pay-cancel" class="justify-content-center py-3">
+            <div id="pay-cancel" class="py-3">
                 <h5 class="fw-bolder">취소하기</h5>
             </div>
-            <div id="pay" class="justify-content-center py-3">
+            <div id="pay" class="py-3">
                 <div class="row">
                     <div class="col-5 text-white" style="text-align: left; padding-left: 10%;"><h5>결제하기</h5></div>
                     <div class="col-1 text-white" style="text-align: left;">￦</div>
@@ -505,7 +518,7 @@
                                         <div class="col-2" id="'+ id +'--count">1</div> \
                                         <div class="col-1" id="add--'+ id +'"><i class="bi bi-plus-circle" style="pointer-events: none;"></i></div> \
                                     </div>'
-            
+            // Event Listener 추가
             let addElementButton = document.querySelectorAll('[id^=add--]');
             for(let i=0;i<addElementButton.length;i++){
                 addElementButton[i].addEventListener('click', addElementButtonClickHandle);
@@ -514,7 +527,6 @@
             for(let i=0;i<deductElementButton.length;i++){
                 deductElementButton[i].addEventListener('click', deductElementButtonClickHandle);
             }
-
             //document.getElementById('deduct--' + id).addEventListener('click', deductElementButtonClickHandle);
             //document.getElementById('add--' + id).addEventListener('click', addElementButtonClickHandle);
 

@@ -18,7 +18,8 @@ class OrderAdmin(admin.ModelAdmin):
             extra_context=extra_context,
         )
         try:
-            qs = response.context_data['cl'].queryset
+            qs = response.context_data.queryset
+            print(qs)
         except (AttributeError, KeyError):
             return response
         
@@ -27,7 +28,8 @@ class OrderAdmin(admin.ModelAdmin):
             menu_qs = Order.objects.filter(menu=v['menu'])
             # age_qa = menu_qs.filter()
             if menu_qs.count() > 0:
-                context += [{"label" : str(v['menu'])}]
+                context += [{"label" : str(v['menu']),
+                             "value" : Order.objects.all()}]
         
         response.context_data['context'] = context
         print(context)

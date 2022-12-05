@@ -1,43 +1,131 @@
 {% extends "admin/change_list.html" %}
 {% load static %}
-{% block content %}
 
-<html>
-  <head>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-      google.charts.load('current', {'packages':['bar']});
-      google.charts.setOnLoadCallback(drawChart);
-
-      function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['Year', 'Sales', 'Expenses', 'Profit'],
-          ['2014', 1000, 400, 200],
-          ['2015', 1170, 460, 250],
-          ['2016', 660, 1120, 300],
-          ['2017', 1030, 540, 350]
-        ]);
-
-        var options = {
-          chart: {
-            title: 'Company Performance',
-            subtitle: 'Sales, Expenses, and Profit: 2014-2017',
-          },
-          bars: 'vertical' // Required for Material Bar Charts.
-        };
-
-        var chart = new google.charts.Bar(document.getElementById('barchart_material'));
-
-        chart.draw(data, google.charts.Bar.convertOptions(options));
-      }
-    </script>
-  </head>
-  <body>
-    <div id="barchart_material" style="width: 900px; height: 500px;"></div>
-  </body>
-</html>
-
-
-<!-- Render the rest of the ChangeList view by calling block.super -->
+<!-- Override extrahead to add Chart.js -->
+{% block extrahead %}
 {{ block.super }}
+
+{% comment %} <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css" /> {% endcomment %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+
+
+{% endblock %}
+
+{% block content %}
+<!-- Render our chart -->
+<section class="py-5">
+    <div class="row">
+        <div class="col-xl-6 col-lg-6">
+            <canvas id="BarChart"></canvas>
+        </div>
+        <div class="col-xl-6">
+            <canvas id="selectedBarChart"></canvas>
+        </div>
+    </div>
+</div>
+<!-- Render the rest of the ChangeList view -->
+{{ block.super }}
+
+<script>
+  let checkbox = document.getElementsByName("_selected_action");
+  function drawChart(){
+      const ctx = document.getElementById('BarChart').getContext('2d');
+      var context = {{ context | safe }}
+    
+      var labels = new Array();
+      var values = new Array();
+      for(let i=0;i<context.length;i++){
+          labels.push(context[i]['menu']);
+          values.push(context[i]['value']);
+        
+      }
+  
+      var myBarChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+          labels: labels,
+          datasets: [{
+              label: "Menu",
+              backgroundColor: "#4e73df",
+              hoverBackgroundColor: "#2e59d9",
+              borderColor: "#4e73df",
+              data: values,
+          }],
+          },
+          options: {
+          maintainAspectRatio: false,
+          layout: {
+              padding: {
+              left: 10,
+              right: 25,
+              top: 25,
+              bottom: 0
+              }
+          },
+          scales: {
+              xAxes: [{
+              gridLines: {
+                  display: true,
+              },
+              ticks: {
+                  maxTicksLimit: labels.length,
+                  callback: function(value, index, values) {
+                      return 'version ' + value + '';
+                  }
+              },
+              maxBarThickness: 50,
+              }],
+              yAxes: [{
+                  ticks: {
+                      min: 0,
+                      max: 100,
+                      maxTicksLimit: 10,
+                      padding: 20,
+                      callback: function(value, index, values) {
+                          return value + '%';
+                      }
+                  },
+                  gridLines: {
+                      display: true,
+                  }
+              }],
+          },
+          legend: {
+              display: false
+          },
+          tooltips: {
+              titleMarginBottom: 10,
+              titleFontColor: '#6e707e',
+              titleFontSize: 14,
+              backgroundColor: "rgb(255,255,255)",
+              bodyFontColor: "#858796",
+              borderColor: '#dddfeb',
+              borderWidth: 1,
+              xPadding: 15,
+              yPadding: 15,
+              displayColors: false,
+              caretPadding: 10,
+              callbacks: {
+              label: function(tooltipItem, chart) {
+                  var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                  return datasetLabel + ': ' + tooltipItem.yLabel + " %";
+              }
+              }
+          },
+          }
+    });
+    myBarChart.render(); 
+  
+  }
+
+  console.log(checkbox.length);
+  {% comment %} for(let i=0;i<checkbox.length;i++){
+      checkbox[i].addEventListener('click', drawChart)
+  } {% endcomment %}
+  document.addEventListener('DOMContentLoaded', drawChart);
+  </script>
 {% endblock %}

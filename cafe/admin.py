@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.conf import settings
+from django.db.models import Count
 from .models import *
 
 class MenuAdmin(admin.ModelAdmin):
@@ -10,6 +11,28 @@ class CustomerAdmin(admin.ModelAdmin):
     
 class OrderAdmin(admin.ModelAdmin):
     list_display=['id', 'menu', 'created']
+    
+    def changelist_view(self, request, extra_context=None):
+        response = super(OrderAdmin, self).changelist_view(
+            request,
+            extra_context=extra_context,
+        )
+        try:
+            qs = response.context_data['cl'].queryset
+        except (AttributeError, KeyError):
+            return response
+        
+        context = []        
+        for v in qs.values('menu').distinct():
+            menu_qs = Order.objects.filter(menu=v['menu'])
+            # age_qa = menu_qs.filter()
+            if menu_qs.count() > 0:
+                context += [{"label" : str(v['menu'])}]
+        
+        response.context_data['context'] = context
+        print(context)
+        return response
+        
     
 class ModelAdmin(admin.ModelAdmin):
     list_display=['version', 'type', 'is_active']

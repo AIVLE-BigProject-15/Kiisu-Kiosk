@@ -1,15 +1,7 @@
 from django.db import models
 
 class Model(models.Model):
-    MODEL_CHOICE = (('CNN', "cnn"), 
-                    ('DNN', 'dnn'), 
-                    ('RandomForest', 'rf'), 
-                    ('KNN', 'knn'), 
-                    ('SGD', 'sgd'), 
-                    ('XGB', 'xgb'))
-
     model = models.FileField(upload_to= 'model/', blank=True)
-    type = models.CharField(max_length=12, choices=MODEL_CHOICE, default='CNN')
     version = models.CharField(max_length=10)
     comment = models.CharField(default= " ", max_length=300)
     pub_date = models.DateTimeField('date published')
@@ -33,6 +25,7 @@ class Menu(models.Model):
     image = models.ImageField(upload_to='menu/images/', null=False)
     
     type = models.CharField(max_length=20, choices=BEVERAGE_TYPE, default=0)
+    is_best_menu = models.BooleanField(default=False)
     created = models.DateField(auto_now_add=True) 
     updated = models.DateTimeField(auto_now=True)
     calorie = models.IntegerField(default=0)
@@ -58,10 +51,14 @@ class Order(models.Model):
     class Meta:
         ordering = ['-id']
     
+    id = models.AutoField(primary_key=True)
     menu = models.ForeignKey(Menu, on_delete=models.CASCADE)
+    count = models.IntegerField('수량', default=0)
     customer = models.OneToOneField(
         Customer,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        null=True
     )    
     created = models.DateField(auto_now_add=True) 
+
 

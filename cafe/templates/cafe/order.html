@@ -5,6 +5,95 @@
 {% block content %}
 
 
+<script>  
+    // GET 방식으로 전송된 데이터 읽기
+    $.extend({
+        getUrlVars: function(){
+            var vars = [], hash;
+            var hashes = window.location.href.slice(window.location.href.indexOf('?') +1).split('&');
+            for(var i = 0; i < hashes.length; i++) {
+                hash = hashes[i].split('=');
+                vars.push(hash[0]);
+                vars[hash[0]] = hash[1];
+            }
+            console.log(vars);
+            return vars;
+        }, 
+        
+        getUrlVar: function(name) {
+            return $.getUrlVars()[name];
+        }
+        
+    });
+
+    function order_now() {
+        let cart_items = document.querySelectorAll('[id^=cart--]');
+        if (cart_items.length == 0){
+            alert("장바구니가 비어있습니다.");
+            return
+        }
+
+        let menu_list = new Array();
+        let menu_counts = new Array();
+        
+        for (let i=0;i<cart_items.length;i++){
+            var menu_id = cart_items[i].id.split("--")[1];
+            var cnt = document.getElementById(menu_id + '--count').innerText * 1; 
+            console.log(cnt);
+
+            menu_list.push(menu_id);
+            menu_counts.push(cnt);
+        }
+        var usage_type = $.getUrlVar('usage_type');      
+
+        var form = document.getElementById("order_submission");
+        var parm = new Array();
+        parm.push( ['usage_type', usage_type] );
+        parm.push( ['menu_list', menu_list] );
+        parm.push( ['menu_counts', menu_counts] );
+
+        var input = new Array();
+        for (var i = 0; i < parm.length; i++) {
+            input[i] = document.createElement("input");
+            input[i].setAttribute("type", "hidden");
+            input[i].setAttribute('name', parm[i][0]);
+            input[i].setAttribute("value", parm[i][1]);
+            form.appendChild(input[i]);
+        }
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+</script>
+{% comment %} <script>
+    function getCookie(cname) {
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return;
+    }
+    $.ajax{     
+        url: 'your url',
+        type: 'POST',
+        data: formData,
+        headers: {"X-CSRFToken": getCookie('csrftoken')},
+
+        success: function (data) {
+
+
+        },
+})
+</script> {% endcomment %}
+
+
 <style>
     .tab_title li {
         list-style: none;
@@ -397,7 +486,9 @@
 </style>
 <!-- Portfolio Section-->
 <section class="bottombar">
-
+    <form id="order_submission" action="{% url 'cafe:confirm' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+    </form>
     <div class="cart-info py-3 bg-secondary">
         <div class="row" id="cart">
             <div class="row" id="headingOne">
@@ -420,7 +511,7 @@
             <div id="pay-cancel" class="py-3">
                 <h5 class="fw-bolder">취소하기</h5>
             </div>
-            <div id="pay" class="py-3">
+            <div id="pay" class="py-3" OnClick="order_now();">
                 <div class="row">
                     <div class="col-5 text-white" style="text-align: left; padding-left: 10%;"><h5>결제하기</h5></div>
                     <div class="col-1 text-white" style="text-align: left;">￦</div>
@@ -430,6 +521,7 @@
             </div>
         </div>
     </div>
+   
 
 </section>
 
@@ -527,8 +619,6 @@
             for(let i=0;i<deductElementButton.length;i++){
                 deductElementButton[i].addEventListener('click', deductElementButtonClickHandle);
             }
-            //document.getElementById('deduct--' + id).addEventListener('click', deductElementButtonClickHandle);
-            //document.getElementById('add--' + id).addEventListener('click', addElementButtonClickHandle);
 
         }else{
             // 선택한 음료 카테고리가 cart-list에 있는 경우, 개수 수정
@@ -555,5 +645,6 @@
         addCartButton[i].addEventListener('click', addCartButtonClickHandle);
     }
 </script>
+
 
 {% endblock %}

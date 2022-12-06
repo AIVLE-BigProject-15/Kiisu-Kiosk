@@ -37,7 +37,7 @@ class OrderAdmin(admin.ModelAdmin):
         
     
 class ModelAdmin(admin.ModelAdmin):
-    list_display=['version', 'type', 'is_active']
+    list_display=['version', 'pub_date', 'is_active']
     actions=['activate', 'deactivate']
 
     def activate(self, request, queryset):

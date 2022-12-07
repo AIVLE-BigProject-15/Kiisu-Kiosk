@@ -1,0 +1,29 @@
+{% extends "admin/change_list.html" %}
+{% load static %}
+{% block extrahead %}
+{{ block.super }}
+
+{% comment %} <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css" /> {% endcomment %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+
+
+{% endblock %}
+{% block content %}
+{{ block.super }}
+<script>
+    var context = {{ context | safe }}
+
+    var labels = new Array();
+    var values = new Array();
+    for(let i=0;i<context.length;i++){
+        labels.push(context[i]['label']);
+        values.push(context[i]['value']);
+        document.write('label: '+ labels );
+        document.write('value: '+ value );
+</script>
+
+{% endblock %}

@@ -1,0 +1,128 @@
+{% extends "admin/change_list.html" %}
+{% load static %}
+
+<!-- Override extrahead to add Chart.js -->
+{% block extrahead %}
+{{ block.super }}
+
+{% comment %} <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css" /> {% endcomment %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+
+
+{% endblock %}
+
+{% block content %}
+<!-- Render our chart -->
+<section class="py-5">
+    <div class="row">
+        <div class="col-xl-6 col-lg-6">
+            <canvas id="BarChart"></canvas>
+        </div>
+    </div>
+</div>
+<!-- Render the rest of the ChangeList view -->
+{{ block.super }}
+
+<script>
+  let checkbox = document.getElementsByName("_selected_action");
+  function drawChart(){
+      const ctx = document.getElementById('BarChart').getContext('2d');
+      var context = {{ context | safe }}
+    
+      var labels = new Array();
+      var values = new Array();
+      for(let i=0;i<context.length;i++){
+          labels.push(context[i]['label']);
+          values.push(context[i]['value']);
+        
+      }
+  
+      var myBarChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+          labels: labels,
+          datasets: [{
+              label: "판매량",
+              backgroundColor: "#4e73df",
+              hoverBackgroundColor: "#2e59d9",
+              borderColor: "#4e73df",
+              data: values,
+          }],
+          },
+          options: {
+          maintainAspectRatio: false,
+          layout: {
+              padding: {
+              left: 10,
+              right: 25,
+              top: 25,
+              bottom: 0
+              }
+          },
+          scales: {
+              xAxes: [{
+              gridLines: {
+                  display: true,
+              },
+              ticks: {
+                  maxTicksLimit: labels.length,
+                  callback: function(value, index, values) {
+                      return 'menu ' + value.id + '';
+                  }
+              },
+              maxBarThickness: 50,
+              }],
+              yAxes: [{
+                  ticks: {
+                      min: 0,
+                      maxTicksLimit: 10,
+                      padding: 20,
+                      callback: function(value, index, values) {
+                          return value + '개'+'';
+                      }
+                  },
+                  gridLines: {
+                      display: true,
+                  }
+              }],
+          },
+          legend: {
+              display: false
+          },
+          tooltips: {
+              titleMarginBottom: 10,
+              titleFontColor: '#6e707e',
+              titleFontSize: 14,
+              backgroundColor: "rgb(255,255,255)",
+              bodyFontColor: "#858796",
+              borderColor: '#dddfeb',
+              borderWidth: 1,
+              xPadding: 15,
+              yPadding: 15,
+              displayColors: false,
+              caretPadding: 10,
+              callbacks: {
+              label: function(tooltipItem, chart) {
+                  var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                  return datasetLabel + ': ' + tooltipItem.yLabel + "";
+              }
+              }
+          },
+          }
+    });
+    myBarChart.render(); 
+  
+  }
+
+  console.log(checkbox.length);
+  {% comment %} for(let i=0;i<checkbox.length;i++){
+      checkbox[i].addEventListener('click', drawChart)
+  } {% endcomment %}
+  document.addEventListener('DOMContentLoaded', drawChart);
+  </script>
+{% endblock %}
+

@@ -28,6 +28,21 @@ def chunks(lst, n):
         yield lst[i:i + n]
         i += n
         
+def old_order(request):
+    hot_cf_list = Menu.objects.filter(type__icontains="hot")
+    ice_cf_list = Menu.objects.filter(type__icontains="ice")
+    non_cf_list = Menu.objects.filter(type__icontains="non")
+    smoothie_list = Menu.objects.filter(type__icontains="smoothie")
+    bread_list = Menu.objects.filter(type__icontains="bread")
+
+    return render(request, 'cafe/old_order.html', {'hot_coffee_all':hot_cf_list,
+                                              'ice_coffee_all' : ice_cf_list,
+                                              'non_coffee_all' : non_cf_list,
+                                              'smoothie_all' : smoothie_list,
+                                              'bread_all' : bread_list,
+                                              })        
+
+
 
 def order(request):
     hot_cf_list = Menu.objects.filter(type__icontains="hot")
@@ -118,37 +133,36 @@ def get_face():
         ret, img = cap.read()
 
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        faces = faceCascade.detectMultiScale( 
+        faces = faceCascade.detectMultiScale(
             gray, #grayscale로 이미지 변환한 원본.
             scaleFactor=1.2, #이미지 피라미드에 사용하는 scalefactor
-            minNeighbors=3, #최소 가질 수 있는 이웃으로 3~6사이의 값을 넣어야 detect가 더 잘된다고 한다.
-
-            minSize=(20, 20) 
+            minNeighbors=3, #최소 가질 수 있는 이웃으로 3~6사이의 값을 넣어야 detect가 더 잘된다고 한다
+            minSize=(20, 20)
         )
 
         if not faces == ():
             x, y, w, h = faces[0]
             cur_img = img[x:x + w, y:y+h]
+            cv2.rectangle(img,(x,y),(x+w,y+h),(255,255,255),2)
+            cv2.imwrite('temp.jpg', cur_img)
+            
+            cap.release() #비디오 끄기  (카메라 리소스 헤제)
+            cv2.destroyAllWindows()
             return cur_img
         
-        #영상에 img 값을 출력
-        cv2.imshow('video',img)
-        # video라는 이름으로 출력
-        k = cv2.waitKey(1) & 0xff #time값이 0이면 무한 대기, waitKey는 키가 입력 받아 질때까지 기다리는 시간을 의미한다.
-        #FF는 끝의 8bit만을 이용한다는 뜻으로 ASCII 코드의 0~255값만 이용하겠다는 의미로 해석됨. (NumLock을 켰을때 또한 )
-        if k == 27: # press 'ESC' to quit # ESC를 누르면 종료
-            break
-        
-        cap.release() #비디오 끄기   (카메라 리소스 헤제)
-        cv2.destroyAllWindows()
-        return
+    return 
 
 def classify(face_img):
-    
+    print(face_img.shape)
     features = []
     character = {0:'10대', 1:'20대', 2:'30대', 3:'40대', 4:'50대', 5:'60대 이상'}
     
-    img = cv2.imread(face_img, cv2.IMREAD_GRAYSCALE)
+    
+    # 넘파이 형태 -> 이미지 형태로 전환
+    img = Image.fromarray(face_img)
+    img = img.astype(np.uint8).copy()
+    # img = cv2.imread(face_img, cv2.IMREAD_GRAYSCALE)
+    print(img.size)
     img = cv2.resize(img, (128, 128), Image.ANTIALIAS)
     
     img = np.array(img)
@@ -158,11 +172,12 @@ def classify(face_img):
     # ignore this step if using RGB
     features = features.reshape(len(features), 128, 128, 1)
     features = features / 255.0
-    
+
     model_path = settings.MODEL_DIR + '/face_10s2.h5'
     model = load_model(model_path)
     
     pred = model.predict(features[0].reshape(1, 128, 128, 1))
+    
     pred_array = np.zeros(shape=(pred.shape[0], pred.shape[1]))
     pred_array[0][pred.argmax()] = 1
 
@@ -179,7 +194,7 @@ def classify(face_img):
     
     # result = model.predict(face_img)
     
-    return pred
+    return {character[pred_array[0].argmax()]}
 
 def detect_age_group(request):
     face = get_face()

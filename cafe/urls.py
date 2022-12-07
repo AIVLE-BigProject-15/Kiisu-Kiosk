@@ -8,6 +8,7 @@ urlpatterns = [
     path('order', views.order, name='order'),
     path('confirm', views.confirm, name='confirm'),
     path('pay', views.pay, name='pay'),
+    path('detect_age_group', views.detect_age_group, name='detect_age_group'),
 ]
 
 

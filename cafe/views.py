@@ -160,6 +160,8 @@ def classify(face_img):
     
     # 넘파이 형태 -> 이미지 형태로 전환
     img = Image.fromarray(face_img)
+    #######################################
+    
     img = img.astype(np.uint8).copy()
     # img = cv2.imread(face_img, cv2.IMREAD_GRAYSCALE)
     print(img.size)
@@ -186,9 +188,7 @@ def classify(face_img):
     #plt.axis('off')
     #plt.imshow(features[0].reshape(128, 128), cmap='gray') 
     
-    
     #model_path = pjoin(settings.MODEL_DIR, model_name)
-
     # model_path = settings.MODEL_DIR + '/face_10s2.h5'
     # model = load_model(model_path)
     

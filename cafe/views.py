@@ -162,7 +162,7 @@ def classify(face_img):
     img = Image.fromarray(face_img)
     #######################################
     
-    img = img.astype(np.uint8).copy()
+    # img = img.astype(np.uint8).copy()
     # img = cv2.imread(face_img, cv2.IMREAD_GRAYSCALE)
     print(img.size)
     img = cv2.resize(img, (128, 128), Image.ANTIALIAS)
@@ -172,7 +172,7 @@ def classify(face_img):
     features = np.array(features)
     
     # ignore this step if using RGB
-    features = features.reshape(len(features), 128, 128, 1)
+    features = features.reshape(1, 128, 128, 1)
     features = features / 255.0
 
     model_path = settings.MODEL_DIR + '/face_10s2.h5'

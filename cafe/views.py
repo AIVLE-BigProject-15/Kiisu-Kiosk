@@ -119,12 +119,10 @@ def pay(request):
 
 def get_face():
     file_path = settings.MODEL_DIR + '/haarcascade_frontalface_default.xml'
-    
     faceCascade = cv2.CascadeClassifier(file_path)
 
     # 비디오의 setting을 준비함.
     cap = cv2.VideoCapture(0) #0번이 내장카메라, 1번이 외장카메라
-    
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
     cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 
@@ -157,28 +155,31 @@ def classify(face_img):
     features = []
     character = {0:'10대', 1:'20대', 2:'30대', 3:'40대', 4:'50대', 5:'60대 이상'}
     
-    
     # 넘파이 형태 -> 이미지 형태로 전환
-    img = Image.fromarray(face_img)
+    # img = Image.fromarray(face_img)
     #######################################
     
     # img = img.astype(np.uint8).copy()
     # img = cv2.imread(face_img, cv2.IMREAD_GRAYSCALE)
-    print(img.size)
-    img = cv2.resize(img, (128, 128), Image.ANTIALIAS)
+    
+    #print(img.size)
+    #print(type(img))
+    
+    img = cv2.resize(face_img, (128, 128), Image.ANTIALIAS)
+    
     
     img = np.array(img)
     features.append(img)
     features = np.array(features)
     
     # ignore this step if using RGB
-    features = features.reshape(1, 128, 128, 1)
+    features = features.reshape(-1, 128, 128, 1) # len(features)
     features = features / 255.0
 
     model_path = settings.MODEL_DIR + '/face_10s2.h5'
     model = load_model(model_path)
     
-    pred = model.predict(features[0].reshape(1, 128, 128, 1))
+    pred = model.predict(features[0].reshape(-1, 128, 128, 1))
     
     pred_array = np.zeros(shape=(pred.shape[0], pred.shape[1]))
     pred_array[0][pred.argmax()] = 1
@@ -200,7 +201,7 @@ def detect_age_group(request):
     face = get_face()
     age_group = classify(face)
     
-    if age_group == 'senior':
-        return render(request, 'cafe/old_order.html')
-    else:
+    if age_group == '10대' or age_group == '20대' or age_group == '30대':
         return render(request, 'cafe/order.html')
+    else:
+        return render(request, 'cafe/old_order.html')

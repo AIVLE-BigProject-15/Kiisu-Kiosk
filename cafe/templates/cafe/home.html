@@ -27,7 +27,7 @@
 </nav>
 
 <section>
-    <div class="bg-primary py-custom" OnClick="location.href ='{% url 'cafe:order' %}'" style="cursor:pointer;" >
+    <div class="bg-primary py-custom" OnClick="location.href ='{% url 'cafe:order' %}?usage_type=restaurant'" style="cursor:pointer;" >
         <div class="container px-5 px-lg-5 my-5">
             <div class="text-center">
                 <h1 class="display-4 fw-bolder">매장에서 먹고가기</h1>
@@ -36,7 +36,7 @@
         </div>
     </div>
 
-<div class="bg-secondary py-custom" OnClick="location.href ='{% url 'cafe:order' %}'" style="cursor:pointer;">
+<div class="bg-secondary py-custom" OnClick="location.href ='{% url 'cafe:order' %}?usage_type=takeout'" style="cursor:pointer;">
     <div class="container px-4 px-lg-5 my-5">
         <div class="text-center">
                 <h1 class="display-4 fw-bolder">포장하기</h1>

@@ -8,6 +8,7 @@ from django.utils import timezone
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 
+from .videocap import MyCamera
 from .classify import Classifier
 from PIL import Image
 from keras.models import load_model
@@ -27,31 +28,18 @@ def chunks(lst, n):
     while i < len(lst):
         yield lst[i:i + n]
         i += n
-        
-def old_order(request):
+
+
+def order(request, age_group="10대"):
     hot_cf_list = Menu.objects.filter(type__icontains="hot")
     ice_cf_list = Menu.objects.filter(type__icontains="ice")
     non_cf_list = Menu.objects.filter(type__icontains="non")
     smoothie_list = Menu.objects.filter(type__icontains="smoothie")
     bread_list = Menu.objects.filter(type__icontains="bread")
+    
+    page_url = "cafe/order.html" if int(age_group[0]) < 4 else "cafe/old_order.html"
 
-    return render(request, 'cafe/old_order.html', {'hot_coffee_all':hot_cf_list,
-                                              'ice_coffee_all' : ice_cf_list,
-                                              'non_coffee_all' : non_cf_list,
-                                              'smoothie_all' : smoothie_list,
-                                              'bread_all' : bread_list,
-                                              })        
-
-
-
-def order(request):
-    hot_cf_list = Menu.objects.filter(type__icontains="hot")
-    ice_cf_list = Menu.objects.filter(type__icontains="ice")
-    non_cf_list = Menu.objects.filter(type__icontains="non")
-    smoothie_list = Menu.objects.filter(type__icontains="smoothie")
-    bread_list = Menu.objects.filter(type__icontains="bread")
-
-    return render(request, 'cafe/order.html', {'hot_coffee_all':hot_cf_list,
+    return render(request, page_url, {'hot_coffee_all':hot_cf_list,
                                               'ice_coffee_all' : ice_cf_list,
                                               'non_coffee_all' : non_cf_list,
                                               'smoothie_all' : smoothie_list,
@@ -122,17 +110,13 @@ def get_face():
     faceCascade = cv2.CascadeClassifier(file_path)
 
     # 비디오의 setting을 준비함.
-    cap = cv2.VideoCapture(0) #0번이 내장카메라, 1번이 외장카메라
-    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
-
+    cap = MyCamera.instance()
     print("Start")
+    
     while True:
-        ret, img = cap.read()
-
-        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        frame = cap.get_frame()
         faces = faceCascade.detectMultiScale(
-            gray, #grayscale로 이미지 변환한 원본.
+            frame, #grayscale로 이미지 변환한 원본.
             scaleFactor=1.2, #이미지 피라미드에 사용하는 scalefactor
             minNeighbors=3, #최소 가질 수 있는 이웃으로 3~6사이의 값을 넣어야 detect가 더 잘된다고 한다
             minSize=(20, 20)
@@ -140,12 +124,9 @@ def get_face():
 
         if not faces == ():
             x, y, w, h = faces[0]
-            cur_img = img[x:x + w, y:y+h]
-            cv2.rectangle(img,(x,y),(x+w,y+h),(255,255,255),2)
+            cur_img = frame[x:x + w, y:y+h]
+            cv2.rectangle(frame,(x,y),(x+w,y+h),(255,255,255),2)
             cv2.imwrite('temp.jpg', cur_img)
-            
-            cap.release() #비디오 끄기  (카메라 리소스 헤제)
-            cv2.destroyAllWindows()
             return cur_img
         
     return 
@@ -195,13 +176,10 @@ def classify(face_img):
     
     # result = model.predict(face_img)
     
-    return {character[pred_array[0].argmax()]}
+    return character[pred_array[0].argmax()]
 
 def detect_age_group(request):
     face = get_face()
     age_group = classify(face)
-    
-    if age_group == '10대' or age_group == '20대' or age_group == '30대':
-        return render(request, 'cafe/order.html')
-    else:
-        return render(request, 'cafe/old_order.html')
+
+    return order(request, age_group=age_group)    

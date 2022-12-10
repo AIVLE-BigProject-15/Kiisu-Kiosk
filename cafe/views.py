@@ -124,7 +124,7 @@ def get_face():
 
         if not faces == ():
             x, y, w, h = faces[0]
-            cur_img = frame[x:x + w, y:y+h]
+            cur_img = frame[y:y+h, x:x + w]
             cv2.rectangle(frame,(x,y),(x+w,y+h),(255,255,255),2)
             cv2.imwrite('temp.jpg', cur_img)
             return cur_img

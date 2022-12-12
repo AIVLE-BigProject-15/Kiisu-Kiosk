@@ -6,35 +6,35 @@ from .models import *
 class MenuAdmin(admin.ModelAdmin):
     list_display=['type', 'title', 'price']
     
+    def changelist_view(self, request, extra_context=None):
+        response = super(MenuAdmin, self).changelist_view(
+            request,
+            extra_context=extra_context,
+        )
+        try:
+            qs = response.context_data['cl'].queryset
+        except (AttributeError, KeyError):
+            return response
+
+        context = []
+        print("queryset", qs)
+        for v in qs.values('id').distinct():
+            print(v)
+            # print(Order.objects.filter(menu__exact=v['id']))
+            print(len(Order.objects.filter(menu__exact=v['id'])))
+            
+            # if v.count() > 0:
+            context += [{"label" : v, "value" : len(Order.objects.filter(menu__exact=v['id']))}]
+        
+        response.context_data['context'] = context
+        # print(context)
+        return response
+    
 class CustomerAdmin(admin.ModelAdmin):
     list_display=['age_group', 'version', 'created']
     
 class OrderAdmin(admin.ModelAdmin):
     list_display=['id', 'menu', 'created']
-    
-    def changelist_view(self, request, extra_context=None):
-        response = super(OrderAdmin, self).changelist_view(
-            request,
-            extra_context=extra_context,
-        )
-        try:
-            qs = response.context_data.queryset
-            print(qs)
-        except (AttributeError, KeyError):
-            return response
-        
-        context = []        
-        for v in qs.values('menu').distinct():
-            menu_qs = Order.objects.filter(menu=v['menu'])
-            # age_qa = menu_qs.filter()
-            if menu_qs.count() > 0:
-                context += [{"label" : str(v['menu']),
-                             "value" : Order.objects.all()}]
-        
-        response.context_data['context'] = context
-        print(context)
-        return response
-        
     
 class ModelAdmin(admin.ModelAdmin):
     list_display=['version', 'pub_date', 'is_active']

@@ -192,3 +192,14 @@ def detect_age_group(request):
     age_group = classify(face)
 
     return order(request, age_group=age_group)    
+
+
+from .serializer import CustomerSerializer
+from rest_framework.response import Response
+from rest_framework.generics import ListAPIView
+
+class fetch_user(ListAPIView):
+        
+    queryset = Customer.objects.all()
+    serializer_class = CustomerSerializer
+

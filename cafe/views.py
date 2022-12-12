@@ -2,6 +2,7 @@ import os, json
 from .models import *
 from os.path import join as pjoin
 import cv2
+import joblib
 
 from django.conf import settings
 from django.utils import timezone
@@ -131,6 +132,12 @@ def get_face():
         
     return 
 
+# 모델의 경로를 불러온다.
+def predicting_model():
+    model_obj = Model.objects.filter(is_active = True)[0]
+    print(model_obj.model.path)
+    return joblib.load(model_obj.model.path)
+
 def classify(face_img):
     print(face_img.shape)
     features = []
@@ -157,7 +164,9 @@ def classify(face_img):
     features = features.reshape(-1, 128, 128, 1) # len(features)
     features = features / 255.0
 
-    model_path = settings.MODEL_DIR + '/face_10s2.h5'
+    # 불러온 모델의 경로로 예측
+    # model_path = settings.MODEL_DIR + '/face_10s2.h5'
+    model_path = predicting_model()
     model = load_model(model_path)
     
     pred = model.predict(features[0].reshape(-1, 128, 128, 1))

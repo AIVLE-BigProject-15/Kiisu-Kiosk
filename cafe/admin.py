@@ -17,7 +17,7 @@ class MenuAdmin(admin.ModelAdmin):
             return response
 
         context = []
-        print("queryset", qs)
+        # print("queryset", qs)
         for v in qs.values('id').distinct():
             # print(v)
             # print(Order.objects.filter(menu__exact=v['id']))

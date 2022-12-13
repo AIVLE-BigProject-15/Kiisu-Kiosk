@@ -160,10 +160,10 @@
     
     <div class="payment">
         <div class="row">
-            <div id="pay-cancel" class="py-5">
+            <div id="pay-cancel" class="py-5" OnClick="location.href ='{% url 'cafe:order' %}'" style="cursor:pointer;" >
                 <h3 class="fw-bolder">취소하기</h3>
             </div>
-            <div id="pay" class="py-5" OnClick="pay_now();">
+            <div id="pay" class="py-5" OnClick="pay_now();" style="cursor:pointer;">
                 <h3>결제하기</h3>
             </div>
         </div>

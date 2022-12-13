@@ -27,7 +27,7 @@ class MenuAdmin(admin.ModelAdmin):
             context += [{"label" : v, "value" : len(Order.objects.filter(menu__exact=v['id']))}]
         
         response.context_data['context'] = context
-        # print(context)
+        print(context)
         return response
     
 class CustomerAdmin(admin.ModelAdmin):
@@ -35,7 +35,6 @@ class CustomerAdmin(admin.ModelAdmin):
     
 class OrderAdmin(admin.ModelAdmin):
     list_display=['id', 'menu', 'created']
-    
     
 class ModelAdmin(admin.ModelAdmin):
     list_display=['version', 'pub_date', 'is_active']

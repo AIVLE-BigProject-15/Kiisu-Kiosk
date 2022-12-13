@@ -33,6 +33,7 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'cafe',
+    'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -135,7 +136,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MODEL_DIR = os.path.join(BASE_DIR, 'cafe/model')
 
 ## 보안 관련 ##
-
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_BROWSER_XSS_FILTER = True
 SESSION_COOKIE_HTTPONLY = True

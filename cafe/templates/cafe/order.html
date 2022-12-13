@@ -191,6 +191,7 @@
     
                     </div>
                 </div>
+
                 <div class="portfolio-modal modal fade" id="portfolioModal{{menu.id}}" tabindex="-1" aria-labelledby="portfolioModal{{menu.id}}" aria-hidden="true">
                     <div class="modal-dialog modal-xl">
                         <div class="modal-content">
@@ -508,10 +509,10 @@
     </div>
     <div class="payment">
         <div class="row">
-            <div id="pay-cancel" class="py-3">
+            <div id="pay-cancel" class="py-3" OnClick="location.href ='{% url 'cafe:home' %}'" style="cursor:pointer;" >
                 <h5 class="fw-bolder">취소하기</h5>
             </div>
-            <div id="pay" class="py-3" OnClick="order_now();">
+            <div id="pay" class="py-3" OnClick="order_now();" style="cursor:pointer;">
                 <div class="row">
                     <div class="col-5 text-white" style="text-align: left; padding-left: 10%;"><h5>결제하기</h5></div>
                     <div class="col-1 text-white" style="text-align: left;">￦</div>

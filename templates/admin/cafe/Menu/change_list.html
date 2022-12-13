@@ -71,7 +71,7 @@
               ticks: {
                   maxTicksLimit: labels.length,
                   callback: function(value, index, values) {
-                      return 'menu ' + value.id + '';
+                      return 'menu :' + value.id + '';
                   }
               },
               maxBarThickness: 50,
@@ -79,7 +79,6 @@
               yAxes: [{
                   ticks: {
                       min: 0,
-                      max: 100,
                       maxTicksLimit: 10,
                       padding: 20,
                       callback: function(value, index, values) {

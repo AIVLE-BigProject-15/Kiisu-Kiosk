@@ -165,8 +165,8 @@ def classify(face_img):
     features = features / 255.0
 
     # 불러온 모델의 경로로 예측
-    # model_path = settings.MODEL_DIR + '/face_10s2.h5'
-    model_path = predicting_model()
+    model_path = settings.MODEL_DIR + '/face_10s2.h5'
+    # model_path = predicting_model()
     model = load_model(model_path)
     
     pred = model.predict(features[0].reshape(-1, 128, 128, 1))
@@ -179,7 +179,7 @@ def classify(face_img):
     #plt.axis('off')
     #plt.imshow(features[0].reshape(128, 128), cmap='gray') 
     
-    #model_path = pjoin(settings.MODEL_DIR, model_name)
+    # model_path = pjoin(settings.MODEL_DIR, model_name)
     # model_path = settings.MODEL_DIR + '/face_10s2.h5'
     # model = load_model(model_path)
     

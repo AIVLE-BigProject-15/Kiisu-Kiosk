@@ -1,0 +1,7 @@
+keras==2.10.0
+tensorflow-cpu==2.10.0
+opencv-python==4.6.0.66
+Pillow==9.2.0
+Django==3.2
+djangorestframework
+django-resized

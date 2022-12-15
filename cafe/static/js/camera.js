@@ -32,31 +32,10 @@ video.addEventListener('play', () => {
     faceapi.draw.drawDetections(canvas, resizedDetections)
 
     if (resizedDetections.length > 0){
-        console.log("submit")
         var box_info = resizedDetections[0]['detection']['_box']
         
-        var mediaStream = video.srcObject
-        var imageCapture = new ImageCapture(mediaStream.getVideoTracks()[0])
-        imageCapture.takePhoto().then((blob) => {
-            console.log('Took photo:', blob);
-            
-            const formData = new FormData(document.getElementById("face_submission"));
-            formData.append("face_image", blob);
-            formData.append("bounding_box", box_info);
-
-            const request = new XMLHttpRequest();
-            request.open("POST", "camera");
-            request.send(formData);
-
-            // document.getElementById("face_image").value = blob
-            // document.getElementById("bounding_box").value = box_info
-            // document.getElementById("face_submission").submit()
-
-
-          }).catch((error) => {
-            console.error('takePhoto() error: ', error);
-          });
-
+        document.getElementById("imageHolder").getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height)
+        document.getElementById("box").value = JSON.stringify(box_info)
     } 
   }, 100)
 })

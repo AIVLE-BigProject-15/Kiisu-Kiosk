@@ -8,7 +8,7 @@
 <script defer src="/static/js/camera.js"></script>
 
 <style>
-    canvas {
+    canvas:not(#imageHolder) {
       position: absolute;
     }
 </style>
@@ -24,13 +24,23 @@
                 </div>
             </div>
         </div>
+        <div class="row gx-5 justify-content-center">
+            <div class="col-lg-6">
+                <div class="text-center mb-5">
+                    <p class="lead fw-normal text-muted" id='seconds'>10</p>
+                </div>
+            </div>
+        </div> 
+
 
         <div class="row gx-5">
             <div class="col-12 text-center justify-content-center" style="display: flex;" id="cameraHolder">
                 <video width="720" height="560" id="video" autoplay></video>
             </div>
+            <canvas id="imageHolder" style="width:720; height:560; display:none;"></canvas>
             <form id="face_submission" action="{% url 'cafe:camera' %}" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
+                <input id="box" type="hidden" name="box" value=""/>
             </form>
         </div>
         
@@ -38,5 +48,64 @@
     </div>
 </section>
 
+<script>
+    function isCanvasBlank(canvas) {
+        return !canvas.getContext('2d')
+          .getImageData(0, 0, canvas.width, canvas.height).data
+          .some(channel => channel !== 0);
+      }
+    
+</script>
+<script>
+    timeLeft = 10;
+    const canvas = document.getElementById("imageHolder")
+
+    function countdown() {
+        timeLeft--;
+        document.getElementById("seconds").innerHTML = String( timeLeft );
+
+        if (timeLeft > 0) {
+            setTimeout(countdown, 1000);
+        } 
+        else if(isCanvasBlank(canvas)){
+            document.getElementById("seconds").innerHTML = "EXPIRED";
+            setTimeout(countdown, 1000);
+        } 
+        else{
+            document.getElementById("seconds").innerHTML = "EXPIRED";
+        
+            var dataURL = canvas.toDataURL("image/png");
+            var blobBin = atob(dataURL.split(',')[1]);
+            var array = [];
+            for (var i = 0; i < blobBin.length; i++) {
+                array.push(blobBin.charCodeAt(i));
+            }
+            var file = new Blob([new Uint8Array(array)], {type: 'image/png'});
+            
+            // FormData -> Bounding Box와 Image
+            var formdata = new FormData(document.getElementById("face_submission"));
+            formdata.append("face_image", file);	
+            formdata.append("box", document.getElementById("box").value);
+
+            // 동기 방식으로 서버에 FormData 전송
+            // 전송에 성공할 경우, 페이지 이동
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "camera", false);
+            xhr.onload = () => {
+                if (xhr.status == 200) {
+                    let result = xhr.response;
+                    window.location.href = result;
+                } else {
+                    alert("ERROR LOADING FILE!" + this.status);
+                }
+            };
+ 
+            xhr.send(formdata);
+        }
+
+    };
+    setTimeout(countdown, 1000);
+    
+</script>
 
 {% endblock content %}

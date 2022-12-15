@@ -19,12 +19,11 @@ class MenuAdmin(admin.ModelAdmin):
         context = []
         # print("queryset", qs)
         for v in qs.values('id').distinct():
-            # print(v)
-            # print(Order.objects.filter(menu__exact=v['id']))
-            # print(len(Order.objects.filter(menu__exact=v['id'])))
-            
+            title = Menu.objects.get(id__exact=v['id']).title
+            # print(len(Order.objects.filter(menu__exact=v['id'])))            
             # if v.count() > 0:
-            context += [{"label" : v, "value" : len(Order.objects.filter(menu__exact=v['id']))}]
+            
+            context += [{"label" : title, "value" : len(Order.objects.filter(menu__exact=v['id']))}]
         
         response.context_data['context'] = context
         print(context)

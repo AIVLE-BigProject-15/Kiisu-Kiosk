@@ -1,4 +1,6 @@
 from django.db import models
+from django_resized import ResizedImageField
+
 
 class Model(models.Model):
     model = models.FileField(upload_to= 'model/', blank=True)
@@ -24,6 +26,7 @@ class Menu(models.Model):
     price = models.IntegerField('가격', default='0')
     image = models.ImageField(upload_to='menu/images/', null=False)
     
+    desc = models.CharField(max_length=250, default="")
     type = models.CharField(max_length=20, choices=BEVERAGE_TYPE, default=0)
     is_best_menu = models.BooleanField(default=False)
     created = models.DateField(auto_now_add=True) 

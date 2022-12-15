@@ -37,7 +37,7 @@ def order(request, age_group="10대"):
     non_cf_list = Menu.objects.filter(type__icontains="non")
     smoothie_list = Menu.objects.filter(type__icontains="smoothie")
     bread_list = Menu.objects.filter(type__icontains="bread")
-    
+
     page_url = "cafe/order.html" if int(age_group[0]) < 4 else "cafe/old_order.html"
 
     return render(request, page_url, {'hot_coffee_all':hot_cf_list,
@@ -184,6 +184,35 @@ def classify(face_img):
     # model = load_model(model_path)
     
     # result = model.predict(face_img)
+    
+    return character[pred_array[0].argmax()]
+
+def classify_jh(face_img):
+    print(face_img.shape)
+    features = []
+    character = {0:'(0, 3)', 1:'(15, 24)', 2:'(25, 37)', 3:'(38, 47)', 4:'(4, 7)', 5:'(48, 59)',6:'(60, 100)',7:'(8, 14)'}
+
+    img = cv2.resize(face_img, (128, 128), Image.ANTIALIAS)
+    
+    img = np.array(img)
+    features.append(img)
+    features = np.array(features)
+    
+    features = features.reshape(-1, 128, 128, 3)
+    features = features / 255.0
+    
+    # 불러온 모델의 경로로 예측
+    model_path = settings.MODEL_DIR + '/agebase.h5'
+    # model_path = predicting_model()
+    model = load_model(model_path)
+    
+    pred = model.predict(features[0].reshape(-1, 128, 128, 3))
+    
+    pred_array = np.zeros(shape=(pred.shape[0], pred.shape[1]))
+    pred_array[0][pred.argmax()] = 1
+
+    # 여기는 나이대랑 사진 보이는 코드
+    print({character[pred_array[0].argmax()]})
     
     return character[pred_array[0].argmax()]
 

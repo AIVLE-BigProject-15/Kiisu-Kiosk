@@ -1,0 +1,42 @@
+{% extends 'index.html' %} 
+
+{% load post_extras %}
+
+{% block content %}
+
+<script defer src="/static/js/face-api.min.js"></script>
+<script defer src="/static/js/camera.js"></script>
+
+<style>
+    canvas {
+      position: absolute;
+    }
+</style>
+
+<!-- Page Content-->
+<section class="py-5">
+    <div class="container px-5 my-5">
+        <div class="row gx-5 justify-content-center">
+            <div class="col-lg-6">
+                <div class="text-center mb-5">
+                    <h1 class="fw-bolder">카메라를 응시해주세요</h1><br>
+                    <p class="lead fw-normal text-muted mb-0">연령대 별 추천 메뉴를 안내해드립니다.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row gx-5">
+            <div class="col-12 text-center justify-content-center" style="display: flex;" id="cameraHolder">
+                <video width="720" height="560" id="video" autoplay></video>
+            </div>
+            <form id="face_submission" action="{% url 'cafe:camera' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+            </form>
+        </div>
+        
+        
+    </div>
+</section>
+
+
+{% endblock content %}

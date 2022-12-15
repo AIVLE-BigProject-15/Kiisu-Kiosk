@@ -11,6 +11,8 @@ urlpatterns = [
     path('pay', views.pay, name='pay'),
     path('detect_age_group', views.detect_age_group, name='detect_age_group'),
     path('fetch_user', fetch_user.as_view(), name='user'),
+    path('camera', views.camera, name='camera'),
+
 ]
 
 

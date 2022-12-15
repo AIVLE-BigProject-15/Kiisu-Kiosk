@@ -194,6 +194,14 @@ def detect_age_group(request):
     return order(request, age_group=age_group)    
 
 
+def camera(request):
+    if request.method == "POST":
+        print(request.POST)
+        render(request, 'cafe/home.html')
+    else:
+        pass
+    return render(request, 'cafe/camera.html')
+
 from .serializer import CustomerSerializer
 from rest_framework.response import Response
 from rest_framework.generics import ListAPIView

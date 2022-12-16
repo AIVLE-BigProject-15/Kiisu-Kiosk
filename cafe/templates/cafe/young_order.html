@@ -117,6 +117,37 @@
     .tab_cont div.on{
         display: block;
     }
+
+        
+    .bestmenu, .bestmenu_detail {
+        display: inline-block;
+        padding: 0.35em 0.65em;
+        font-size: 0.9em;
+        font-weight: 700;
+        line-height: 1;
+        color: #fff;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+        border-radius: 0.2rem;
+        position: relative;
+        top: -1px;
+    }
+    .bestmenu {
+        font-size: 0.9em;
+        font-weight: 700;
+        line-height: 1;
+    }
+    .bestmenu_detail {
+        font-size: 1.5em;
+        font-weight: 1000;
+        line-height: 1;
+    }
+    .bestmenu:empty, .bestmenu_detail:empty {
+        display: none;
+    }
+    
+
 </style>
 
 <section class="my-md-5">
@@ -152,6 +183,10 @@
                         <!-- Product details-->
                         <div class="card-body p-4">
                             <div class="text-center">
+                                {% if menu.is_best_menu %}
+                                    <div class='bestmenu bg-primary bg-gradient rounded-pill mb-2'>BEST MENU</div>
+                                {% endif %}
+
                                 <!-- Product name-->
                                 <h4 class="fw-bolder">{{menu.title}}</h4>
                                 <!-- Product price-->
@@ -172,6 +207,10 @@
                                 <div class="container">
                                     <div class="row justify-content-center">
                                         <div class="col-lg-8">
+                                            {% if menu.is_best_menu %}
+                                                <div class='bestmenu_detail bg-primary bg-gradient rounded-pill mb-2'>BEST MENU</div>
+                                            {% endif %}
+
                                             <!-- Portfolio Modal - Title-->
                                             <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0">{{menu.title}}</h2>
                                             
@@ -208,6 +247,9 @@
                         <!-- Product details-->
                         <div class="card-body p-4">
                             <div class="text-center">
+                                {% if menu.is_best_menu %}
+                                    <div class='bestmenu bg-primary bg-gradient rounded-pill mb-2'>BEST MENU</div>
+                                {% endif %}
                                 <!-- Product name-->
                                 <h4 class="fw-bolder">{{menu.title}}</h4>
                                 <!-- Product price-->
@@ -228,6 +270,10 @@
                                 <div class="container">
                                     <div class="row justify-content-center">
                                         <div class="col-lg-8">
+                                            {% if menu.is_best_menu %}
+                                                <div class='bestmenu_detail bg-primary bg-gradient rounded-pill mb-2'>BEST MENU</div>
+                                            {% endif %}
+
                                             <!-- Portfolio Modal - Title-->
                                             <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0">{{menu.title}}</h2>
                                             
@@ -264,6 +310,9 @@
                         <!-- Product details-->
                         <div class="card-body p-4">
                             <div class="text-center">
+                                {% if menu.is_best_menu %}
+                                    <div class='bestmenu bg-primary bg-gradient rounded-pill mb-2'>BEST MENU</div>
+                                {% endif %}
                                 <!-- Product name-->
                                 <h4 class="fw-bolder">{{menu.title}}</h4>
                                 <!-- Product price-->
@@ -284,6 +333,10 @@
                                 <div class="container">
                                     <div class="row justify-content-center">
                                         <div class="col-lg-8">
+                                            {% if menu.is_best_menu %}
+                                                <div class='bestmenu_detail bg-primary bg-gradient rounded-pill mb-2'>BEST MENU</div>
+                                            {% endif %}
+
                                             <!-- Portfolio Modal - Title-->
                                             <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0">{{menu.title}}</h2>
                                             
@@ -320,6 +373,9 @@
                         <!-- Product details-->
                         <div class="card-body p-4">
                             <div class="text-center">
+                                {% if menu.is_best_menu %}
+                                    <div class='bestmenu bg-primary bg-gradient rounded-pill mb-2'>BEST MENU</div>
+                                {% endif %}
                                 <!-- Product name-->
                                 <h4 class="fw-bolder">{{menu.title}}</h4>
                                 <!-- Product price-->
@@ -340,6 +396,10 @@
                                 <div class="container">
                                     <div class="row justify-content-center">
                                         <div class="col-lg-8">
+                                            {% if menu.is_best_menu %}
+                                                <div class='bestmenu_detail bg-primary bg-gradient rounded-pill mb-2'>BEST MENU</div>
+                                            {% endif %}
+
                                             <!-- Portfolio Modal - Title-->
                                             <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0">{{menu.title}}</h2>
                                             

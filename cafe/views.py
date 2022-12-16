@@ -37,7 +37,7 @@ def order(request, age_group="10대"):
     non_cf_list = Menu.objects.filter(type__icontains="non")
     smoothie_list = Menu.objects.filter(type__icontains="smoothie")
     bread_list = Menu.objects.filter(type__icontains="bread")
-    
+
     page_url = "cafe/order.html" if int(age_group[0]) < 4 else "cafe/old_order.html"
 
     return render(request, page_url, {'hot_coffee_all':hot_cf_list,
@@ -185,7 +185,7 @@ def classify(face_img):
 
 def detect_age_group(request):
     face = get_face()
-    age_group = classify(face)
+    age_group = classify(face) 
 
     return order(request, age_group=age_group)    
 

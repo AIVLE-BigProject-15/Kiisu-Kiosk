@@ -14,6 +14,10 @@ class VideoCamera(object):
         gray_img = cv2.cvtColor(self.frame, cv2.COLOR_BGR2GRAY)
         return gray_img
 
+    def get_frame_jh(self):
+        rgb_img = cv2.cvtColor(self.frame, cv2.COLOR_BGR2RGB)
+        return self.frame
+
     def update(self):
         while True:
             (self.grabbed, self.frame) = self.video.read()

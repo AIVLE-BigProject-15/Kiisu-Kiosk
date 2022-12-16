@@ -31,21 +31,45 @@ def chunks(lst, n):
         i += n
 
 
-def order(request, age_group="10대"):
+def old_order(request, age_group="50대"):
     hot_cf_list = Menu.objects.filter(type__icontains="hot")
     ice_cf_list = Menu.objects.filter(type__icontains="ice")
     non_cf_list = Menu.objects.filter(type__icontains="non")
     smoothie_list = Menu.objects.filter(type__icontains="smoothie")
     bread_list = Menu.objects.filter(type__icontains="bread")
 
-    page_url = "cafe/order.html" if int(age_group[0]) < 4 else "cafe/old_order.html"
-
+    page_url = "cafe/old_order.html"
+    
     return render(request, page_url, {'hot_coffee_all':hot_cf_list,
                                               'ice_coffee_all' : ice_cf_list,
                                               'non_coffee_all' : non_cf_list,
                                               'smoothie_all' : smoothie_list,
                                               'bread_all' : bread_list,
                                               })
+
+
+def young_order(request, age_group="10대"):
+    hot_cf_list = Menu.objects.filter(type__icontains="hot")
+    ice_cf_list = Menu.objects.filter(type__icontains="ice")
+    non_cf_list = Menu.objects.filter(type__icontains="non")
+    smoothie_list = Menu.objects.filter(type__icontains="smoothie")
+    bread_list = Menu.objects.filter(type__icontains="bread")
+    
+    page_url ="cafe/young_order.html"
+    
+    return render(request, page_url, {'hot_coffee_all':hot_cf_list,
+                                              'ice_coffee_all' : ice_cf_list,
+                                              'non_coffee_all' : non_cf_list,
+                                              'smoothie_all' : smoothie_list,
+                                              'bread_all' : bread_list,
+                                              })
+
+def page_classify(request ,age_group):
+    
+    if int(age_group[0]) < 4:
+        return young_order(request, age_group=age_group)
+    else:
+        return old_order(request, age_group=age_group)
     
 def confirm(request):
     context = {}
@@ -187,7 +211,7 @@ def detect_age_group(request):
     face = get_face()
     age_group = classify(face) 
 
-    return order(request, age_group=age_group)    
+    return page_classify(request, age_group=age_group)    
 
 from PIL import Image, ImageDraw
 
@@ -211,7 +235,7 @@ def camera(request):
         age_group = classify(gray_img)
         print(age_group, usage_type)
         
-        page_url = "order" if int(age_group[0]) < 4 else "old_order"
+        page_url = "young_order" if int(age_group[0]) < 4 else "old_order"
         return HttpResponse(page_url + f"?usage_type={usage_type}")
 
     return render(request, 'cafe/camera.html')

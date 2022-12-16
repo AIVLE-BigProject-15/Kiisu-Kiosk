@@ -42,17 +42,12 @@
                 <div class="text-center mb-5">
                     <h1 class="fw-bolder">카메라를 응시해주세요</h1><br>
                     <p class="lead fw-normal text-muted mb-0">연령대 별 추천 메뉴를 안내해드립니다.</p>
+                    <br>
+                    <img src="/static/assets/spinner.gif" alt="loading" width="80">
+                    <p class="lead fw-normal text-muted" id='seconds' style="display:none;">8</p>
                 </div>
             </div>
         </div>
-        <div class="row gx-5 justify-content-center">
-            <div class="col-lg-6">
-                <div class="text-center mb-5">
-                    <p class="lead fw-normal text-muted" id='seconds'>10</p>
-                </div>
-            </div>
-        </div> 
-
 
         <div class="row gx-5">
             <div class="col-12 text-center justify-content-center" style="display: flex;" id="cameraHolder">
@@ -80,7 +75,7 @@
     
 </script>
 <script>
-    timeLeft = 10;
+    timeLeft = 8;
     const canvas = document.getElementById("imageHolder")
 
     function countdown() {
@@ -130,7 +125,7 @@
         }
 
     };
-    setTimeout(countdown, 1000);
+    setTimeout(countdown, 800);
     
 </script>
 

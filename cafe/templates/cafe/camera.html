@@ -12,6 +12,27 @@
       position: absolute;
     }
 </style>
+<script>
+    // GET 방식으로 전송된 데이터 읽기
+    $.extend({
+        getUrlVars: function(){
+            var vars = [], hash;
+            var hashes = window.location.href.slice(window.location.href.indexOf('?') +1).split('&');
+            for(var i = 0; i < hashes.length; i++) {
+                hash = hashes[i].split('=');
+                vars.push(hash[0]);
+                vars[hash[0]] = hash[1];
+            }
+            console.log(vars);
+            return vars;
+        }, 
+        
+        getUrlVar: function(name) {
+            return $.getUrlVars()[name];
+        }
+        
+    });
+</script>
 
 <!-- Page Content-->
 <section class="py-5">
@@ -37,7 +58,9 @@
             <div class="col-12 text-center justify-content-center" style="display: flex;" id="cameraHolder">
                 <video width="720" height="560" id="video" autoplay></video>
             </div>
-            <canvas id="imageHolder" style="width:720; height:560; display:none;"></canvas>
+            <div class="col-12 text-center justify-content-center" style="display: none;">
+                <canvas id="imageHolder" width="720" height="560"></canvas>
+            </div>
             <form id="face_submission" action="{% url 'cafe:camera' %}" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 <input id="box" type="hidden" name="box" value=""/>
@@ -84,7 +107,10 @@
             
             // FormData -> Bounding Box와 Image
             var formdata = new FormData(document.getElementById("face_submission"));
-            formdata.append("face_image", file);	
+            var usage_type = $.getUrlVar('usage_type');      
+
+            formdata.append("face_image", file);
+            formdata.append("usage_type", usage_type);	
             formdata.append("box", document.getElementById("box").value);
 
             // 동기 방식으로 서버에 FormData 전송

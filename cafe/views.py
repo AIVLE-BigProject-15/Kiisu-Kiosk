@@ -149,9 +149,6 @@ def classify(face_img):
     # img = img.astype(np.uint8).copy()
     # img = cv2.imread(face_img, cv2.IMREAD_GRAYSCALE)
     
-    #print(img.size)
-    #print(type(img))
-    
     img = cv2.resize(face_img, (128, 128), Image.ANTIALIAS)
     
     
@@ -192,11 +189,30 @@ def detect_age_group(request):
 
     return order(request, age_group=age_group)    
 
+from PIL import Image, ImageDraw
+
 def camera(request):
     if request.method == "POST" and request.FILES:
-        print(request.POST.get("box"))
-        print(request.FILES['face_image'])
-        return HttpResponse('/cafe')
+        usage_type = request.POST.get("usage_type")
+        box = json.loads(request.POST.get("box"))
+        face_image = request.FILES['face_image']
+        
+        img = Image.open(face_image.file)
+        x, y, w, h = map(lambda x: int(box[x]), box)
+
+        draw = ImageDraw.Draw(img)
+        draw.rectangle((x, y, x + w, y + h), outline=(255, 0, 0), width = 3)
+        crop_img = img.crop((x, y, x + w, y + h))
+        
+        img.save('test_img.png',"PNG")
+        crop_img.save('test_crop_img.png',"PNG")
+        
+        gray_img = cv2.cvtColor(np.array(crop_img) , cv2.COLOR_RGB2GRAY)
+        age_group = classify(gray_img)
+        print(age_group, usage_type)
+        
+        page_url = "order" if int(age_group[0]) < 4 else "old_order"
+        return HttpResponse(page_url + f"?usage_type={usage_type}")
 
     return render(request, 'cafe/camera.html')
 

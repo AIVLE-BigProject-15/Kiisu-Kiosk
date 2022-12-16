@@ -16,7 +16,7 @@ from keras.models import load_model
 import numpy as np
 
 
-MODEL_NAME = "face_10s2.h5" # 모델명 쓰는 곳
+MODEL_NAME = "agebase.h5" # 모델명 쓰는 곳
 MODEL_TYPE = "CNN"
 
 classifier = Classifier(model_name=MODEL_NAME, model_type=MODEL_TYPE)
@@ -31,14 +31,14 @@ def chunks(lst, n):
         i += n
 
 
-def order(request, age_group="10대"):
+def order(request, age_group="(60, 100)"):
     hot_cf_list = Menu.objects.filter(type__icontains="hot")
     ice_cf_list = Menu.objects.filter(type__icontains="ice")
     non_cf_list = Menu.objects.filter(type__icontains="non")
     smoothie_list = Menu.objects.filter(type__icontains="smoothie")
     bread_list = Menu.objects.filter(type__icontains="bread")
 
-    page_url = "cafe/order.html" if int(age_group[0]) < 4 else "cafe/old_order.html"
+    page_url = "cafe/order.html" if int(age_group[1]) < 6 else "cafe/old_order.html"
 
     return render(request, page_url, {'hot_coffee_all':hot_cf_list,
                                               'ice_coffee_all' : ice_cf_list,
@@ -115,7 +115,7 @@ def get_face():
     print("Start")
     
     while True:
-        frame = cap.get_frame()
+        frame = cap.get_frame_jh()
         faces = faceCascade.detectMultiScale(
             frame, #grayscale로 이미지 변환한 원본.
             scaleFactor=1.2, #이미지 피라미드에 사용하는 scalefactor
@@ -141,49 +141,29 @@ def predicting_model():
 def classify(face_img):
     print(face_img.shape)
     features = []
-    character = {0:'10대', 1:'20대', 2:'30대', 3:'40대', 4:'50대', 5:'60대 이상'}
-    
-    # 넘파이 형태 -> 이미지 형태로 전환
-    # img = Image.fromarray(face_img)
-    #######################################
-    
-    # img = img.astype(np.uint8).copy()
-    # img = cv2.imread(face_img, cv2.IMREAD_GRAYSCALE)
-    
-    #print(img.size)
-    #print(type(img))
-    
+    character = {0:'(0, 3)', 1:'(15, 24)', 2:'(25, 37)', 3:'(38, 47)', 4:'(4, 7)', 5:'(48, 59)',6:'(60, 100)',7:'(8, 14)'}
+
     img = cv2.resize(face_img, (128, 128), Image.ANTIALIAS)
-    
     
     img = np.array(img)
     features.append(img)
     features = np.array(features)
     
-    # ignore this step if using RGB
-    features = features.reshape(-1, 128, 128, 1) # len(features)
+    features = features.reshape(-1, 128, 128, 3)
     features = features / 255.0
-
+    
     # 불러온 모델의 경로로 예측
-    model_path = settings.MODEL_DIR + '/face_10s2.h5'
+    model_path = settings.MODEL_DIR + '/agebase.h5'
     # model_path = predicting_model()
     model = load_model(model_path)
     
-    pred = model.predict(features[0].reshape(-1, 128, 128, 1))
+    pred = model.predict(features[0].reshape(-1, 128, 128, 3))
     
     pred_array = np.zeros(shape=(pred.shape[0], pred.shape[1]))
     pred_array[0][pred.argmax()] = 1
 
     # 여기는 나이대랑 사진 보이는 코드
     print({character[pred_array[0].argmax()]})
-    #plt.axis('off')
-    #plt.imshow(features[0].reshape(128, 128), cmap='gray') 
-    
-    # model_path = pjoin(settings.MODEL_DIR, model_name)
-    # model_path = settings.MODEL_DIR + '/face_10s2.h5'
-    # model = load_model(model_path)
-    
-    # result = model.predict(face_img)
     
     return character[pred_array[0].argmax()]
 

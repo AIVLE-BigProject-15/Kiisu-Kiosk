@@ -6,7 +6,8 @@ from .views import fetch_user
 app_name = 'cafe'
 urlpatterns = [
     path('', views.home, name='home'),
-    path('order', views.order, name='order'),
+    path('young_order', views.young_order, name='young_order'),
+    path('old_order', views.old_order, name='old_order'),
     path('confirm', views.confirm, name='confirm'),
     path('pay', views.pay, name='pay'),
     path('detect_age_group', views.detect_age_group, name='detect_age_group'),

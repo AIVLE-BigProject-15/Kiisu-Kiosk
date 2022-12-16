@@ -54,7 +54,7 @@
 
 <!-- Header-->
 <div class="py-5">
-	<div class="container px-5">
+	<div class="container px-4">
         <h1 class="display-5 fw-bolder mb-2">주문 내역을 확인해주세요!</h1><br>
 
         <div class="row gx-4 gx-lg-5 justify-content-center">
@@ -69,14 +69,14 @@
             </div>
         </div>        
         
-		<section class="py-5">
-            <div class="container px-5 my-5">
-                <div class="row gx-5"> 
+		<section class="py-3">
+            <div class="container my-5">
+                <div class="row gx-3"> 
                     {% for item in cart_all %} 
-                        <div class='col-lg-3 col-5 mb-5'>
+                        <div class='col-lg-3 col-4'>
                             <div class='card h-100 border-1'>
                                 <img class='card-img-top' src={{item.menu.image|fix_route|default:'https://dummyimage.com/600x400/403f40/d4d4d4.png'}} />
-                                <div class='card-body p-4'>
+                                <div class='card-body'>
                                     <a class='text-decoration-none link-dark stretched-link'>
                                         <h5 class='card-title mb-3'>
                                             <strong>{{item.menu.title}} </strong>

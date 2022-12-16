@@ -160,7 +160,7 @@
     
     <div class="payment">
         <div class="row">
-            <div id="pay-cancel" class="py-5" OnClick="location.href ='{% url 'cafe:order' %}'" style="cursor:pointer;" >
+            <div id="pay-cancel" class="py-5" OnClick="window.history.back();" style="cursor:pointer;" >
                 <h3 class="fw-bolder">취소하기</h3>
             </div>
             <div id="pay" class="py-5" OnClick="pay_now();" style="cursor:pointer;">

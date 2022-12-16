@@ -50,7 +50,6 @@ def order(request, age_group="10대"):
 def confirm(request):
     context = {}
     if request.method == "POST":
-
         usage_type = request.POST.get('usage_type')
         menu_list = request.POST.getlist('menu_list')[0].split(",")
         menu_counts = list(map(int, request.POST.getlist('menu_counts')[0].split(",")))
@@ -193,6 +192,13 @@ def detect_age_group(request):
 
     return order(request, age_group=age_group)    
 
+def camera(request):
+    if request.method == "POST" and request.FILES:
+        print(request.POST.get("box"))
+        print(request.FILES['face_image'])
+        return HttpResponse('/cafe')
+
+    return render(request, 'cafe/camera.html')
 
 from .serializer import CustomerSerializer
 from rest_framework.response import Response

@@ -16,10 +16,10 @@ from keras.models import load_model
 import numpy as np
 
 
-MODEL_NAME = "agebase.h5" # 모델명 쓰는 곳
-MODEL_TYPE = "CNN"
+# MODEL_NAME = "face_10s2.h5" # 모델명 쓰는 곳
+# MODEL_TYPE = "CNN"
 
-classifier = Classifier(model_name=MODEL_NAME, model_type=MODEL_TYPE)
+# classifier = Classifier(model_name=MODEL_NAME, model_type=MODEL_TYPE)
 
 def home(request):
     return render(request, 'cafe/home.html')
@@ -31,21 +31,45 @@ def chunks(lst, n):
         i += n
 
 
-def order(request, age_group="(60, 100)"):
+def old_order(request, age_group="(60, 100)"):
     hot_cf_list = Menu.objects.filter(type__icontains="hot")
     ice_cf_list = Menu.objects.filter(type__icontains="ice")
     non_cf_list = Menu.objects.filter(type__icontains="non")
     smoothie_list = Menu.objects.filter(type__icontains="smoothie")
     bread_list = Menu.objects.filter(type__icontains="bread")
 
-    page_url = "cafe/order.html" if int(age_group[1]) < 6 else "cafe/old_order.html"
-
+    page_url = "cafe/old_order.html"
+    
     return render(request, page_url, {'hot_coffee_all':hot_cf_list,
                                               'ice_coffee_all' : ice_cf_list,
                                               'non_coffee_all' : non_cf_list,
                                               'smoothie_all' : smoothie_list,
                                               'bread_all' : bread_list,
                                               })
+
+
+def young_order(request, age_group="10대"):
+    hot_cf_list = Menu.objects.filter(type__icontains="hot")
+    ice_cf_list = Menu.objects.filter(type__icontains="ice")
+    non_cf_list = Menu.objects.filter(type__icontains="non")
+    smoothie_list = Menu.objects.filter(type__icontains="smoothie")
+    bread_list = Menu.objects.filter(type__icontains="bread")
+    
+    page_url ="cafe/young_order.html"
+    
+    return render(request, page_url, {'hot_coffee_all':hot_cf_list,
+                                              'ice_coffee_all' : ice_cf_list,
+                                              'non_coffee_all' : non_cf_list,
+                                              'smoothie_all' : smoothie_list,
+                                              'bread_all' : bread_list,
+                                              })
+
+def page_classify(request ,age_group):
+    
+    if int(age_group[1]) < 6:
+        return young_order(request, age_group=age_group)
+    else:
+        return old_order(request, age_group=age_group)
     
 def confirm(request):
     context = {}
@@ -137,18 +161,58 @@ def predicting_model():
     print(model_obj.model.path)
     return joblib.load(model_obj.model.path)
 
-def classify(face_img):
+# def classify(face_img):
+#     print(face_img.shape)
+#     features = []
+#     character = {0:'(0, 3)', 1:'(15, 24)', 2:'(25, 37)', 3:'(38, 47)', 4:'(4, 7)', 5:'(48, 59)',6:'(60, 100)',7:'(8, 14)'}
+
+    
+    
+    
+    
+    
+    
+    
+#     img = cv2.resize(face_img, (128, 128), Image.ANTIALIAS)
+    
+    
+#     img = np.array(img)
+#     features.append(img)
+#     features = np.array(features)
+    
+    
+#     features = features.reshape(-1, 128, 128, 3)
+    
+    
+    
+#     model_path = settings.MODEL_DIR + '/agebase.h5'
+    
+#     model = load_model(model_path)
+    
+#     pred = model.predict(features[0].reshape(-1, 128, 128, 3))
+    
+#     pred_array = np.zeros(shape=(pred.shape[0], pred.shape[1]))
+#     pred_array[0][pred.argmax()] = 1
+
+    
+#     print({character[pred_array[0].argmax()]})
+    
+    
+    
+    
+    
+    
+    
+    
+    
+#     return character[pred_array[0].argmax()]
+
+import torch
+def classify_yolo(face_img):
     print(face_img.shape)
     features = []
     character = {0:'(0, 3)', 1:'(15, 24)', 2:'(25, 37)', 3:'(38, 47)', 4:'(4, 7)', 5:'(48, 59)',6:'(60, 100)',7:'(8, 14)'}
 
-    # 넘파이 형태 -> 이미지 형태로 전환
-    # img = Image.fromarray(face_img)
-    #######################################
-    
-    # img = img.astype(np.uint8).copy()
-    # img = cv2.imread(face_img, cv2.IMREAD_GRAYSCALE)
-    
     img = cv2.resize(face_img, (128, 128), Image.ANTIALIAS)
     
     
@@ -156,38 +220,38 @@ def classify(face_img):
     features.append(img)
     features = np.array(features)
     
-    # ignore this step if using RGB
     features = features.reshape(-1, 128, 128, 3)
-    features = features / 255.0
+    # features = features / 255.0
     
-    # 불러온 모델의 경로로 예측
-    model_path = settings.MODEL_DIR + '/agebase.h5'
-    # model_path = predicting_model()
-    model = load_model(model_path)
+    model_path = settings.MODEL_DIR + '/ageyolobase.pt'
     
-    pred = model.predict(features[0].reshape(-1, 128, 128, 3))
+    model = torch.load(model_path)
+    
+    net = cv2.dnn.readNet(model)
+    
+    classes = ['(0, 3)','(15, 24)','(25, 37)','(38, 47)','(4, 7)','(48, 59)','(60, 100)','(8, 14)']
+    
+    layer_names = net.getLayerNames()
+    output_layers = [layer_names[i[0] - 1] for i in net.getUnconnectedOutLayers()]
+    
+    blob = cv2.dnn.blobFromImage(features[0].reshape(-1, 128, 128, 3)) 
+    
+    net.setInput(blob)
+    
+    pred = net.forward(output_layers)
     
     pred_array = np.zeros(shape=(pred.shape[0], pred.shape[1]))
     pred_array[0][pred.argmax()] = 1
 
-    # 여기는 나이대랑 사진 보이는 코드
     print({character[pred_array[0].argmax()]})
-    #plt.axis('off')
-    #plt.imshow(features[0].reshape(128, 128), cmap='gray') 
-    
-    # model_path = pjoin(settings.MODEL_DIR, model_name)
-    # model_path = settings.MODEL_DIR + '/face_10s2.h5'
-    # model = load_model(model_path)
-    
-    # result = model.predict(face_img)
     
     return character[pred_array[0].argmax()]
 
 def detect_age_group(request):
     face = get_face()
-    age_group = classify(face) 
+    age_group = classify_yolo(face) 
 
-    return order(request, age_group=age_group)    
+    return page_classify(request, age_group=age_group)    
 
 from PIL import Image, ImageDraw
 
@@ -207,11 +271,11 @@ def camera(request):
         img.save('test_img.png',"PNG")
         crop_img.save('test_crop_img.png',"PNG")
         
-        gray_img = cv2.cvtColor(np.array(crop_img) , cv2.COLOR_RGB2GRAY)
-        age_group = classify(gray_img)
+        RGB_img = cv2.cvtColor(np.array(crop_img) , cv2.COLOR_BGR2RGB) 
+        age_group = classify_yolo(RGB_img)
         print(age_group, usage_type)
         
-        page_url = "order" if int(age_group[0]) < 4 else "old_order"
+        page_url = "young_order" if int(age_group[1]) < 6 else "old_order"
         return HttpResponse(page_url + f"?usage_type={usage_type}")
 
     return render(request, 'cafe/camera.html')
@@ -224,4 +288,4 @@ class fetch_user(ListAPIView):
         
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
-
+    

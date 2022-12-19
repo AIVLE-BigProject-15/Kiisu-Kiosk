@@ -155,14 +155,14 @@
 </style>
 
 <section class="bottombar">
-    <form id="confirmed_order_submission" action="{% url 'cafe:pay' %}" method="POST" enctype="multipart/form-data">
+    <form id="confirmed_order_submission" action="{% url 'cafe:old_pay' %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
     </form>
     
     <div class="payment">
         <div class="row">
             <div id="pay-cancel" class="py-5" OnClick="window.history.back();" style="cursor:pointer;" >
-                <h3 class="fw-bolder">취소하기</h3>
+                <h3 class="fw-bolder">취소</h3>
             </div>
             <div id="pay" class="py-5" OnClick="pay_now();" style="cursor:pointer;">
                 <h3>결제하기</h3>

@@ -519,7 +519,7 @@
 </style>
 <!-- Portfolio Section-->
 <section class="bottombar">
-    <form id="order_submission" action="{% url 'cafe:confirm' %}" method="POST" enctype="multipart/form-data">
+    <form id="order_submission" action="{% url 'cafe:young_confirm' %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
     </form>
     <div class="cart-info py-3 bg-secondary">

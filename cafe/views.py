@@ -71,7 +71,45 @@ def page_classify(request ,age_group):
     else:
         return old_order(request, age_group=age_group)
     
-def confirm(request):
+def old_confirm(request, age_group = "50대"):
+    context = {}
+    if request.method == "POST":
+        usage_type = request.POST.get('usage_type')
+        menu_list = request.POST.getlist('menu_list')[0].split(",")
+        menu_counts = list(map(int, request.POST.getlist('menu_counts')[0].split(",")))
+        # customer_obj = Customer.objects.filter(id__exact=request.POST.get('customer_id'))[0]
+
+        print(menu_list)
+        print(menu_counts)
+        cart_list = []
+        total_price = 0
+        for menu_title, cnt in zip(menu_list, menu_counts):
+            menu_obj = Menu.objects.filter(title__exact=menu_title)[0]
+            
+            order_obj = Order()
+            order_obj.menu = menu_obj
+            order_obj.count = cnt
+
+            order_obj.created = timezone.datetime.now()
+            order_obj.save()
+        
+            cart_list += [order_obj]
+            total_price += menu_obj.price * int(cnt)
+        
+        context['usage_type'] = usage_type
+        context['total_count'] = sum(list(map(lambda x: x.count, cart_list)))
+        context['cart_all'] = cart_list
+        context['total_price'] = total_price
+        
+        page_url = 'cafe/old_confirm.html'
+        
+        print(context)
+    else:
+        pass
+        
+    return render(request, 'cafe/old_confirm.html', context)       
+
+def young_confirm(request, age_group = "10대"):
     context = {}
     if request.method == "POST":
         usage_type = request.POST.get('usage_type')
@@ -104,10 +142,12 @@ def confirm(request):
         print(context)
     else:
         pass
+    
+    page_url = 'cafe/young_confirm.html'
         
-    return render(request, 'cafe/confirm.html', context)        
+    return render(request, 'cafe/young_confirm.html', context)   
 
-def pay(request):
+def old_pay(request, age_group = "50대"):
     context = {}
     if request.method == "POST":
         usage_type = request.POST.get('usage_type')
@@ -126,8 +166,34 @@ def pay(request):
         print(context)
     else:
         pass
+    
+    page_url = 'cafe/old_pay.html'
         
-    return render(request, 'cafe/pay.html', context)        
+    return render(request, 'cafe/old_pay.html', context)        
+
+def young_pay(request, age_group = "10대"):
+    context = {}
+    if request.method == "POST":
+        usage_type = request.POST.get('usage_type')
+        total_price = request.POST.get('total_price')
+        order_ids = list(map(int, request.POST.getlist('orders')[0].split(",")))
+        # customer_obj = Customer.objects.filter(id__exact=request.POST.get('customer_id'))[0]
+
+        print(usage_type)
+        print(total_price)
+        print(order_ids)
+        
+        context['usage_type'] = usage_type
+        context['order_ids'] = order_ids
+        context['total_price'] = total_price
+        
+        print(context)
+    else:
+        pass
+    
+    page_url = 'cafe/young_pay.html'
+        
+    return render(request, 'cafe/young_pay.html', context)    
 
 def get_face():
     file_path = settings.MODEL_DIR + '/haarcascade_frontalface_default.xml'

@@ -22,7 +22,7 @@
     .box1 {
         box-sizing: content-box;
         width: 160px;
-        height: 320px;
+        height: 160px;
         margin: 10px;
         padding: 60px;
     }
@@ -30,71 +30,83 @@
     .box2 {
         box-sizing: content-box;
         width: 160px;
-        height: 320px;
+        height: 160px;
         margin: 10px;
         padding: 60px;
     }
     .box3 {
         width: 600px;
     }
+
+    .background {
+
+
+    }
 </style>
+<style>
+    .home-py-5 {
+        padding-top: 9rem !important;
+        padding-bottom: 9rem !important;
+      }
 
-<!-- Navigation-->
-<nav class="topbar navbar-expand-lg navbar-light py-2" style="background-color: #B9DFD5;">
-    <div class="container px-4 px-lg-5">
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <button class="btn btn-primary btn-lg">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-globe-asia-australia" viewBox="0 0 16 16">
-                    <path d="m10.495 6.92 1.278-.619a.483.483 0 0 0 .126-.782c-.252-.244-.682-.139-.932.107-.23.226-.513.373-.816.53l-.102.054c-.338.178-.264.626.1.736a.476.476 0 0 0 .346-.027ZM7.741 9.808V9.78a.413.413 0 1 1 .783.183l-.22.443a.602.602 0 0 1-.12.167l-.193.185a.36.36 0 1 1-.5-.516l.112-.108a.453.453 0 0 0 .138-.326ZM5.672 12.5l.482.233A.386.386 0 1 0 6.32 12h-.416a.702.702 0 0 1-.419-.139l-.277-.206a.302.302 0 1 0-.298.52l.761.325Z"/>
-                    <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0ZM1.612 10.867l.756-1.288a1 1 0 0 1 1.545-.225l1.074 1.005a.986.986 0 0 0 1.36-.011l.038-.037a.882.882 0 0 0 .26-.755c-.075-.548.37-1.033.92-1.099.728-.086 1.587-.324 1.728-.957.086-.386-.114-.83-.361-1.2-.207-.312 0-.8.374-.8.123 0 .24-.055.318-.15l.393-.474c.196-.237.491-.368.797-.403.554-.064 1.407-.277 1.583-.973.098-.391-.192-.634-.484-.88-.254-.212-.51-.426-.515-.741a6.998 6.998 0 0 1 3.425 7.692 1.015 1.015 0 0 0-.087-.063l-.316-.204a1 1 0 0 0-.977-.06l-.169.082a1 1 0 0 1-.741.051l-1.021-.329A1 1 0 0 0 11.205 9h-.165a1 1 0 0 0-.945.674l-.172.499a1 1 0 0 1-.404.514l-.802.518a1 1 0 0 0-.458.84v.455a1 1 0 0 0 1 1h.257a1 1 0 0 1 .542.16l.762.49a.998.998 0 0 0 .283.126 7.001 7.001 0 0 1-9.49-3.409Z"/>
-                </svg>
-                English
-            </button>
-        </div>
-    </div>
-</nav>
+    .font1{
+        color : #E51937;
+        font-size : 32px;
+    }
 
+    @font1 {
+        font-family: 'KOFIHDrLEEJWTTF-B';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2210-2@1.0/KOFIHDrLEEJWTTF-B.woff2') format('woff2');
+        font-weight: 700;
+        font-style: normal;
+    }
+
+    .font2{
+        color : #E51937;
+        font-size : 25px;
+    }
+    * {
+        font-family: 'KOFIHDrLEEJWTTF-B';
+
+    }
+
+</style>
 <section>
+<div class="py-5" style="background-color:#F2F2F2;">
+
 <div class="py-5">
-    <div class="container px-5">
+    <div class="container home-py-5">
         <div class="row justify-content-center text-center">
-            <div class="row justify-content-center text-center">
+
+            <div class="text-center">
+                <h1 class="fw-bolder mb-2 font1">에이블 카페</h1><br>
+                <p class="lead fw-normal mb-0 font2">어서오세요! 카페 에이블입니다 </p>
             </div>
-            <h1 class="fw-bolder mb-2">식사하실 방법을 선택해주세요.</h1><br>
 
                 <div id="box">
-                    <div class="btn btn-outline-primary btn-lg col-5 box1" id="btnCash" OnClick="location.href ='{% url 'cafe:camera' %}?usage_type=restaurant'" >
+
+                    <div class="btn btn-lg col-5 box1" style="background-color:#FFFFFF;" id="btnCash" OnClick="location.href ='{% url 'cafe:camera' %}?usage_type=restaurant'" >
                         <div class="container px-5 px-lg-5 my-5">
                             <div class="text-center">
-                                <h1 class="fw-bolder"><i class="bi bi-cash-coin"></i> 매장이용</h1><br>
+                                <h1 class="fw-bolder"><i class="bi bi-cash-coin"></i> 매장식사</h1><br>
                             </div>
                         </div>
                     </div>
 
-                    <div class="btn btn-outline-primary btn-lg col-6 box2" id="btnCoupon" OnClick="location.href ='{% url 'cafe:camera' %}?usage_type=takeout'" >
+                    <div class="btn btn-lg col-6 box2" style="background-color:#FFFFFF;" id="btnCoupon" OnClick="location.href ='{% url 'cafe:camera' %}?usage_type=takeout'" >
                         <div class="container px-5 px-lg-5 my-5">
                             <div class="text-center">
-                                <h1 class="fw-bolder"><i class="bi bi-qr-code-scan"></i> 포장하기</h1><br>
+                                <h1 class="fw-bolder"><i class="bi bi-qr-code-scan"></i> 방문포장</h1><br>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="btn btn-outline-primary btn-lg btn-payment box3" OnClick="location.href ='#'" >
-                    <div class="container px-5 px-lg-5 my-5">
-                        <div class="text-center">
-                            <h1 class="display-4 fw-bolder"><i class="bi bi-credit-card"></i> 이 칸에 뭘 넣을까요</h1><br>
-                            <p class="lead fw-normal text-muted mb-0">직원호출?</p>
-                        </div>
-                    </div>
                 </div>
 
         </div>
     </div>
 </div>
+</div>
 </section>
 
 {% endblock content %}
-
-{% block cart %}
-{% endblock %}

@@ -98,13 +98,13 @@
     .tab_title li {
         list-style: none;
         color: #fff;
-        background-color: #E51937;
-        border-color: #E51937;
+        background-color: #ff7575;
+        border-color: #ff7575;
         cursor: pointer;
         padding: 50px 80px;
         display: inline-block;
         margin: 0 0 1rem;
-        border-radius: 0.5rem;
+        border-radius: 2rem;
 
 
       }
@@ -116,7 +116,7 @@
       }
     .tab_title li.on {
         color: #fff;
-        background-color: #d63545;
+        background-color: #E51937;
         font-weight: bold;
         border-color: #ff7575;
         box-shadow: 0 0 0 0.25rem rgba(60, 198, 171, 0.5);
@@ -153,6 +153,7 @@
         left: 50%; 
         transform: translate(-50%, -50%);
         border: 3px solid #E51937;
+        border-radius: 2rem;
     }
 
     .top_box {
@@ -167,7 +168,7 @@
     }
 
     .si {
-        margin-top : 30px;
+        margin-top : 5px;
     }
 
     h4 {
@@ -177,7 +178,7 @@
 </style>
 
 
-<nav class="topbar navbar-expand-lg navbar-light py-2 top_box" style="background-color: #FFFFFF;">
+<nav class="topbar navbar-expand-lg navbar-light py-2 top_box">
     <div class="container px-4 px-lg-5">
 
 <section class="my-md-5">
@@ -580,6 +581,9 @@
     .textborder {
         font-size: 60px;
     }
+    .cart_order {
+        background-color: #a39998;
+    }
 
     #pay-cancel, #pay {
         width: 50%; 
@@ -620,7 +624,7 @@
     <form id="order_submission" action="{% url 'cafe:old_confirm' %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
     </form>
-    <div class="cart-info py-3 bg-secondary">
+    <div class="cart-info py-3 cart_order">
         <div class="row" id="cart">
             <div class="row" id="headingOne">
                 <button class="btn collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">

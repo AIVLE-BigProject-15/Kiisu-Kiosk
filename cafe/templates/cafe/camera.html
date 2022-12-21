@@ -36,33 +36,29 @@
 
 <!-- Page Content-->
 <section class="py-5">
-    <div class="container px-5 my-5">
-        <div class="row gx-5 justify-content-center">
-            <div class="col-lg-6">
-                <div class="text-center mb-5">
-                    <h1 class="fw-bolder">카메라를 응시해주세요</h1><br>
-                    <p class="lead fw-normal text-muted mb-0">연령대 별 추천 메뉴를 안내해드립니다.</p>
-                    <br>
-                    <img src="/static/assets/spinner.gif" alt="loading" width="80">
-                    <p class="lead fw-normal text-muted" id='seconds' style="display:none;">8</p>
-                </div>
+    <div class="row gx-5 justify-content-center">
+        <div class="col-lg-6">
+            <div class="text-center mb-5">
+                <h1 class="page-section-heading fw-bolder">카메라를 응시해주세요</h1><br>
+                연령대 별 추천 메뉴를 안내해드립니다.<br>
+                <br>
+                <img src="/static/assets/spinner.gif" alt="loading" width="80">
+                <p class="lead fw-normal text-muted" id='seconds' style="display:none;">8</p>
             </div>
         </div>
+    </div>
 
-        <div class="row gx-5">
-            <div class="col-12 text-center justify-content-center" style="display: flex;" id="cameraHolder">
-                <video width="720" height="560" id="video" autoplay></video>
-            </div>
-            <div class="col-12 text-center justify-content-center" style="display: none;">
-                <canvas id="imageHolder" width="720" height="560"></canvas>
-            </div>
-            <form id="face_submission" action="{% url 'cafe:camera' %}" method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-                <input id="box" type="hidden" name="box" value=""/>
-            </form>
+    <div class="row gx-5">
+        <div class="col-12 text-center justify-content-center" style="display: flex;" id="cameraHolder">
+            <video width="720" height="560" id="video" autoplay></video>
         </div>
-        
-        
+        <div class="col-12 text-center justify-content-center" style="display: none;">
+            <canvas id="imageHolder" width="720" height="560"></canvas>
+        </div>
+        <form id="face_submission" action="{% url 'cafe:camera' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input id="box" type="hidden" name="box" value=""/>
+        </form>
     </div>
 </section>
 
@@ -127,6 +123,6 @@
     };
     setTimeout(countdown, 800);
     
-</script>
+</script> 
 
 {% endblock content %}

@@ -5,3 +5,4 @@ Pillow==9.2.0
 Django==3.2
 djangorestframework
 django-resized
+torch

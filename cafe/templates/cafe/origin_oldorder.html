@@ -98,27 +98,27 @@
     .tab_title li {
         list-style: none;
         color: #fff;
-        background-color: #ff7575;
-        border-color: #ff7575;
+        background-color: #399B83;
+        border-color: #399B83;
         cursor: pointer;
         padding: 50px 80px;
         display: inline-block;
         margin: 0 0 1rem;
-        border-radius: 2rem;
+        border-radius: 0.5rem;
 
 
       }
       .tab_title li:hover {
         color: #fff;
-        background-color: #ff7575;
-        border-color: #ff7575;
+        background-color: #4AC4A5;
+        border-color: #15967d;
 
       }
     .tab_title li.on {
         color: #fff;
-        background-color: #E51937;
+        background-color: #4AC4A5;
         font-weight: bold;
-        border-color: #ff7575;
+        border-color: #15967d;
         box-shadow: 0 0 0 0.25rem rgba(60, 198, 171, 0.5);
 
       }
@@ -126,8 +126,8 @@
       .tab_title li:disabled, .tab_title li.disabled {
         list-style: none;
         color: #fff;
-        background-color: #ff7575;
-        border-color: #ff7575;
+        background-color: #1abc9c;
+        border-color: #1abc9c;
       }
 
     
@@ -151,14 +151,11 @@
         position: relative; 
         top: 50%; 
         left: 50%; 
-        transform: translate(-50%, -50%);
-        border: 3px solid #E51937;
-        border-radius: 2rem;
+        transform: translate(-50%, -50%); 
     }
 
     .top_box {
-        height: 400px;
-        background-color: #FFFFFF;
+        height: 150px;
     }
 
     .btn_height {
@@ -168,18 +165,24 @@
     }
 
     .si {
-        margin-top : 5px;
+        margin-top : 130px;
     }
-
-    h4 {
-        color: #E51937;
-    }
-
 </style>
 
-
-<nav class="topbar navbar-expand-lg navbar-light py-2 top_box">
+<nav class="topbar navbar-expand-lg navbar-light py-2 top_box" style="background-color: #B9DFD5;">
     <div class="container px-4 px-lg-5">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent" OnClick="location.href ='{% url 'cafe:home' %}'" style="cursor:pointer;">
+            <button class="btn btn-primary btn-lg btn_height">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-globe-asia-australia" viewBox="0 0 16 16">
+                    <path d="m10.495 6.92 1.278-.619a.483.483 0 0 0 .126-.782c-.252-.244-.682-.139-.932.107-.23.226-.513.373-.816.53l-.102.054c-.338.178-.264.626.1.736a.476.476 0 0 0 .346-.027ZM7.741 9.808V9.78a.413.413 0 1 1 .783.183l-.22.443a.602.602 0 0 1-.12.167l-.193.185a.36.36 0 1 1-.5-.516l.112-.108a.453.453 0 0 0 .138-.326ZM5.672 12.5l.482.233A.386.386 0 1 0 6.32 12h-.416a.702.702 0 0 1-.419-.139l-.277-.206a.302.302 0 1 0-.298.52l.761.325Z"/>
+                    <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0ZM1.612 10.867l.756-1.288a1 1 0 0 1 1.545-.225l1.074 1.005a.986.986 0 0 0 1.36-.011l.038-.037a.882.882 0 0 0 .26-.755c-.075-.548.37-1.033.92-1.099.728-.086 1.587-.324 1.728-.957.086-.386-.114-.83-.361-1.2-.207-.312 0-.8.374-.8.123 0 .24-.055.318-.15l.393-.474c.196-.237.491-.368.797-.403.554-.064 1.407-.277 1.583-.973.098-.391-.192-.634-.484-.88-.254-.212-.51-.426-.515-.741a6.998 6.998 0 0 1 3.425 7.692 1.015 1.015 0 0 0-.087-.063l-.316-.204a1 1 0 0 0-.977-.06l-.169.082a1 1 0 0 1-.741.051l-1.021-.329A1 1 0 0 0 11.205 9h-.165a1 1 0 0 0-.945.674l-.172.499a1 1 0 0 1-.404.514l-.802.518a1 1 0 0 0-.458.84v.455a1 1 0 0 0 1 1h.257a1 1 0 0 1 .542.16l.762.49a.998.998 0 0 0 .283.126 7.001 7.001 0 0 1-9.49-3.409Z"/>
+                </svg>
+                HOME
+            </button>
+        </div>
+    </div>
+</nav>
+
 
 <section class="my-md-5">
     <div class="row justify-content-center">            
@@ -197,18 +200,9 @@
             <li id="menu_type--smoothie">
                 <h3 class="masthead-heading text-center text-uppercase text-white mb-0" style="pointer-events: none; ">스무디</h3>
             </li>
-
-            <!-- 빵 넣을거면 id 등 수정, 추가해야함-->
-            <li id="menu_type--smoothie"> 
-                <h3 class="masthead-heading text-center text-uppercase text-white mb-0" style="pointer-events: none; ">빵</h3>
-            </li>
         </ul>    
         
     </div>
-
-</div>
-</nav>
-
     <div class="row justify-content-center si"> 
             
         <div class="row justify-content-center" id="menu_content--hotcoffee" style="display: auto;">
@@ -241,7 +235,6 @@
                 </div>
                     </div>
                 </div>
-
 
                 <div class="portfolio-modal modal fade" id="portfolioModal{{menu.id}}" tabindex="-1" aria-labelledby="portfolioModal{{menu.id}}" aria-hidden="true">
                     <div class="modal-dialog modal-xl">
@@ -336,7 +329,6 @@
                 </div>
             {% endfor %}
         </div>
-
         <div class="row justify-content-center" id="menu_content--noncoffee" style="display: none;">
             {% for menu in non_coffee_all %}
                 <div class="col-md-4 col mb-5">
@@ -455,69 +447,6 @@
                 </div>
             {% endfor %}
         </div>
-
-        <!-- id 부분 bread로 바꿔야함-->
-        <div class="row justify-content-center" id="menu_content--smoothie" style="display: none;">
-            {% for menu in smoothie_all %}
-                <div class="col-md-4 col mb-5">
-                    <div class="btn btn-outline-primary btn-lg btn-payment box3">
-                        <div class="container px-5 px-lg-5 my-5">
-                    <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="#portfolioModal{{menu.id}}">
-                        <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
-                            <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
-                        </div>
-                        <!-- Product image-->
-                        <img class="card-img-top" src="{{menu.image|fix_route|default:'https://dummyimage.com/450x300/dee2e6/6c757d.jpg'}}" alt="..." />
-                        <!-- Product details-->
-                        <div class="card-body p-4">
-                            <div class="text-center">
-                                <!-- Product name-->
-                                <h4 class="fw-bolder">{{menu.title}}</h4>
-                                <!-- Product price-->
-                                <h4 class="fw-normal" id="{{menu.title}}--price">{{menu.price}} 원</h4>
-                                <!-- Product Calorie-->
-                                <h5 class="fw-light text-muted">{{menu.calorie}} Kcal</h5>
-                                
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                    </div>
-                </div>
-                <div class="portfolio-modal modal fade" id="portfolioModal{{menu.id}}" tabindex="-1" aria-labelledby="portfolioModal{{menu.id}}" aria-hidden="true">
-                    <div class="modal-dialog modal-xl">
-                        <div class="modal-content">
-                            <div class="modal-header border-0"><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div>
-                            <div class="modal-body text-center pb-5">
-                                <div class="container">
-                                    <div class="row justify-content-center">
-                                        <div class="col-lg-8">
-                                            <!-- Portfolio Modal - Title-->
-                                            <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0">{{menu.title}}</h2>
-                                            
-                                            <!-- Portfolio Modal - Image-->
-                                            <img class="img-fluid rounded mb-5" src="{{menu.image|fix_route|default:'https://dummyimage.com/450x300/dee2e6/6c757d.jpg'}}" alt="..." />
-                                            <!-- Portfolio Modal - Text-->
-                                            <p class="mb-4">{{menu.desc}}</p>
-                                            <button class="btn btn-secondary btn-lg" data-bs-dismiss="modal">
-                                                <i class="fas fa-xmark fa-fw"></i>
-                                                뒤로 가기
-                                            </button>
-                                            <button class="btn btn-primary btn-lg" data-bs-dismiss="modal" id="addToCart--{{menu.title}}">
-                                                <i class="fas fa-xmark fa-fw"></i>
-                                                장바구니 담기
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
-        
-
     </div>
 
 </section>
@@ -577,12 +506,12 @@
     .payment {
         width: 100%; 
     }
-
+    .cart {
+        background-color: #399B83;
+        width: 100%;
+    }
     .textborder {
         font-size: 60px;
-    }
-    .cart_order {
-        background-color: #a39998;
     }
 
     #pay-cancel, #pay {
@@ -595,7 +524,7 @@
         background-color: #BEBEBE;
     }
     #pay {
-        background-color: #CC3939;
+        background-color: #FF0000;
     }
     #pay-cancel:hover {
         color: #555555;
@@ -624,7 +553,7 @@
     <form id="order_submission" action="{% url 'cafe:old_confirm' %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
     </form>
-    <div class="cart-info py-3 cart_order">
+    <div class="cart-info py-3 bg-secondary">
         <div class="row" id="cart">
             <div class="row" id="headingOne">
                 <button class="btn collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">

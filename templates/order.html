@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>키슈(kiosk is you)</title>
+        <title>우리가게 0원한 알바생</title>
 
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="/static/assets/favicon.ico" />
@@ -17,16 +17,26 @@
 
         
     </head>
-    <body>
-        <!-- Begin Page Content -->
-        {% block content %}
-        {% endblock %}
-        <!-- End of Main Content -->
+    <body style="height: 100%;">
 
+        <div class="row" style="height: 100%;">
 
-        {% block cart %}
-        {% endblock %}
+            <div class="col-10 text-center align-items-center justify-content-center" style="padding: 0;">
 
+                <!-- Begin Page Content -->
+                {% block content %}
+                {% endblock %}
+                <!-- End of Main Content -->
+            </div>
+
+            <div class="col-2 bg-muted text-center align-items-center justify-content-center" style="padding: 0;">
+                <!-- Begin Side Bar -->
+                {% block bar %}
+                {% endblock %}
+                <!-- End of Side Bar -->
+            </div>
+        </div>
+        
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->

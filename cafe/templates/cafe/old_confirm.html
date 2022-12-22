@@ -41,14 +41,14 @@
 
 <style>
     #totalPrice {
+        width: 1200px;
         border-style: solid;
         border-color: gray;
-        border-width: 0px 0px 1px 0px;
+        border-width: 0px 0px 2px 0px;
         margin: 0 0 0 0;
         align-items : center;
         display : flex;
         padding: 3% 0 0 0;
-
     }
 </style>
 
@@ -155,17 +155,17 @@
 
 
 <section class="bottombar">
-    <div class="row gx-4 gx-lg-5" id="totalPrice">
-        <div class="col-9"><h1 class="fw-normal mt-5 mb-4">총 주문 금액</h1></div>
-        <div class="col-3"><h1 class="fw-normal mt-3 mb-4">{{total_price|default:0}}원</h1></div>
+    <div class="row gx-9 gx-lg-9" id="totalPrice">
+        <div class="col-7"><h1 class="display-5 fw-bolder mt-3 mb-4">&nbsp;&nbsp;&nbsp;총 주문 금액</h1></div>
+        <div class="col-5"><h1 class="display-5 fw-bolder mt-3 mb-4 text-end">{{total_price|default:0}}원&nbsp;&nbsp;&nbsp;</h1></div>
     </div>
     <form id="confirmed_order_submission" action="{% url 'cafe:old_pay' %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
     </form>
-    
 
     <div class="payment">
         <div class="row">
+            <h1 class="display-3 fw-bolder mt-3 mb-4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;결제 수단선택</h1></div>
             <div id="cash-pay" class="py-5" OnClick="window.history.back();" style="cursor:pointer;" >
                 <h1 class="display-1 fw-bolder"><br>현금결제</h1>
             </div>

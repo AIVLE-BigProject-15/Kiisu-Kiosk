@@ -40,7 +40,7 @@
 </script>
 
 <style>
-    #totalCount, #totalPrice {
+    #totalPrice {
         border-style: solid;
         border-color: gray;
         border-width: 0px 0px 1px 0px;
@@ -53,24 +53,17 @@
 </style>
 
 <!-- Header-->
-<div class="py-5">
-	<div class="container px-4">
-        <h1 class="display-5 fw-bolder mt-5 mb-2">주문 내역을 확인해주세요</h1><br>
-
-        <div class="row gx-4 gx-lg-5 justify-content-center">
-            <div class="row gx-4 gx-lg-5" id="totalCount">
-                <div class="col-9"><h2 class="fw-normal mt-3 mb-4">총 주문 수량</h2></div>
-                <div class="col-3"><h2 class="fw-normal mt-3 mb-4">{{total_count|default:0}}</h2></div>
-            </div>
-
-            <div class="row gx-4 gx-lg-5" id="totalPrice">
-                <div class="col-9"><h2 class="fw-normal mt-3 mb-4">총 주문 금액</h2></div>
-                <div class="col-3"><h2 class="fw-normal mt-3 mb-4">{{total_price|default:0}}원</h2></div>
-            </div>
-        </div>        
+<div class="py-3">
+	<div class="container px-1">
+        <div class="payment">
+            <div class="row">
+                <div id="pay-cancel" class="py-5" OnClick="window.history.back();" style="cursor:pointer;" >
+                    <h1 class="display-3 fw-bolder text-danger">< 취소하기</h1>
+                </div>
+        <h1 class="display-3 fw-bolder mt-5 mb-2">주문 내역</h1><br>      
         
 		<section class="py-3">
-            <div class="container my-5 mt-5">
+            <div class="container my-5 py-5">
                 <div class="row gx-3"> 
                     {% for item in cart_all %} 
                         <div class='col-lg-4 col-4 mt-5'>
@@ -91,7 +84,6 @@
             </div>
         </section>
 	</div>
-
 </div>
 {% endblock content %}
             
@@ -108,7 +100,7 @@
         display: flex;
         flex-wrap: wrap;
         align-items: center;
-        justify-content: space-between;
+        justify-content: center;
         padding-top: 0.5rem;
         padding-bottom: 0rem;
       }
@@ -120,22 +112,28 @@
     .payment {
         width: 100%; 
     }
-    #pay-cancel, #pay {
+    #cash-pay, #card-pay {
         width: 50%; 
+        height: 400px;
         text-align: center;
         padding-top: 1rem;
 -    }
     #pay-cancel {
-        color: #fff;
-        background-color: #BEBEBE;
+    width: 50%; 
+    height: 200px;
+    padding-top: 1rem;
+-    }
+    #pay-cancel {
+        color: #000000;
+        background-color: #ffffff;
     }
-    #pay {
+    #cash-pay #card-pay {
         color: #ffffff;
         background-color: #FF0000;
     }
     #pay-cancel:hover {
-        color: #555555;
-        background-color: #E8E8E8;
+        color: #000000;
+        background-color: #ffffff;
     }
     #pay:hover {
         color: #ffffff;
@@ -154,18 +152,25 @@
     }
 </style>
 
+
+
 <section class="bottombar">
+    <div class="row gx-4 gx-lg-5" id="totalPrice">
+        <div class="col-9"><h1 class="fw-normal mt-5 mb-4">총 주문 금액</h1></div>
+        <div class="col-3"><h1 class="fw-normal mt-3 mb-4">{{total_price|default:0}}원</h1></div>
+    </div>
     <form id="confirmed_order_submission" action="{% url 'cafe:old_pay' %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
     </form>
     
+
     <div class="payment">
         <div class="row">
-            <div id="pay-cancel" class="py-5" OnClick="window.history.back();" style="cursor:pointer;" >
-                <h3 class="fw-bolder">취소하기</h3>
+            <div id="cash-pay" class="py-5" OnClick="window.history.back();" style="cursor:pointer;" >
+                <h1 class="display-1 fw-bolder"><br>현금결제</h1>
             </div>
-            <div id="pay" class="py-5" OnClick="pay_now();" style="cursor:pointer;">
-                <h3>결제하기</h3>
+            <div id="card-pay" class="py-5" OnClick="pay_now();" style="cursor:pointer;">
+                <h1 class="display-1 fw-bolder"><br>카드결제</h1>
             </div>
         </div>
     </div>

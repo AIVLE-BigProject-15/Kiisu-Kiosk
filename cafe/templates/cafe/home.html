@@ -21,26 +21,39 @@
 
     .box1 {
         box-sizing: content-box;
-        width: 160px;
-        height: 160px;
+        width: 300px;
+        height: 300px;
         margin: 10px;
         padding: 60px;
+        border-radius: 2rem;
     }
 
     .box2 {
         box-sizing: content-box;
-        width: 160px;
-        height: 160px;
+        width: 300px;
+        height: 300px;
         margin: 10px;
         padding: 60px;
+        border-radius: 2rem;
+    }
+    .temp-box{
+        width: 50px;
+        height: 50px;
     }
     .box3 {
         width: 600px;
     }
 
+    .si {
+        margin-top : 100px;
+        margin-bottom : 100px;
+    }
+
     .background {
+    }
 
-
+    .vertical {
+        vertical-align : middle;
     }
 </style>
 <style>
@@ -67,36 +80,56 @@
     }
     * {
         font-family: 'KOFIHDrLEEJWTTF-B';
+    
+    }
+    .home-back {
+        width: 1640px;
+        height: 2360px;
+    }
+
+    td {
+        font-size : 50px;
+        vertical-align : middle;
+    }
+
+    .font_t {
 
     }
 
 </style>
 <section>
-<div class="py-5" style="background-color:#F2F2F2;">
+<div class="home-back" style="background-color:#F2F2F2;">
 
 <div class="py-5">
-    <div class="container home-py-5">
+    <div class="container home-py-5 si">
         <div class="row justify-content-center text-center">
 
+
+        <div class="si">
             <div class="text-center">
                 <h1 class="fw-bolder mb-2 font1">CAFE AIVLE</h1><br>
                 <p class="lead fw-normal mb-0 font2">어서오세요! 카페 에이블입니다 </p>
             </div>
+        </div>
 
                 <div id="box">
 
                     <div class="btn btn-lg col-5 box1" style="background-color:#FFFFFF;" id="btnCash" OnClick="location.href ='{% url 'cafe:camera' %}?usage_type=restaurant'" >
                         <div class="container px-5 px-lg-5 my-5">
                             <div class="text-center">
-                                <h1 class="fw-bolder"><i class="bi bi-cash-coin"></i> 매장식사</h1><br>
+                                <h1 class="fw-bolder font_t"><i class="bi"></i><br><br> 매장식사</h1>
+
                             </div>
                         </div>
                     </div>
 
+                    <div class="btn btn-lg col-6 temp-box">
+                    </div>
+
                     <div class="btn btn-lg col-6 box2" style="background-color:#FFFFFF;" id="btnCoupon" OnClick="location.href ='{% url 'cafe:camera' %}?usage_type=takeout'" >
-                        <div class="container px-5 px-lg-5 my-5">
+                        <div class="container px-5 px-lg-5 my-5 ">
                             <div class="text-center">
-                                <h1 class="fw-bolder"><i class="bi bi-qr-code-scan"></i> 방문포장</h1><br>
+                                <h1 class="fw-bolder font_t"><i class="bi bi-qr-code-scan"><br><br></i> 방문포장</h1>
                             </div>
                         </div>
                     </div>

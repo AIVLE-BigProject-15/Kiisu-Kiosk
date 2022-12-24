@@ -11,6 +11,21 @@
     canvas:not(#imageHolder) {
       position: absolute;
     }
+    .camera-title {
+        font-size: 4rem;
+        line-height: 4rem;
+        font-weight: 900 !important;
+        margin-top: 5rem !important;
+        margin-bottom: 2rem !important;
+    }
+    .camera-desc {
+        font-size: 2rem;
+        line-height: 3rem;
+        font-weight: 500 !important;
+        margin-bottom: 3rem !important;
+
+    }
+
 </style>
 <script>
     // GET 방식으로 전송된 데이터 읽기
@@ -39,10 +54,10 @@
     <div class="row gx-5 justify-content-center">
         <div class="col-lg-6">
             <div class="text-center mb-5">
-                <h1 class="page-section-heading fw-bolder">카메라를 응시해주세요</h1><br>
-                연령대 별 추천 메뉴를 안내해드립니다.<br>
+                <h1 class="camera-title fw-bolder">카메라를 응시해주세요</h1><br>
+                <p class="camera-desc">연령대 별 추천 메뉴를 안내해드립니다.</p><br>
                 <br>
-                <img src="/static/assets/spinner.gif" alt="loading" width="80">
+                <img src="/static/assets/spinner.gif" alt="loading" width="120">
                 <p class="lead fw-normal text-muted" id='seconds' style="display:none;">8</p>
             </div>
         </div>
@@ -50,19 +65,22 @@
 
     <div class="row gx-5">
         <div class="col-12 text-center justify-content-center" style="display: flex;" id="cameraHolder">
-            <video width="720" height="560" id="video" autoplay></video>
+            <video width="1260" height="980" id="video" autoplay></video>
         </div>
         <div class="col-12 text-center justify-content-center" style="display: none;">
-            <canvas id="imageHolder" width="720" height="560"></canvas>
+            <canvas id="imageHolder" width="1260" height="980"></canvas>
         </div>
         <form id="face_submission" action="{% url 'cafe:camera' %}" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <input id="box" type="hidden" name="box" value=""/>
         </form>
+
+        <div class="col-lg-5 text-center" id="estimation_result">
+        </div>
     </div>
 </section>
 
-<script>
+ {% comment %} <script>
     function isCanvasBlank(canvas) {
         return !canvas.getContext('2d')
           .getImageData(0, 0, canvas.width, canvas.height).data
@@ -71,7 +89,7 @@
     
 </script>
 <script>
-    timeLeft = 8;
+    timeLeft = 10;
     const canvas = document.getElementById("imageHolder")
 
     function countdown() {
@@ -110,8 +128,11 @@
             xhr.open("POST", "camera", false);
             xhr.onload = () => {
                 if (xhr.status == 200) {
+                    //let page_url = xhr.response['page_url'];
                     let result = xhr.response;
                     window.location.href = result;
+                    //document.getElementById("estimation_result").innerHTML = result;
+                    
                 } else {
                     alert("ERROR LOADING FILE!" + this.status);
                 }
@@ -122,7 +143,8 @@
 
     };
     setTimeout(countdown, 800);
+    //window.location.href = page_url;
     
-</script> 
+</script>  {% endcomment %}
 
 {% endblock content %}

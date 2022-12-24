@@ -1,0 +1,102 @@
+{% extends 'index.html' %} 
+
+{% load post_extras %}
+
+{% block content %}
+
+<style>
+    canvas:not(#imageHolder) {
+      position: absolute;
+    }
+    .camera-title {
+        font-size: 4rem;
+        line-height: 4rem;
+        font-weight: 900 !important;
+        margin-top: 5rem !important;
+        margin-bottom: 2rem !important;
+    }
+    .camera-desc {
+        font-size: 2rem;
+        line-height: 3rem;
+        font-weight: 500 !important;
+        margin-bottom: 3rem !important;
+
+    }
+
+</style>
+<script>
+    // GET 방식으로 전송된 데이터 읽기
+    $.extend({
+        getUrlVars: function(){
+            var vars = [], hash;
+            var hashes = window.location.href.slice(window.location.href.indexOf('?') +1).split('&');
+            for(var i = 0; i < hashes.length; i++) {
+                hash = hashes[i].split('=');
+                vars.push(hash[0]);
+                vars[hash[0]] = hash[1];
+            }
+            console.log(vars);
+            return vars;
+        }, 
+        
+        getUrlVar: function(name) {
+            return $.getUrlVars()[name];
+        }
+        
+    });
+</script>
+
+<!-- Page Content-->
+<section class="py-5">
+    <div class="row gx-5 justify-content-center">
+        <div class="col-lg-6">
+            <div class="text-center mb-5">
+                <h1 class="camera-title fw-bolder">카메라를 응시해주세요</h1><br>
+                <p class="camera-desc">연령대 별 추천 메뉴를 안내해드립니다.</p><br>
+                <br>
+                <img src="/static/assets/spinner.gif" alt="loading" width="120">
+                <p class="lead fw-normal text-muted" id='seconds' style="display:none;">8</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row gx-5">
+        <div class="col-12 text-center justify-content-center" style="display: flex;" id="cameraHolder">
+            <img id="imageHolder" width="1260" height="980" src="{% url 'cafe:camera' %}"></img>
+        </div>
+    </div>
+</section>
+
+ <script>
+    function nextPage() {
+        console.log("next page")
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", "{% url 'cafe:get_age' %}", false);
+        xhr.onload = () => {
+            if (xhr.status == 200) {
+                let result = xhr.response;
+                var usage_type = $.getUrlVar('usage_type');
+
+                if (result == "None"){
+                    console.log("Error");
+                }
+                else if (result[0] * 1 < 6){
+                    window.location.href = "{% url 'cafe:young_order' %}?usage_type=" + usage_type;
+
+                }else{
+                    window.location.href = "{% url 'cafe:old_order' %}?usage_type=" + usage_type;
+                }
+                
+            } else {
+                alert("ERROR LOADING FILE!" + this.status);
+            }
+        };
+
+        xhr.send();
+    }
+    setTimeout(() => nextPage(), 20 * 1000); 
+
+</script>
+
+
+{% endblock content %}

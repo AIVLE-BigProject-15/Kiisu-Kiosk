@@ -5,8 +5,10 @@ Promise.all([
   faceapi.nets.tinyFaceDetector.loadFromUri('/static/js/models'),
   faceapi.nets.faceLandmark68Net.loadFromUri('/static/js/models'),
   faceapi.nets.faceRecognitionNet.loadFromUri('/static/js/models'),
-  faceapi.nets.faceExpressionNet.loadFromUri('/static/js/models')
+  faceapi.nets.faceExpressionNet.loadFromUri('/static/js/models'),
+  faceapi.nets.ageGenderNet.loadFromUri('/static/js/models')
 ]).then(startVideo)
+
 
 function startVideo() {
   navigator.getUserMedia(
@@ -25,9 +27,15 @@ video.addEventListener('play', () => {
   faceapi.matchDimensions(canvas, displaySize)
   
   setInterval(async () => {
-    const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions()
+
+    const detections = await faceapi
+    .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
+    .withFaceLandmarks()
+    .withAgeAndGender();
+
     const resizedDetections = faceapi.resizeResults(detections, displaySize)
     canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
+
 
     faceapi.draw.drawDetections(canvas, resizedDetections)
 

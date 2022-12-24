@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<!-- 가로 : 1640 세로 : 2360-->
+<!-- 가로 : 768 세로 : 1024-->
 <style>
     .py-custom {
         padding-top: 21.5% !important;
@@ -21,27 +21,25 @@
 
     .box1 {
         box-sizing: content-box;
-        width: 300px;
-        height: 300px;
+        width: 190px;
+        height: 190px;
         margin: 10px;
-        padding: 60px;
+        padding: 10px;
         border-radius: 2rem;
     }
 
-    .box2 {
+    .box2{
         box-sizing: content-box;
-        width: 300px;
-        height: 300px;
+        width: 190px;
+        height: 190px;
         margin: 10px;
-        padding: 60px;
+        padding: 10px;
         border-radius: 2rem;
     }
+
     .temp-box{
         width: 50px;
         height: 50px;
-    }
-    .box3 {
-        width: 600px;
     }
 
     .si {
@@ -83,8 +81,8 @@
     
     }
     .home-back {
-        width: 1640px;
-        height: 2360px;
+        width: 768px;
+        height: 1300px;
     }
 
     td {
@@ -116,19 +114,16 @@
                     <div class="btn btn-lg col-5 box1" style="background-color:#FFFFFF;" id="btnCash" OnClick="location.href ='{% url 'cafe:camera' %}?usage_type=restaurant'" >
                         <div class="container px-5 px-lg-5 my-5">
                             <div class="text-center">
-                                <h1 class="fw-bolder font_t"><i class="bi"></i><br><br> 매장식사</h1>
+                                <h1 class="fw-bolder font_t"><i class="bi"></i>매장식사</h1>
 
                             </div>
                         </div>
                     </div>
 
-                    <div class="btn btn-lg col-6 temp-box">
-                    </div>
-
                     <div class="btn btn-lg col-6 box2" style="background-color:#FFFFFF;" id="btnCoupon" OnClick="location.href ='{% url 'cafe:camera' %}?usage_type=takeout'" >
                         <div class="container px-5 px-lg-5 my-5 ">
                             <div class="text-center">
-                                <h1 class="fw-bolder font_t"><i class="bi bi-qr-code-scan"><br><br></i> 방문포장</h1>
+                                <h1 class="fw-bolder font_t"><i class="bi bi-qr-code-scan"></i> 방문포장</h1>
                             </div>
                         </div>
                     </div>

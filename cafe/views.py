@@ -287,73 +287,34 @@ def detect_age_group(request):
     return page_classify(request, age_group=age_group)    
 
 from PIL import Image, ImageDraw
-from django.views.decorators import gzip
-from django.http import StreamingHttpResponse
-from collections import Counter
 
-def gen():
-    file_path = settings.MODEL_DIR + '/haarcascade_frontalface_default.xml'
-    faceCascade = cv2.CascadeClassifier(file_path)
-    
-    # 비디오의 setting을 준비함.
-    cap = MyCamera.instance()
-    print("Start")
-    
-    character = {0:'10-19', 1:'20-29', 2:'30-39', 3:'40-49', 4:'50-59', 5:'60+'}
-    model_path = settings.MODEL_DIR + '/face_10s2.h5'
-    model = load_model(model_path)
-    
-    while True:
-        frame = cap.get_frame()
-        faces = faceCascade.detectMultiScale(
-            frame, 
-            scaleFactor=1.2, 
-            minNeighbors=3, 
-            minSize=(20, 20)
-        )
-        if not faces == ():
-            x, y, w, h = faces[0]
-            cv2.rectangle(frame,(x,y),(x+w,y+h),(0, 0, 255), 5)
-            cur_img = frame[y:y+h, x:x + w]
-            
-            img = cv2.resize(cur_img, (128, 128), Image.ANTIALIAS)
-            features = img[np.newaxis, :]
-            features = features.reshape(-1, 128, 128, 1)
-            features = features / 255.0
-            
-            pred = model.predict(features[0].reshape(-1, 128, 128, 1))
-            pred = pred.reshape(-1)
-            age_group = character[pred.argmax()]
-            MyEstimations.instance().add(age_group)
-                    
-            cv2.putText(frame, f'{age_group} ({pred.max()})', (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0,255,255), 2, cv2.LINE_AA)
-
-        _, jpeg = cv2.imencode('.jpg', frame)
-        
-        
-        yield(b'--frame\r\n'
-        b'Content-Type: image/jpeg\r\n\r\n' + jpeg.tobytes() + b'\r\n\r\n')
-
-
-@gzip.gzip_page
 def camera(request):
-    try:
-        return StreamingHttpResponse(gen(), content_type="multipart/x-mixed-replace;boundary=frame")
-    except:
-        print("aborted")
+    if request.method == "POST" and request.FILES:
+        usage_type = request.POST.get("usage_type")
+        box = json.loads(request.POST.get("box"))
+        face_image = request.FILES['face_image']
         
+        img = Image.open(face_image.file)
+        x, y, w, h = map(lambda x: int(box[x]), box)
+
+        draw = ImageDraw.Draw(img)
+        draw.rectangle((x, y, x + w, y + h), outline=(255, 0, 0), width = 3)
+        crop_img = img.crop((x, y, x + w, y + h))
+        
+        img.save('test_img.png',"PNG")
+        crop_img.save('test_crop_img.png',"PNG")
+        
+        gray_img = cv2.cvtColor(np.array(crop_img) , cv2.COLOR_RGB2GRAY)
+        age_group = classify(gray_img)
+        print(age_group, usage_type)
+        
+        page_url = "young_order" if int(age_group[0]) < 4 else "old_order"
+        return HttpResponse(page_url)
+
+        # return HttpResponse(page_url + f"?usage_type={usage_type}")
+
+    return render(request, 'cafe/camera.html')
     
-def detect_age(request):
-    return render(request, 'cafe/age_detection.html')
-
-
-def get_age(request):
-    if request.method == "POST" :
-        print(MyEstimations.instance().get_last())
-        return HttpResponse(MyEstimations.instance().get_last())
-
-    return HttpResponse("None")
-
 from .serializer import CustomerSerializer
 from rest_framework.response import Response
 from rest_framework.generics import ListAPIView

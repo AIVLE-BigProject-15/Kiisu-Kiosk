@@ -6,3 +6,4 @@ Django==3.2
 djangorestframework
 django-resized
 torch
+django-sslserver

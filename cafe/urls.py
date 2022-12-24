@@ -15,8 +15,7 @@ urlpatterns = [
     path('detect_age_group', views.detect_age_group, name='detect_age_group'),
     path('fetch_user', fetch_user.as_view(), name='user'),
     path('camera', views.camera, name='camera'),
-    path('age_detection', views.detect_age, name='age_detection'),
-    path('get_age', views.get_age, name='get_age'),
+
 ]
 
 # from . import views_jh

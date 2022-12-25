@@ -61,9 +61,9 @@
     </div>
 
     <div class="row gx-5">
-        <video width="720" height="560" id="video" style="display: none;" autoplay></video>
+        <video width="720" height="720" id="video" style="display: none;" autoplay></video>
         <div class="col-12 text-center justify-content-center" style="display: flex;" id="cameraHolder">
-            <canvas id="imageHolder" width="720" height="560"></canvas>
+            <canvas id="imageHolder" width="720" height="720"></canvas>
         </div>
         <form id="face_submission" action="{% url 'cafe:camera' %}" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
@@ -88,7 +88,7 @@
         } 
         else{
             document.getElementById("seconds").innerHTML = "EXPIRED";
-            window.location.href = document.getElementById("estimation_result").innerHTML +"?usage_type=" + $.getUrlVars['usage_type'];   
+            window.location.href = document.getElementById("estimation_result").innerHTML +"?usage_type=" + $.getUrlVar('usage_type');        
         }
     };
     setTimeout(countdown, 1000);    

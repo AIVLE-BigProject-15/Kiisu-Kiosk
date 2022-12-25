@@ -1,18 +1,6 @@
 
 const age_names = ['10-19', '20-29', '30-39', '40-49', '50-59', '60+']
 
-function isiOS() {
-    return /iPhone|iPad|iPod/i.test(navigator.userAgent);
-}
-
-function isAndroid() {
-    return /Android/i.test(navigator.userAgent);
-}
-
-function isMobile() {
-    return isAndroid() || isiOS();
-}
-
 class Camera {
     constructor() {
         this.video = document.getElementById('video');
@@ -31,12 +19,13 @@ class Camera {
         const videoConfig = {
             'audio': false,
             'video': {
-            facingMode: 'user',
-            width: $size.width,
-            height: $size.height,
+                facingMode: 'user',
+                // Only setting the video to a specified size for large screen, on
+                // mobile devices accept the default size.
+                width: $size.width,
+                height: $size.height,
             }
         };
-
         const stream = await navigator.mediaDevices.getUserMedia(videoConfig);
 
         const camera = new Camera();

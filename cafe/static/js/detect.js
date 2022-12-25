@@ -14,13 +14,15 @@ class Camera {
             'Browser API navigator.mediaDevices.getUserMedia not available');
         }
 
-        const $size = { width: 720, height: 560 };
+        const $size = { width: 720, height: 720 };
         const videoConfig = {
             'audio': false,
             'video': {
-            facingMode: 'user',
-            width: $size.width,
-            height: $size.height,
+                facingMode: 'user',
+                // Only setting the video to a specified size for large screen, on
+                // mobile devices accept the default size.
+                width: $size.width,
+                height: $size.height,
             }
         };
 
@@ -55,11 +57,8 @@ class Camera {
         this.ctx.font = font;
         this.ctx.textBaseline = "top";
 
-
         const estimate_cls = res.argMax().dataSync()
-        res.print()
-        res.sum().print()
-        const estimate_score = res.div(res.sum()).max().dataSync()
+        const estimate_score = res.max().dataSync()
 
         let [x, y, w, h] = box;
         const age_group = age_names[estimate_cls];
@@ -111,6 +110,7 @@ async function renderResult() {
     let cnn_input = null;
     let modelWidth = 128, modelHeight = 128;
     let score = 0, box = null;
+    
     const displaySize = { width: video.width, height: video.height }
     
     if (estimator != null) {

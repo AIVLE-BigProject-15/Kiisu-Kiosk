@@ -55,8 +55,11 @@ class Camera {
         this.ctx.font = font;
         this.ctx.textBaseline = "top";
 
+
         const estimate_cls = res.argMax().dataSync()
-        const estimate_score = res.max().dataSync()
+        res.print()
+        res.sum().print()
+        const estimate_score = res.div(res.sum()).max().dataSync()
 
         let [x, y, w, h] = box;
         const age_group = age_names[estimate_cls];
@@ -76,7 +79,7 @@ class Camera {
         this.ctx.fillStyle = "#F2F2F2";
         this.ctx.fillText(age_group + ": " + (estimate_score[0]).toFixed(2), x, y);
 
-        document.getElementById("estimation_result").innerHTML = estimate_cls < 5 ? "young_order" : "old_order";
+        document.getElementById("estimation_result").innerHTML = estimate_cls < 4 ? "young_order" : "old_order";
     }
 }
 

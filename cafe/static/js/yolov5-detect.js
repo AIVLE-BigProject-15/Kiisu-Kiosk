@@ -85,8 +85,7 @@ class Camera {
             const width = x2 - x1;
             const height = y2 - y1;
 
-            var label = classes_data[i] > 5 ? 5 : classes_data[i];
-            const age_group = age_names[label];
+            const age_group = age_names[classes_data[i]];
             const score = scores_data[i].toFixed(2);
 
             // Draw the bounding box.
@@ -106,13 +105,14 @@ class Camera {
             x1 *= this.canvas.width;
             y1 *= this.canvas.height;
 
-            var label = classes_data[i] > 5 ? 5 : classes_data[i];
-            const age_group = age_names[label];
+            const age_group = age_names[classes_data[i]];
             const score = scores_data[i].toFixed(2);
 
             // Draw the text last to ensure it's on top.
             this.ctx.fillStyle = "#F2F2F2";
             this.ctx.fillText(age_group + ":" + score, x1, y1);
+
+            document.getElementById("estimation_result").innerHTML = classes_data[i] < 4 ? "young_order" : "old_order";
         }
     }
 }
@@ -122,7 +122,7 @@ let startInferenceTime, numInferences = 0;
 let inferenceTimeSum = 0, lastPanelUpdate = 0;
 let rafId;
 
-const yolov5n_weight = "/static/js/web_model/model.json"
+const yolov5n_weight = "/static/js/yolo_model/model.json"
 
 async function createDetector() {
     return tf.loadGraphModel(yolov5n_weight);

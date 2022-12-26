@@ -1,0 +1,125 @@
+.page-heading {
+    font-size: 2.75rem;
+    line-height: 2.75rem;
+    padding-left: 0.5rem;
+}
+.tab_title li {
+    font-weight: 700 !important;
+    text-align: center !important;
+    text-transform: uppercase !important;
+    font-size: 1.45rem;
+    list-style: none;
+    color: #949292;
+    cursor: pointer;
+    padding: 10px 10px;
+    display: inline-block;
+    margin: 0 0 1rem;
+    border-radius: 0.5rem;
+  }
+  
+.tab_title li.on, .tab_title li:hover{
+    color: #FFFFFF;
+    background-color: #E51937;
+    font-weight: bold;
+    border: 3px solid #F5BDBD;
+    box-shadow: 0 0 0 0.25rem F5BDBD;
+}
+
+.tab_cont {
+    clear: both;
+    border: 1px solid #dedede;
+    background-color: #cecece;
+}
+
+.tab_cont div {
+    text-align: center;
+}
+
+.tab_cont div.on{
+    display: block;
+}
+
+.btn-in-modal{
+    color: #FFFFFF;
+    font-weight: 600 !important;
+    text-align: center !important;
+    padding: 10px 130px;
+    font-size: 1.5rem;
+    border-radius: 4rem;
+}
+
+.bestmenu, .bestmenu_detail {
+    display: inline-block;
+    padding: 0.35em 0.65em;
+    font-size: 0.9em;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.2rem;
+    position: relative;
+    top: -1px;
+}
+.bestmenu {
+    font-size: 0.9em;
+    font-weight: 700;
+    line-height: 1;
+}
+.bestmenu_detail {
+    font-size: 1.5em;
+    font-weight: 1000;
+    line-height: 1;
+}
+.bestmenu:empty, .bestmenu_detail:empty {
+    display: none;
+}
+.order-py-5 {
+    padding-top: 3rem !important;
+}
+.menu-modal-title {
+    font-size: 2.75rem;
+    line-height: 3rem;
+    font-weight: 900 !important;
+    margin-bottom: 1rem !important;
+}
+.menu-modal-en-title{
+    font-size: 2rem;
+    line-height: 2rem;
+    font-weight: 700 !important;
+    margin-bottom: 1.5rem !important;
+}
+.menu-modal-desc {
+    font-size: 1.25rem;
+    line-height: 2rem;
+    font-weight: 500 !important;
+    margin-bottom: 2rem !important;
+}
+
+.cart-py-5 {
+    padding-top: 7rem !important;
+    padding-bottom: 1rem !important;
+    padding-left : 0.3rem;
+}
+.sidebar-py-5 {
+    padding-top: 3rem !important;
+    padding-bottom: 2rem !important;
+    padding-left : 0.3rem;
+}
+
+
+.side_tab_title div {
+    text-align: center !important;
+    border-radius: 0.5rem;
+  }
+  
+.side_tab_title div.on {
+    color: #F25168;
+    font-weight: bold;
+}
+
+.side_tab_title div.off {
+    color: #B7B7B7;
+    font-weight: 600;
+}

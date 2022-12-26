@@ -4,8 +4,6 @@
 
 {% block content %}
 
-{% comment %} <script defer src="/static/js/yolov5-detect.js"></script> {% endcomment %}
-
 <style>
     canvas:not(#imageHolder) {
       position: absolute;
@@ -98,5 +96,6 @@
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
 
 <script defer src="/static/js/detect.js"></script>
+{% comment %} <script defer src="/static/js/yolov5-detect.js"></script> {% endcomment %}
 
 {% endblock content %}

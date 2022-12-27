@@ -1,0 +1,9 @@
+{% extends 'index.html' %}
+{% block content %}
+<title>hello everyone</title>
+ <form action='/cafe/testing' method='post'>
+   {% csrf_token %}
+      {{ data }}<br />
+      post_body={{ image }}<br />
+ </form>
+ {% endblock %}

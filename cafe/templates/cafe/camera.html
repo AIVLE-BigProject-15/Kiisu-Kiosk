@@ -63,6 +63,12 @@
         <div class="col-12 text-center justify-content-center" style="display: flex;" id="cameraHolder">
             <canvas id="imageHolder" width="720" height="720"></canvas>
         </div>
+        
+        <!-- Image Crop Test-->
+        <div class="col-12 text-center justify-content-center" style="display: none;" id="cameraHolder2">
+            <canvas id="imageHolder2" width="128" height="128"></canvas>
+        </div>
+
         <form id="face_submission" action="{% url 'cafe:camera' %}" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <input id="box" type="hidden" name="box" value=""/>

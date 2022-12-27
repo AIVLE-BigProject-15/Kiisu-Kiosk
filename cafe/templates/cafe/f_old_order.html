@@ -1,8 +1,20 @@
+<!--https://startbootstrap.com/template/shop-homepage-->
+
 {% extends 'order.html' %} 
 
 {% load post_extras %}
 {% block content %}
 <link href="/static/css/basic.css" rel="stylesheet" />
+
+<!-- Header-->
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">광고 표지 제작중</h1>
+            <p class="lead fw-normal text-white-50 mb-0">With this shop hompeage template</p>
+        </div>
+    </div>
+</header>
 
 <!-- Navigation-->
 <nav class="navbar-expand-lg order-py-5">
@@ -11,6 +23,7 @@
             <p class="page-heading fw-bold text-primary" style="text-align:left;" onClick="window.location.href={% url 'cafe:home' %}">
                 <i class="bi bi-chevron-left"></i> MENU
             </p>
+            
         </div>
     </div>
 </nav>
@@ -21,22 +34,22 @@
         <!-- Portfolio Grid Items-->
         <ul class="tab_title py-1 text-center" style="text-align:center;" id="drink_tab">
             <li class="on" id="menu_type--hotcoffee">
-                Hot coffee
+                뜨거운 커피
             </li>
             <li id="menu_type--icecoffee">
-                Ice coffee
+                차가운 커피
             </li>
             <li id="menu_type--noncoffee">
-                Non Coffee
+                음료수
             </li>
             <li id="menu_type--smoothie">
-                Smoothie
+                스무디
             </li>
         </ul>    
         
     </div>
     <div class="row justify-content-center"> 
-        <!-- HOT COFFEE TAB-->
+            
         <div class="row justify-content-center" id="menu_content--hotcoffee" style="display: auto;">
             {% for menu in hot_coffee_all %}
                 <div class="col-md-5 col">
@@ -45,7 +58,7 @@
                             <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
                         </div>
                         <!-- Product image-->
-                        <img class="card-img-top" id="{{menu.title}}--image" src="{{menu.image|fix_route|default:'https://dummyimage.com/450x300/dee2e6/6c757d.jpg'}}" alt="..." />
+                        <img class="card-img-top" src="{{menu.image|fix_route|default:'https://dummyimage.com/450x300/dee2e6/6c757d.jpg'}}" alt="..." />
                         <!-- Product details-->
                         <div class="card-body p-4">
                             <div class="text-center">
@@ -59,6 +72,7 @@
                                 <h4 class="fw-normal" id="{{menu.title}}--price">{{menu.price}} 원</h4>
                                 <!-- Menu Calorie-->
                                 <h5 class="fw-light text-muted">{{menu.calorie}} Kcal</h5>
+                                
                             </div>
                         </div>
     
@@ -100,8 +114,6 @@
                 </div>
             {% endfor %}
         </div>
-
-        <!-- ICE COFFEE TAB-->
         <div class="row justify-content-center" id="menu_content--icecoffee" style="display: none;">
             {% for menu in ice_coffee_all %}
                 <div class="col-md-5 col">
@@ -110,7 +122,7 @@
                             <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
                         </div>
                         <!-- Product image-->
-                        <img class="card-img-top" id="{{menu.title}}--image" src="{{menu.image|fix_route|default:'https://dummyimage.com/450x300/dee2e6/6c757d.jpg'}}" alt="..." />
+                        <img class="card-img-top" src="{{menu.image|fix_route|default:'https://dummyimage.com/450x300/dee2e6/6c757d.jpg'}}" alt="..." />
                         <!-- Product details-->
                         <div class="card-body p-4">
                             <div class="text-center">
@@ -129,7 +141,7 @@
     
                     </div>
                 </div>
-                <div class="portfolio-modal modal fade" id="portfolioModal{{menu.id}}" tabindex="0" aria-labelledby="portfolioModal{{menu.id}}" aria-hidden="true">
+                <div class="portfolio-modal modal fade" id="portfolioModal{{menu.id}}" tabindex="-1" aria-labelledby="portfolioModal{{menu.id}}" aria-hidden="true">
                     <div class="modal-dialog modal-xl">
                         <div class="modal-content">
                             <div class="modal-header border-0"><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div>
@@ -165,8 +177,6 @@
                 </div>
             {% endfor %}
         </div>
-
-        <!-- NON COFFEE TAB-->
         <div class="row justify-content-center" id="menu_content--noncoffee" style="display: none;">
             {% for menu in non_coffee_all %}
                 <div class="col-md-4 col">
@@ -175,7 +185,7 @@
                             <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
                         </div>
                         <!-- Product image-->
-                        <img class="card-img-top" id="{{menu.title}}--image" src="{{menu.image|fix_route|default:'https://dummyimage.com/450x300/dee2e6/6c757d.jpg'}}" alt="..." />
+                        <img class="card-img-top" src="{{menu.image|fix_route|default:'https://dummyimage.com/450x300/dee2e6/6c757d.jpg'}}" alt="..." />
                         <!-- Product details-->
                         <div class="card-body p-4">
                             <div class="text-center">
@@ -194,7 +204,7 @@
     
                     </div>
                 </div>
-                <div class="portfolio-modal modal fade" id="portfolioModal{{menu.id}}" tabindex="1" aria-labelledby="portfolioModal{{menu.id}}" aria-hidden="true">
+                <div class="portfolio-modal modal fade" id="portfolioModal{{menu.id}}" tabindex="-1" aria-labelledby="portfolioModal{{menu.id}}" aria-hidden="true">
                     <div class="modal-dialog modal-xl">
                         <div class="modal-content">
                             <div class="modal-header border-0"><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div>
@@ -230,8 +240,6 @@
                 </div>
             {% endfor %}
         </div>
-
-        <!-- SMOOTHIE TAB-->
         <div class="row justify-content-center" id="menu_content--smoothie" style="display: none;">
             {% for menu in smoothie_all %}
                 <div class="col-md-4 col">
@@ -240,7 +248,7 @@
                             <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
                         </div>
                         <!-- Product image-->
-                        <img class="card-img-top" id="{{menu.title}}--image" src="{{menu.image|fix_route|default:'https://dummyimage.com/450x300/dee2e6/6c757d.jpg'}}" alt="..." />
+                        <img class="card-img-top" src="{{menu.image|fix_route|default:'https://dummyimage.com/450x300/dee2e6/6c757d.jpg'}}" alt="..." />
                         <!-- Product details-->
                         <div class="card-body p-4">
                             <div class="text-center">
@@ -259,7 +267,7 @@
     
                     </div>
                 </div>
-                <div class="portfolio-modal modal fade" id="portfolioModal{{menu.id}}" tabindex="2" aria-labelledby="portfolioModal{{menu.id}}" aria-hidden="true">
+                <div class="portfolio-modal modal fade" id="portfolioModal{{menu.id}}" tabindex="-1" aria-labelledby="portfolioModal{{menu.id}}" aria-hidden="true">
                     <div class="modal-dialog modal-xl">
                         <div class="modal-content">
                             <div class="modal-header border-0"><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div>
@@ -303,11 +311,11 @@
     <div class="row justify-content-center mb-2">            
         <!-- Portfolio Grid Items-->
         <ul class="tab_title py-1 text-center" style="text-align:center;" id="bread_tab">
-            <li class="on" id="bread_type--bread" style="padding: 8px 45px; font-size: 1.5rem;">
-                Bread
+            <li class="on" id="bread_type--bread" style="padding: 10px 40px; font-size: 1.5rem;">
+                빵
             </li>
-            <li id="bread_type--cookie" style="padding: 8px 45px; font-size: 1.5rem;">
-                Cookie
+            <li id="bread_type--cookie" style="padding: 10px 40px; font-size: 1.5rem;">
+                쿠키
             </li>
         </ul>    
         
@@ -342,7 +350,7 @@
     
                     </div>
                 </div>
-                <div class="portfolio-modal modal fade" id="portfolioModal{{menu.id}}" tabindex="3" aria-labelledby="portfolioModal{{menu.id}}" aria-hidden="true">
+                <div class="portfolio-modal modal fade" id="portfolioModal{{menu.id}}" tabindex="-1" aria-labelledby="portfolioModal{{menu.id}}" aria-hidden="true">
                     <div class="modal-dialog modal-xl">
                         <div class="modal-content">
                             <div class="modal-header border-0"><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div>
@@ -405,7 +413,7 @@
     
                     </div>
                 </div>
-                <div class="portfolio-modal modal fade" id="portfolioModal{{menu.id}}" tabindex="4" aria-labelledby="portfolioModal{{menu.id}}" aria-hidden="true">
+                <div class="portfolio-modal modal fade" id="portfolioModal{{menu.id}}" tabindex="-1" aria-labelledby="portfolioModal{{menu.id}}" aria-hidden="true">
                     <div class="modal-dialog modal-xl">
                         <div class="modal-content">
                             <div class="modal-header border-0"><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div>
@@ -445,111 +453,9 @@
     </div>
 </section>
 
-<!-- Cart Tab -->
 <section class="my-md-5" id="bar-content--cart" style="display: none;">
-	<div class="container my-5" style="padding-left: 2rem; padding-right: 2rem;">
-		<div class="row gx-2" id="cart_append_area">
-			<!-- Cart Menu Example--> 
-            <div class='cart-col mt-4' id="cart_menu_none" style="display: none;">
-				<div class='card h-100 border-1'>
-					<img class='card-img-top' src='https://dummyimage.com/600x400/403f40/d4d4d4.png' />
-					<div class='card-body'>
-						<a class='text-decoration-none link-dark stretched-link text-center'>
-							<h5 class='card-title mb-3'>
-								<strong>TITLE</strong>
-							</h5>
-						</a>
-						<p class='card-text mb-0 text-center'>수량 :</p>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<section class="bottombar">
-		<div class="row gx-9 mt-3 mb-3" id="totalPrice">
-			<div class="col-7">
-				<h3 class="fw-bolder mt-3 mb-3 text-start" style="padding-left: 0.9rem;">총 주문 금액</h3>
-			</div>
-			<div class="col-5">
-				<h3 class="fw-bolder mt-3 mb-3 text-danger text-end" id="cart-total-money" style="padding-right: 1rem;">0 원</h3>
-			</div>
-		</div>
-		<div class="payment">
-			<div class="row">
-				<h3 class="fw-bolder mt-3 mb-3 text-start" style="padding-left: 5.5rem;">결제 수단선택</h3>
-			</div>
-
-            <!-- 카드 결제 -->
-			<div id="card-pay" class="py-5 mt-3" style="cursor:pointer; float:left;" OnClick="location.href ='#'" data-bs-toggle="modal" data-bs-target="#portfolioModal_card">
-				<h1 class="fw-bolder text-center">
-					<i class="bi bi-credit-card"></i> 카드 결제
-				</h1>
-			</div>
-            
-
-            <!-- 간편 결제 -->
-			<div id="app-pay" class="py-5 mt-3" style="cursor:pointer; float:left;" data-bs-toggle="modal" data-bs-target="#portfolioModal_coupon">
-				<h1 class="fw-bolder text-center">
-					<i class="bi bi-upc-scan"></i> 간편 결제
-				</h1>
-			</div>
-            
-
-		</div>		
-	</section>
 </section>
 
-<div class="portfolio-modal modal fade" id="portfolioModal_card" tabindex="-1" aria-labelledby="portfolioModal_card" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-            <div class="modal-header border-0"></div>
-            <div class="modal-body text-center pb-5">
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-lg-8">
-                            <!-- Portfolio Modal - Title-->
-                            <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0">신용카드 결제</h2>
-                            <br>
-                            <span class="mb-4" style="font-size: 1.2em;">신용카드를 투입구에 넣어주세요</span>
-                            <br>
-                            <!-- Portfolio Modal - Image-->
-                            <img class="img-fluid rounded mb-5" src="/static/assets/img/card_example.PNG" alt="..." />
-                            <!-- Portfolio Modal - Text-->
-                            <button class="btn btn-secondary btn-lg" data-bs-dismiss="modal">
-                                <i class="fas fa-xmark fa-fw"></i> 결제 취소 </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="portfolio-modal modal fade" id="portfolioModal_coupon" tabindex="-1" aria-labelledby="portfolioModal_coupon" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-            <div class="modal-header border-0"></div>
-            <div class="modal-body text-center pb-5">
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-lg-8">
-                            <!-- Portfolio Modal - Title-->
-                            <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0">모바일 쿠폰</h2>
-                            <br>
-                            <span class="mb-4" style="font-size: 1.2em;">모바일 쿠폰을 스캔해주세요</span>
-                            <br>
-                            <!-- Portfolio Modal - Image-->
-                            <img class="img-fluid rounded mb-5" src="/static/assets/img/coupon_example.PNG" alt="..." />
-                            <!-- Portfolio Modal - Text-->
-                            <button class="btn btn-secondary btn-lg" data-bs-dismiss="modal">
-                                <i class="fas fa-xmark fa-fw"></i> 결제 취소 </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 {% endblock%}
 
 
@@ -578,7 +484,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" fill="currentColor" class="bi bi-cup-straw" viewBox="0 0 16 16" style="pointer-events: none;">
                     <path d="M13.902.334a.5.5 0 0 1-.28.65l-2.254.902-.4 1.927c.376.095.715.215.972.367.228.135.56.396.56.82 0 .046-.004.09-.011.132l-.962 9.068a1.28 1.28 0 0 1-.524.93c-.488.34-1.494.87-3.01.87-1.516 0-2.522-.53-3.01-.87a1.28 1.28 0 0 1-.524-.93L3.51 5.132A.78.78 0 0 1 3.5 5c0-.424.332-.685.56-.82.262-.154.607-.276.99-.372C5.824 3.614 6.867 3.5 8 3.5c.712 0 1.389.045 1.985.127l.464-2.215a.5.5 0 0 1 .303-.356l2.5-1a.5.5 0 0 1 .65.278zM9.768 4.607A13.991 13.991 0 0 0 8 4.5c-1.076 0-2.033.11-2.707.278A3.284 3.284 0 0 0 4.645 5c.146.073.362.15.648.222C5.967 5.39 6.924 5.5 8 5.5c.571 0 1.109-.03 1.588-.085l.18-.808zm.292 1.756C9.445 6.45 8.742 6.5 8 6.5c-1.133 0-2.176-.114-2.95-.308a5.514 5.514 0 0 1-.435-.127l.838 8.03c.013.121.06.186.102.215.357.249 1.168.69 2.438.69 1.27 0 2.081-.441 2.438-.69.042-.029.09-.094.102-.215l.852-8.03a5.517 5.517 0 0 1-.435.127 8.88 8.88 0 0 1-.89.17zM4.467 4.884s.003.002.005.006l-.005-.006zm7.066 0-.005.006c.002-.004.005-.006.005-.006zM11.354 5a3.174 3.174 0 0 0-.604-.21l-.099.445.055-.013c.286-.072.502-.149.648-.222z"/>
                 </svg>
-                <h3 class="fw-bolder" style="pointer-events: none;">DRINK</h3>
+                <h3 class="fw-bolder" style="pointer-events: none;">음료</h3>
             </div>
         </div>
         
@@ -591,7 +497,7 @@
                     <path d="M256 32C192 32 0 64 0 192c0 35.3 28.7 64 64 64V432c0 26.5 21.5 48 48 48H400c26.5 0 48-21.5 48-48V256c35.3 0 64-28.7 64-64C512 64 320 32 256 32z"/>
                 </svg>
                 
-                <h3 class="fw-bolder" style="pointer-events: none;">BREAD</h3>
+                <h3 class="fw-bolder" style="pointer-events: none;">빵</h3>
             </div>
         </div>
         
@@ -599,7 +505,7 @@
 
     <div class="card-body sidebar-py-5">
         <div class="text-center text-light-muted">
-            <img width="113" height="100" src="/static/assets/logo.PNG" alt="logo" style="border-radius: 0%;"/>
+            <img width="80" height="80" src="/static/assets/temp_logo.PNG" alt="logo" style="border-radius: 50%;"/>
         </div> 
         
     </div>

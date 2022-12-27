@@ -121,10 +121,10 @@ async function renderResult() {
 
             if (resizedDetections.length > 0){
                 score = resizedDetections[0]['_score']
-                var x = resizedDetections[0]['box']['_x']
-                var y = resizedDetections[0]['box']['_y']
-                var w = resizedDetections[0]['box']['_width']
-                var h = resizedDetections[0]['box']['_height']
+                var x = parseInt(resizedDetections[0]['box']['_x'])
+                var y = parseInt(resizedDetections[0]['box']['_y'])
+                var w = parseInt(resizedDetections[0]['box']['_width'])
+                var h = parseInt(resizedDetections[0]['box']['_height'])
                 
                 box = [x, y, w, h]
 
@@ -133,11 +133,14 @@ async function renderResult() {
                     .toFloat()
                     .expandDims(0)
                     .expandDims(-1)
-                
+                        
                 cnn_input = tf.tidy(() => {
-                    return tf.image.cropAndResize(img_tensor, [[y, x, y + h, x + w]], [0], [modelWidth, modelHeight])
+                    return img_tensor.slice([0, y, x, 0], [1, w, h, 1]).resizeBilinear([modelWidth, modelHeight])
                         .div(255.0);
                 });
+                
+                // Cropped Image Check
+                // tf.browser.toPixels(cnn_input.squeeze(axis=0), document.getElementById("imageHolder2"))
                 
                 estimate_res = await estimator.predict(
                     cnn_input,

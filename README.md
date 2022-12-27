@@ -27,6 +27,6 @@ openssl req -new -x509 -nodes -sha256 -days 365 -key django.key > django.crt
 - **runsslserver**  
 
 ```bash
-python manange.py runsslserver 0.0.0.0:80 --certificate django.crt --key django.key
+python manage.py runsslserver 0.0.0.0:8443 --certificate django.crt --key django.key
 ```
 

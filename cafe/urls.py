@@ -2,7 +2,6 @@
 from django.urls import path, include
 
 from . import views
-from .views import fetch_user
 app_name = 'cafe'
 urlpatterns = [
     path('', views.home, name='home'),
@@ -13,7 +12,7 @@ urlpatterns = [
     path('young_pay', views.young_pay, name='young_pay'),
     path('old_pay', views.old_pay, name='old_pay'),
     path('detect_age_group', views.detect_age_group, name='detect_age_group'),
-    path('fetch_user', fetch_user.as_view(), name='user'),
+    path('img_post', views.get_post),
     path('camera', views.camera, name='camera'),
 
 ]

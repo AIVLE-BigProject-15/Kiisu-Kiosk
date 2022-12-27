@@ -14,6 +14,7 @@ from django.utils import timezone
 from django.http import JsonResponse
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect
+from django.views.decorators.csrf import csrf_exempt
 
 from .estimation import MyEstimations
 from .videocap import MyCamera
@@ -317,12 +318,19 @@ def camera(request):
 
     return render(request, 'cafe/camera.html')
     
-from .serializer import CustomerSerializer
-from rest_framework.response import Response
-from rest_framework.generics import ListAPIView
 
-class fetch_user(ListAPIView):
+# 앱에서 받은 img predict, --csrf 예외처리--
+@csrf_exempt
+def get_post(request):
+    data={}
+    if request.method =='POST':
+        image_ = request.FILES['image']
+        data = {'image':image_}
         
-    queryset = Customer.objects.all()
-    serializer_class = CustomerSerializer
+        img = Image.open(data['image'].file)
+        gray_img = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2GRAY)
+        age_group = classify(gray_img)
+        print(age_group)
+    return render(request, 'cafe\parameter.html', data)
+        
 

@@ -111,7 +111,8 @@ let startInferenceTime, numInferences = 0;
 let inferenceTimeSum = 0, lastPanelUpdate = 0;
 let rafId;
 
-const yolov5n_weight = "/static/js/yolo_model_jh/model.json"
+// const yolov5n_weight = "/static/js/yolo_model_jh/model.json"
+const yolov5n_weight = "/static/js/yolo04/model.json"
 
 async function createDetector() {
     return tf.loadGraphModel(yolov5n_weight);
@@ -129,7 +130,10 @@ async function renderResult() {
     let detect_res = null;
     //const webcam = await tf.data.webcam(camera.video, { resizeWidth: 640, resizeHeight: 640 });
     //const img = await webcam.capture();
+    
     let [modelWidth, modelHeight] = detector.inputs[0].shape.slice(1, 3);
+    console.log(modelWidth, modelHeight);
+    console.log(detector.inputs[0])
     const input = tf.tidy(() => {
         return tf.image.resizeBilinear(tf.browser.fromPixels(camera.video), [modelWidth, modelHeight])
             .div(255.0).expandDims(0);

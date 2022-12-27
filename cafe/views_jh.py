@@ -255,7 +255,7 @@ def classify(face_img):
     features = features / 255.0
 
     # 불러온 모델의 경로로 예측
-    model_path = settings.MODEL_DIR + '/ageyolobase.pt'
+    model_path = settings.MODEL_DIR + '/yolojh03.pt'
     # model_path = predicting_model()
     
     model = yolov5.load(model_path)

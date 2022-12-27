@@ -18,6 +18,27 @@ const addCartButtonClickHandle = (e) =>{
     var totalPrice = document.getElementById('total-money').innerText;
     totalPrice *= 1;
     document.getElementById('total-money').innerHTML = (totalPrice + price);
+    document.getElementById('cart-total-money').innerHTML = (totalPrice + price) + " 원";
+
+
+    // 장바구니 담기
+    let appendArea = document.getElementById("cart_append_area");
+    if (document.getElementById("cart_menu--" + id)){
+        let nodeCount =  document.querySelector('#cart_menu--' + id +" p").innerHTML.split(" : ")[1];
+        nodeCount *= 1;
+        document.querySelector("#cart_menu--"+ id + " > div > div > p").innerHTML = '수량 : ' + (nodeCount + 1);
+    }
+    else{
+        let cloneCartNode = document.getElementById('cart_menu_none').cloneNode(true);
+        cloneCartNode.id = "cart_menu--" + id;
+        cloneCartNode.style.cssText = "";
+        appendArea.append(cloneCartNode);
+
+        console.log(document.querySelector("#cart_menu--" + id.replace(" ", "\\ ") +" > div > img"))
+        document.querySelector("#cart_menu--" + id.replace(" ", "\\ ") +" > div > img").src = document.getElementById(id + "--image").src;
+        document.querySelector("#cart_menu--" + id.replace(" ", "\\ ") +" > div > div > a > h5").innerHTML = '<strong>' + id + '</strong>';
+        document.querySelector("#cart_menu--"+ id.replace(" ", "\\ ") + " > div > div > p").innerHTML = '수량 : 1';
+    }
 
 }
 for(let i=0;i<addCartButton.length;i++){

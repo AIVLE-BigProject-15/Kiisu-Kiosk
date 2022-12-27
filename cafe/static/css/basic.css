@@ -124,3 +124,61 @@
     color: #B7B7B7;
     font-weight: 600;
 }
+
+.bottombar {
+    width: 85.8%;
+    position: fixed;
+    bottom: 0;
+    margin: auto;
+    align-items: center;
+    justify-content: center;
+    padding-top: 0.5rem;
+    padding-bottom: 0rem;
+}
+#totalPrice {
+    width: 600px;
+    border-style: solid;
+    border-color: gray;
+    border-width: 0px 0px 2px 0px;
+    margin: auto;
+    display : flex;
+    padding: 3% 0 0 0;
+}
+.cart-info {
+    border-radius: 35px 35px 0px 0px; 
+    width: 100%; 
+    padding: 1rem 1rem;
+}
+.payment {
+    width: 100%;
+    margin: auto;
+}
+
+#card-pay {
+    width: 50%;
+    height: 140px;
+    color: #000000;
+    background-color: #F2F2F2;
+}
+#app-pay {
+    width: 50%;
+    height: 140px;
+    color: #ffffff;
+    background-color: #E51937;
+}
+#cart-list > * {
+    color: #fff;
+    text-align: center;
+    font-size: 1.25rem;
+    padding-bottom: 0.5rem;
+    
+}
+#cartElement {
+    text-align: left;
+    padding-left: 2rem;
+}
+
+.cart-col {
+    flex: 0 0 auto;
+    width: 32%;
+}

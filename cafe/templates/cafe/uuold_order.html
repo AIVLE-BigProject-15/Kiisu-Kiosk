@@ -93,42 +93,39 @@
 })
 </script> {% endcomment %}
 
-
+<link href="/static/css/basic.css" rel="stylesheet" />
 <style>
     .tab_title li {
+        font-weight: 700 !important;
+        text-align: center !important;
+        text-transform: uppercase !important;
+        font-size: 2rem;
+        font-weight: bold;
         list-style: none;
         color: #fff;
-        background-color: #eddfdf;
-        border-color: #eddfdf;
+        background-color: #ff7575;
+        border-color: #ff7575;
         cursor: pointer;
         padding: 25px 25px;
         display: inline-block;
         margin: 0 0 1rem;
-        border-radius: 2.5rem;
-
-
+        border-radius: 2rem;
       }
-      .tab_title li:hover {
-        color: #fff;
-        background-color: #eddfdf;
-        border-color: #eddfdf;
 
-      }
-    .tab_title li.on {
-        color: #fff;
+      .tab_title li.on, .tab_title li:hover{
+        color: #FFFFFF;
         background-color: #E51937;
         font-weight: bold;
-        border-color: #eddfdf;
+        border: 3px solid #F5BDBD;
         box-shadow: 0 0 0 0.25rem F5BDBD;
         border-radius: 2.5rem;
-
-      }
+    }
       
       .tab_title li:disabled, .tab_title li.disabled {
         list-style: none;
         color: #fff;
-        background-color: #eddfdf;
-        border-color: #eddfdf;
+        background-color: #fadcdc;
+        border-color: #fadcdc;
       }
 
     
@@ -136,7 +133,6 @@
         clear: both;
         border: 1px solid #dedede;
         background-color: #cecece;
-        text-align: center;
     }
 
     .tab_cont div {
@@ -159,7 +155,7 @@
     }
 
     .top_box {
-        height: 200px;
+        height: 400px;
         background-color: #FFFFFF;
     }
 
@@ -169,57 +165,24 @@
         margin-top : 15px;
     }
 
+    .si {
+        margin-top : 5px;
+    }
+
     h4 {
         color: #E51937;
     }
-    .font_t{
-        color:#FFFFFF;
-    }
-
-    .box1 {
-        box-sizing: content-box;
-        width: 180px;
-        height: 80px;
-        margin: 10px;
-        padding: 10px;
-        border-radius: 2rem;
-        text-align: center;
-    }
-
-    .box2{
-        box-sizing: content-box;
-        width: 180px;
-        height: 80px;
-        margin: 10px;
-        padding: 10px;
-        border-radius: 2rem;
-    }
 
 </style>
-<body class="background py-5">
 
-    <div class="container px-4 px-lg-5 my-5">
-        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center" id="box">
-            <div class="btn btn-lg col-5 box1" style="background-color:#E51937;" id="btnCash">
-                <div class="container px-5 px-lg-5 my-5">
-                    <div class="text-center">
-                        <h1 class="fw-bolder font_t"><i class="bi"></i>음료</h1>
-                    </div>
-                </div>
-            </div>
+<header class="py-5">
+    <div class="m container px-4 px-lg-5 my-5">
+        <div class="text-center text-light-muted">
+            
 
-            <div class="btn btn-lg col-6 box2" style="background-color:#f59c02;" id="btnCoupon">
-                <div class="container px-5 px-lg-5 my-5 ">
-                    <div class="text-center">
-                        <h1 class="fw-bolder font_t"><i class="bi bi-qr-code-scan"></i>빵</h1>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+        </div> 
     </div>
-
-</body>
+</header>
 
 <nav class="topbar navbar-expand-lg navbar-light py-2 top_box">
     <div class="container px-4 px-lg-5">
@@ -250,7 +213,7 @@
 </div>
 </nav>
 
-    <div class="row justify-content-center"> 
+    <div class="row justify-content-center si"> 
             
         <div class="row justify-content-center" id="menu_content--hotcoffee" style="display: auto;">
             {% for menu in hot_coffee_all %}

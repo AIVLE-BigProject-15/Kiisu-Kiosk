@@ -117,6 +117,12 @@ for(let i=0;i<breadTabButton.length;i++){
 }
 
 
+
+
+
+function go_pay() {
+    setTimeout(pay_now, 8000);
+};
 function pay_now() { 
     var form = document.getElementById("order_submission");
     var parm = new Array();

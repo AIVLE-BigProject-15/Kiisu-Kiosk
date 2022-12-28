@@ -14,6 +14,7 @@ urlpatterns = [
     path('detect_age_group', views.detect_age_group, name='detect_age_group'),
     path('img_post', views.get_post),
     path('camera', views.camera, name='camera'),
+    path('check', views.check, name='check'),
 
 ]
 

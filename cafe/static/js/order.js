@@ -1,3 +1,24 @@
+// GET 방식으로 전송된 데이터 읽기
+$.extend({
+    getUrlVars: function(){
+        var vars = [], hash;
+        var hashes = window.location.href.slice(window.location.href.indexOf('?') +1).split('&');
+        for(var i = 0; i < hashes.length; i++) {
+            hash = hashes[i].split('=');
+            vars.push(hash[0]);
+            vars[hash[0]] = hash[1];
+        }
+        console.log(vars);
+        return vars;
+    }, 
+    
+    getUrlVar: function(name) {
+        return $.getUrlVars()[name];
+    }
+    
+});
+
+
 let addCartButton = document.querySelectorAll('[id^=addToCart]');
 // 장바구니 담기 처리
 const addCartButtonClickHandle = (e) =>{
@@ -95,52 +116,25 @@ for(let i=0;i<breadTabButton.length;i++){
     breadTabButton[i].addEventListener('click',breadTabButtonClickHandle);
 }
 
-// GET 방식으로 전송된 데이터 읽기
-$.extend({
-    getUrlVars: function(){
-        var vars = [], hash;
-        var hashes = window.location.href.slice(window.location.href.indexOf('?') +1).split('&');
-        for(var i = 0; i < hashes.length; i++) {
-            hash = hashes[i].split('=');
-            vars.push(hash[0]);
-            vars[hash[0]] = hash[1];
-        }
-        console.log(vars);
-        return vars;
-    }, 
-    
-    getUrlVar: function(name) {
-        return $.getUrlVars()[name];
-    }
-    
-});
 
-function order_now() {
-    let cart_items = document.querySelectorAll('[id^=cart--]');
-    if (cart_items.length == 0){
-        alert("장바구니가 비어있습니다.");
-        return
-    }
-
-    let menu_list = new Array();
-    let menu_counts = new Array();
-    
-    for (let i=0;i<cart_items.length;i++){
-        var menu_id = cart_items[i].id.split("--")[1];
-        var cnt = document.getElementById(menu_id + '--count').innerText * 1; 
-        console.log(cnt);
-
-        menu_list.push(menu_id);
-        menu_counts.push(cnt);
-    }
-    var usage_type = $.getUrlVar('usage_type');
-
+function pay_now() { 
     var form = document.getElementById("order_submission");
     var parm = new Array();
-    parm.push( ['usage_type', usage_type] );
-    parm.push( ['menu_list', menu_list] );
-    parm.push( ['menu_counts', menu_counts] );
 
+    var menus = new Array();
+    var counts = new Array();
+    var cart_menus = document.querySelectorAll("[id^=cart_menu--]")
+    for (let i=0; i < cart_menus.length; i++){
+        var id = cart_menus[i].id.split("--")[1]
+        menus.push(id);
+        counts.push(document.querySelector("#cart_menu--"+ id.replace(" ", "\\ ") + " > div > div > p").innerHTML.split(': ')[1]);
+    }
+    console.log(menus, counts)
+    parm.push( ['usage_type', $.getUrlVar('usage_type')] );
+    parm.push( ['menu_list', menus] );
+    parm.push( ['menu_counts', counts] );
+    parm.push( ['customer_id', $.getUrlVar('customer_id')] );
+    
     var input = new Array();
     for (var i = 0; i < parm.length; i++) {
         input[i] = document.createElement("input");

@@ -1,0 +1,58 @@
+{% extends 'index.html' %} 
+
+{% load post_extras %}
+
+{% block content %}
+
+<style>
+    .check-title {
+        font-size: 2.5rem;
+        line-height: 2.5rem;
+        font-weight: 900 !important;
+        margin-top: 3rem !important;
+        margin-bottom: 2rem !important;
+    }
+    .check-desc {
+        font-size: 1.5rem;
+        line-height: 1.5rem;
+        font-weight: 600 !important;
+        margin-bottom: 1rem !important;
+    }
+</style>
+
+<!-- Page Content-->
+<section class="py-5">
+    <div class="row gx-5 justify-content-center">
+        <div class="col-lg-6">
+            <div class="text-center mb-2">
+                <h1 class="check-title fw-bolder">주문이 완료되었습니다</h1><br>
+                <p class="check-desc">주문 번호: {{order_id}}</p><br>
+                <img src="/static/assets/spinner.gif" alt="loading" width="80">
+                <p class="lead fw-normal text-muted" id='seconds' style="display:none;">8</p>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<script>
+    // 30초 후, 홈으로 이동
+    timeLeft = 30;
+    const canvas = document.getElementById("imageHolder")
+
+    function countdown() {
+        timeLeft--;
+        document.getElementById("seconds").innerHTML = String( timeLeft );
+
+        if (timeLeft > 0) {
+            setTimeout(countdown, 1000);
+        } 
+        else{
+            document.getElementById("seconds").innerHTML = "EXPIRED";
+            window.location.href = "{% url 'cafe:home' %}"
+        }
+    };
+    setTimeout(countdown, 1000);    
+</script>
+
+{% endblock content %}

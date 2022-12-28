@@ -10,6 +10,8 @@ import warnings
 warnings.filterwarnings(action='ignore')
 
 from django.conf import settings
+from django.db.models import Count
+
 from django.utils import timezone
 from django.http import JsonResponse
 from django.http import HttpResponse, Http404
@@ -32,12 +34,6 @@ classifier = Classifier(model_name=MODEL_NAME, model_type=MODEL_TYPE)
 def home(request):
     return render(request, 'cafe/home.html')
 
-def chunks(lst, n):
-    i = 0
-    while i < len(lst):
-        yield lst[i:i + n]
-        i += n
-
 
 def old_order(request, age_group="50대"):
     hot_cf_list = Menu.objects.filter(type__icontains="hot")
@@ -56,22 +52,52 @@ def old_order(request, age_group="50대"):
                                               })
 
 
-def young_order(request):
-    hot_cf_list = Menu.objects.filter(type__icontains="hot")
-    ice_cf_list = Menu.objects.filter(type__icontains="ice")
-    non_cf_list = Menu.objects.filter(type__icontains="non")
-    smoothie_list = Menu.objects.filter(type__icontains="smoothie")
-    bread_list = Menu.objects.filter(type__icontains="bread")
-    cookie_list = Menu.objects.filter(type__icontains="cookie")
-        
-    context = {'hot_coffee_all':hot_cf_list,
-                'ice_coffee_all' : ice_cf_list,
-                'non_coffee_all' : non_cf_list,
-                'smoothie_all' : smoothie_list,
-                'bread_all' : bread_list,
-                'cookie_all' : cookie_list,
-            }
+def check(request, context):
+    return render(request, "cafe/check.html", context)
+    
+    
+def young_order(request):    
+    context = {}
+    if request.method == "POST":
+        usage_type = request.POST.get('usage_type')
+        menu_list = request.POST.getlist('menu_list')[0].split(",")
+        menu_counts = list(map(int, request.POST.getlist('menu_counts')[0].split(",")))
+        customer_obj = Customer.objects.filter(id__exact=request.POST.get('customer_id'))[0]
 
+        print(menu_list)
+        print(menu_counts)
+        for menu_title, cnt in zip(menu_list, menu_counts):
+            menu_obj = Menu.objects.filter(title__exact=menu_title)[0]
+            
+            order_obj = Order()
+            order_obj.menu = menu_obj
+            order_obj.customer = customer_obj
+            order_obj.count = cnt
+
+            order_obj.created = timezone.datetime.now()
+            order_obj.save()
+                
+        context['usage_type'] = usage_type
+        context['order_id'] = order_obj.id
+        return check(request, context)
+    
+    best_menu_all = {}
+    qs = Order.objects.select_related('customer')
+    for i in range(1, 7):
+        sub_qs = qs.filter(customer__age_group=f"{i}0")
+        sub_menu_ids = list(sub_qs.values('menu_id').annotate(total=Count('menu_id')).order_by("count")[:5])
+        sub_menu_ids = list(map(lambda x: x['menu_id'], sub_menu_ids))
+        best_menu_all[f"{i}0"] = Menu.objects.filter(id__in=sub_menu_ids)
+        print(best_menu_all[f"{i}0"])
+                            
+    context = {'hot_coffee_all': Menu.objects.filter(type__icontains="hot"),
+                'ice_coffee_all' : Menu.objects.filter(type__icontains="ice"),
+                'non_coffee_all' : Menu.objects.filter(type__icontains="non"),
+                'smoothie_all' : Menu.objects.filter(type__icontains="smoothie"),
+                'bread_all' : Menu.objects.filter(type__icontains="bread"),
+                'cookie_all' : Menu.objects.filter(type__icontains="cookie"),
+                'best_menu_all' : best_menu_all,
+            }
     return render(request, "cafe/young_order.html", context)
 
 def page_classify(request ,age_group):
@@ -292,29 +318,19 @@ def detect_age_group(request):
 from PIL import Image, ImageDraw
 
 def camera(request):
-    if request.method == "POST" and request.FILES:
-        usage_type = request.POST.get("usage_type")
-        box = json.loads(request.POST.get("box"))
-        face_image = request.FILES['face_image']
+    if request.method == "POST":
+        age_group = request.POST.get("age_group")
+        print(age_group)
         
-        img = Image.open(face_image.file)
-        x, y, w, h = map(lambda x: int(box[x]), box)
-
-        draw = ImageDraw.Draw(img)
-        draw.rectangle((x, y, x + w, y + h), outline=(255, 0, 0), width = 3)
-        crop_img = img.crop((x, y, x + w, y + h))
+        # Customer 생성
+        customer_obj = Customer()
+        customer_obj.age_group = age_group
+        customer_obj.created = timezone.datetime.now()
+        customer_obj.save()
         
-        img.save('test_img.png',"PNG")
-        crop_img.save('test_crop_img.png',"PNG")
+        print("Customer 생성")
         
-        gray_img = cv2.cvtColor(np.array(crop_img) , cv2.COLOR_RGB2GRAY)
-        age_group = classify(gray_img)
-        print(age_group, usage_type)
-        
-        page_url = "young_order" if int(age_group[0]) < 4 else "old_order"
-        return HttpResponse(page_url)
-
-        # return HttpResponse(page_url + f"?usage_type={usage_type}")
+        return HttpResponse(customer_obj.id)
 
     return render(request, 'cafe/camera.html')
     

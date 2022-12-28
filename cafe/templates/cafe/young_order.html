@@ -42,7 +42,7 @@
         <!--BEST MENU TAB -->
         <div class="row justify-content-center" id="menu_content--bestmenu" style="display: auto;">
             {% for menu in best_menu_all.20 %}
-                <div class="col-md-5 col">
+                <div class="col-md-4 col">
                     <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="#portfolioModal_best{{menu.id}}">
                         <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
                             <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
@@ -57,7 +57,7 @@
                                 {% endif %}
 
                                 <!-- Menu name-->
-                                <h3 class="fw-bolder">{{menu.title}}</h3>
+                                <h3 class="fw-bolder">{{menu.title|fix_title|linebreaks }}</h3>
                                 <!-- Menu price-->
                                 <h4 class="fw-normal" id="{{menu.title}}--price">{{menu.price}} 원</h4>
                                 <!-- Menu Calorie-->
@@ -107,7 +107,7 @@
         <!-- HOT COFFEE TAB-->
         <div class="row justify-content-center" id="menu_content--hotcoffee" style="display: none;">
             {% for menu in hot_coffee_all %}
-                <div class="col-md-5 col">
+                <div class="col-md-4 col">
                     <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="#portfolioModal{{menu.id}}">
                         <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
                             <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
@@ -122,7 +122,7 @@
                                 {% endif %}
 
                                 <!-- Menu name-->
-                                <h3 class="fw-bolder">{{menu.title}}</h3>
+                                <h3 class="fw-bolder">{{menu.title|fix_title|linebreaks}}</h3>
                                 <!-- Menu price-->
                                 <h4 class="fw-normal" id="{{menu.title}}--price">{{menu.price}} 원</h4>
                                 <!-- Menu Calorie-->
@@ -172,7 +172,7 @@
         <!-- ICE COFFEE TAB-->
         <div class="row justify-content-center" id="menu_content--icecoffee" style="display: none;">
             {% for menu in ice_coffee_all %}
-                <div class="col-md-5 col">
+                <div class="col-md-4 col">
                     <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="#portfolioModal{{menu.id}}">
                         <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
                             <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
@@ -186,7 +186,7 @@
                                     <div class='bestmenu bg-primary bg-gradient rounded-pill mb-2'>BEST MENU</div>
                                 {% endif %}
                                 <!-- Menu name-->
-                                <h3 class="fw-bolder">{{menu.title}}</h3>
+                                <h3 class="fw-bolder">{{menu.title|fix_title|linebreaks}}</h3>
                                 <!-- Menu price-->
                                 <h4 class="fw-normal" id="{{menu.title}}--price">{{menu.price}} 원</h4>
                                 <!-- Menu Calorie-->
@@ -251,7 +251,7 @@
                                     <div class='bestmenu bg-primary bg-gradient rounded-pill mb-2'>BEST MENU</div>
                                 {% endif %}
                                 <!-- Menu name-->
-                                <h3 class="fw-bolder">{{menu.title}}</h3>
+                                <h3 class="fw-bolder">{{menu.title|fix_title|linebreaks}}</h3>
                                 <!-- Menu price-->
                                 <h4 class="fw-normal" id="{{menu.title}}--price">{{menu.price}} 원</h4>
                                 <!-- Menu Calorie-->
@@ -316,7 +316,7 @@
                                     <div class='bestmenu bg-primary bg-gradient rounded-pill mb-2'>BEST MENU</div>
                                 {% endif %}
                                 <!-- Menu name-->
-                                <h3 class="fw-bolder">{{menu.title}}</h3>
+                                <h3 class="fw-bolder">{{menu.title|fix_title|linebreaks}}</h3>
                                 <!-- Menu price-->
                                 <h4 class="fw-normal" id="{{menu.title}}--price">{{menu.price}} 원</h4>
                                 <!-- Menu Calorie-->
@@ -399,7 +399,7 @@
                                 {% endif %}
 
                                 <!-- Menu name-->
-                                <h3 class="fw-bolder">{{menu.title}}</h3>
+                                <h3 class="fw-bolder">{{menu.title|fix_title|linebreaks}}</h3>
                                 <!-- Menu price-->
                                 <h4 class="fw-normal" id="{{menu.title}}--price">{{menu.price}} 원</h4>
                                 <!-- Menu Calorie-->
@@ -462,7 +462,7 @@
                                     <div class='bestmenu bg-primary bg-gradient rounded-pill mb-2'>BEST MENU</div>
                                 {% endif %}
                                 <!-- Menu name-->
-                                <h3 class="fw-bolder">{{menu.title}}</h3>
+                                <h3 class="fw-bolder">{{menu.title|fix_title|linebreaks}}</h3>
                                 <!-- Menu price-->
                                 <h4 class="fw-normal" id="{{menu.title}}--price">{{menu.price}} 원</h4>
                                 <!-- Menu Calorie-->

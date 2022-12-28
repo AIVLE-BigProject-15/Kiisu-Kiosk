@@ -18,6 +18,7 @@ $.extend({
     
 });
 
+document.getElementById("menu_type--bestmenu").innerText = "BEST FOR " + $.getUrlVar('age')+"'s";
 
 let addCartButton = document.querySelectorAll('[id^=addToCart]');
 // 장바구니 담기 처리

@@ -69,9 +69,9 @@
             <canvas id="imageHolder2" width="128" height="128"></canvas>
         </div>
 
-        <form id="face_submission" action="{% url 'cafe:camera' %}" method="POST" enctype="multipart/form-data">
+        <form id="estimation_submission" action="{% url 'cafe:camera' %}" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-            <input id="box" type="hidden" name="box" value=""/>
+            <input id="age_group" type="hidden" name="age_group" value=""/>
         </form>
         <div class="col-lg-5 text-center camera-title" id="estimation_result" style="display: none;"></div>
         <div class="col-lg-5 text-center camera-title" id="estimation_confidence" style="display: none;"></div>
@@ -92,6 +92,9 @@
 
         return avg;
     }
+
+    function page_move(avg_age, avg_conf, customer_id){
+        }
     // 10초 후, 예측한 연령대를 기반으로 페이지 이동
     timeLeft = 10;
     const canvas = document.getElementById("imageHolder")
@@ -112,12 +115,29 @@
             var avg_age = get_average(predicted_age);
             var avg_conf = get_average(predicted_confs);
 
-            if (avg_age <= 40){
-                window.location.href = "{% url 'cafe:young_order' %}?usage_type=" + $.getUrlVar('usage_type') + "&age=" + Math.round(avg_age / 10) * 10 + "&confidence=" + (avg_conf).toFixed(2);       
+            var formdata = new FormData(document.getElementById("estimation_submission"));
+            formdata.append("age_group", Math.round(avg_age / 10) * 10);	
 
-            }else{
-                window.location.href = "{% url 'cafe:old_order' %}?usage_type=" + $.getUrlVar('usage_type') + "&age=" + Math.round(avg_age / 10) * 10 + "&confidence=" + (avg_conf).toFixed(2);    
-            }
+            // 동기 방식으로 서버에 FormData 전송
+            // 전송에 성공할 경우, 페이지 이동
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "camera", false);
+            xhr.onload = () => {
+                if (xhr.status == 200) {
+                    let customer_id = xhr.response;
+                    var page_url = "";
+                    if (avg_age <= 40){
+                        page_url = "{% url 'cafe:young_order' %}";               
+                    }else{
+                        page_url = "{% url 'cafe:old_order' %}";
+                    }
+                    window.location.href = page_url + "?usage_type=" + $.getUrlVar('usage_type') + "&age=" + Math.round(avg_age / 10) * 10 + "&confidence=" + (avg_conf).toFixed(2) + "&customer_id=" + customer_id;
+                
+                } else {
+                    alert("ERROR LOADING FILE!" + this.status);
+                }
+            };
+            xhr.send(formdata);            
         }
     };
     setTimeout(countdown, 1000);    

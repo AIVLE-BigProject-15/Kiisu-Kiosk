@@ -21,8 +21,8 @@
         font-weight: 600 !important;
         margin-bottom: 1rem !important;
     }
-
 </style>
+
 <script>
     // GET 방식으로 전송된 데이터 읽기
     $.extend({
@@ -74,11 +74,24 @@
             <input id="box" type="hidden" name="box" value=""/>
         </form>
         <div class="col-lg-5 text-center camera-title" id="estimation_result" style="display: none;"></div>
+        <div class="col-lg-5 text-center camera-title" id="estimation_confidence" style="display: none;"></div>
+
     </div>
 </section>
 
 
 <script>
+
+    function get_average(nums){
+        console.log(nums);
+        var sum = 0;
+        for( var i = 1; i < nums.length; i++ ){
+            sum += parseInt( nums[i], 10 );
+        }
+        var avg = sum/(nums.length - 1);
+
+        return avg;
+    }
     // 10초 후, 예측한 연령대를 기반으로 페이지 이동
     timeLeft = 10;
     const canvas = document.getElementById("imageHolder")
@@ -92,7 +105,19 @@
         } 
         else{
             document.getElementById("seconds").innerHTML = "EXPIRED";
-            window.location.href = document.getElementById("estimation_result").innerHTML +"?usage_type=" + $.getUrlVar('usage_type');        
+
+            var predicted_age = document.getElementById("estimation_result").innerHTML.split(" ");
+            var predicted_confs = document.getElementById("estimation_confidence").innerHTML.split(" ");
+
+            var avg_age = get_average(predicted_age);
+            var avg_conf = get_average(predicted_confs);
+
+            if (avg_age <= 40){
+                window.location.href = "{% url 'cafe:young_order' %}?usage_type=" + $.getUrlVar('usage_type') + "&age=" + Math.round(avg_age / 10) * 10 + "&confidence=" + (avg_conf).toFixed(2);       
+
+            }else{
+                window.location.href = "{% url 'cafe:old_order' %}?usage_type=" + $.getUrlVar('usage_type') + "&age=" + Math.round(avg_age / 10) * 10 + "&confidence=" + (avg_conf).toFixed(2);    
+            }
         }
     };
     setTimeout(countdown, 1000);    

@@ -77,8 +77,9 @@ class Camera {
         // Draw the text last to ensure it's on top.
         this.ctx.fillStyle = "#F2F2F2";
         this.ctx.fillText(age_group + ": " + (estimate_score[0]).toFixed(2), x, y);
-
-        document.getElementById("estimation_result").innerHTML = estimate_cls < 4 ? "young_order" : "old_order";
+        
+        document.getElementById("estimation_result").innerHTML += " " + age_names[estimate_cls].slice(0, 2);
+        document.getElementById("estimation_confidence").innerHTML += " " + (estimate_score[0]).toFixed(2);
     }
 }
 
@@ -133,7 +134,7 @@ async function renderResult() {
                     .toFloat()
                     .expandDims(0)
                     .expandDims(-1)
-                        
+                
                 cnn_input = tf.tidy(() => {
                     return img_tensor.slice([0, y, x, 0], [1, w, h, 1]).resizeBilinear([modelWidth, modelHeight])
                         .div(255.0);
@@ -148,9 +149,7 @@ async function renderResult() {
             }
 
         } catch (error) {
-            estimator.dispose();
-            estimator = null;
-            alert(error);
+            console.error(error);
         }
     }
     camera.drawCtx();

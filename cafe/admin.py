@@ -30,7 +30,7 @@ class MenuAdmin(admin.ModelAdmin):
         return response
     
 class CustomerAdmin(admin.ModelAdmin):
-    list_display=['age_group', 'version', 'created']
+    list_display=['age_group', 'created']
     
 class OrderAdmin(admin.ModelAdmin):
     list_display=['id', 'menu', 'created']

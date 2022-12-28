@@ -18,6 +18,7 @@ class Menu(models.Model):
                     ('non_coffee', 'Non Coffee'),
                     ('smoothie', 'Smoothie'),
                     ('bread', 'Bread'),
+                    ('cookie', 'Cookie'),
                     )
     class Meta:
         ordering = ['-id']
@@ -37,18 +38,16 @@ class Menu(models.Model):
         return self.title
     
 class Customer(models.Model):
-    AGE_GROUP = (('youth', "Youth"), 
-                    ('middle', 'Middle-Aged'), 
-                    ('senior', 'Senior'))
+    AGE_GROUP = [(f'{i}0', f'{i}0대') for i in range(1, 6)]
+    AGE_GROUP.append(('60', '60대 이상'))
+    
+    AGE_GROUP = tuple(AGE_GROUP)
+
     class Meta:
         ordering = ['-id']
         
-    image = models.ImageField(upload_to='face/images/', null=False)
     created = models.DateField(auto_now_add=True) 
-    updated = models.DateTimeField(auto_now=True)
     age_group = models.CharField(max_length=12, choices=AGE_GROUP, default=0)
-    version = models.ForeignKey(Model, related_name='versionR', on_delete=models.CASCADE, db_column='version', default=0)
-
     
 class Order(models.Model):
     class Meta:
@@ -57,7 +56,7 @@ class Order(models.Model):
     id = models.AutoField(primary_key=True)
     menu = models.ForeignKey(Menu, on_delete=models.CASCADE)
     count = models.IntegerField('수량', default=0)
-    customer = models.OneToOneField(
+    customer = models.ForeignKey(
         Customer,
         on_delete=models.CASCADE,
         null=True

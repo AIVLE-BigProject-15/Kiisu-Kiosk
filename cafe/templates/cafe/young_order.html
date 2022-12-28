@@ -3,6 +3,9 @@
 {% load post_extras %}
 {% block content %}
 <link href="/static/css/basic.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 
 <!-- Navigation-->
 <nav class="navbar-expand-lg order-py-5">
@@ -14,6 +17,46 @@
         </div>
     </div>
 </nav>
+
+
+<style>
+    @keyframes fadeInUp {
+        0% {
+            opacity: 0;
+            transform: translate3d(0, 20%, 0);
+        }
+        to {
+            opacity: 0.7;
+            transform: translateZ(0);
+        }
+    }
+ 
+    .low_conf_alert {
+        width: 100%;
+        position: fixed;
+        top: 0;
+        margin: auto;     
+        text-align: right;   
+        padding-right: 1rem;
+        padding-top: 13rem;
+        animation: fadeInUp 1.5s;
+    }
+    .btn-radius {
+        border-radius: 1.5rem;
+    }
+</style>
+ 
+<div class="low_conf_alert">
+    <button class="btn btn-primary btn-radius" style="display: auto;" onClick="go_old_order();" id="alert_for_low_confidence">
+        <h4 class="fw-bold" style="padding: 0 1rem;"> 혹시 사용이 어려우신가요?</h4>
+    </button>    
+    <script>
+        function go_old_order(){
+            window.location.href = "{% url 'cafe:old_order' %}?usage=" + $.getUrlVar('usage_type') + "&age=50&confidence=" + $.getUrlVar('confidence') + "&customer_id=" + $.getUrlVar('customer_id');
+        }
+    </script>
+</div>
+
 
 <!-- Drink Tab -->
 <section class="my-md-5" id="bar-content--drink" style="display: auto;">
@@ -621,6 +664,9 @@
         </div>
     </div>
 </div>
+
+
+
 {% endblock%}
 
 

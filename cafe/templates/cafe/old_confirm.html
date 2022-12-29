@@ -5,25 +5,33 @@
 
 
 <script>  
+    function go_pay() {
+        setTimeout(pay_now, 5000);
+    };
+    
     function pay_now() { 
         var form = document.getElementById("confirmed_order_submission");
         var parm = new Array();
 
         let carts = [
-                    {% for item in cart_all %}
+                    {% for item in order_list %}
                         {
-                            id: "{{ item.id }}",
+                            title: "{{ item.menu.title }}",
+                            cnt: "{{ item.cnt }}",
                         },
                     {% endfor %}
                 ]
-        var orders = new Array();
+        var menu_list = new Array();
+        var menu_counts = new Array();
         for (let i=0; i < carts.length; i++){
-            orders.push(carts[i].id);
+            menu_list.push(carts[i].title);
+            menu_counts.push(carts[i].cnt);
         }
-        console.log(orders);
         parm.push( ['usage_type', "{{usage_type|safe}}"] );
-        parm.push( ['orders', orders] );
         parm.push( ['total_price', "{{total_price|safe}}"] );
+        parm.push( ['menu_list', menu_list] );
+        parm.push( ['menu_counts', menu_counts] );
+        parm.push( ['customer_id', "{{ customer_id|safe }}"] );
 
         var input = new Array();
         for (var i = 0; i < parm.length; i++) {
@@ -105,16 +113,16 @@
 	<div class="container px-1">
         <div class="payment1">
             <div class="row">
-                <h1 class="fw-bolder mb-3 text-start text-danger" onclick="location.href='{% url 'cafe:old_order' %}'" style="padding-top: 2rem;">
-                    <i class="bi bi-chevron-left"></i> 취소하기</h1><br>
-                <h1 class="fw-bolder mt-3 text-start" style="padding-left: 4rem; padding-bottom: 2rem;">주문 내역</h1><br>
+                <h1 class="fw-bolder mb-3 text-start text-danger" style="padding-top: 2rem;">
+                    <i class="bi bi-chevron-left"></i>뒤로 가기</h1><br>
+                <h1 class="fw-bolder mt-4 mb-3 text-start" style="padding-left: 4rem; padding-bottom: 2rem;">주문 내역</h1><br>
             </div>
         </div>
         
 		<section class="py-3">
             <div class="container my-5 py-5">
                 <div class="row gx-3"> 
-                    {% for item in cart_all %} 
+                    {% for item in order_list %} 
                         <div class='col-lg-4 col-4 mt-5'>
                             <div class='card h-100 border-1'>
                                 <img class='card-img-top' src={{item.menu.image|fix_route|default:'https://dummyimage.com/600x400/403f40/d4d4d4.png'}} />
@@ -124,7 +132,7 @@
                                             <strong>{{item.menu.title}} </strong>
                                         </h3>
                                     </a>
-                                    <h4 class='card-text mb-0 text-center'>수량 : {{item.count}}</h4>
+                                    <h4 class='card-text mb-0 text-center'>수량 : {{item.cnt}}</h4>
                                 </div>
                             </div>
                         </div> 
@@ -141,7 +149,7 @@
             <h2 class="fw-bolder mt-3 mb-3 text-start" style="padding-left: 0.9rem;">총 주문 금액</h2>
         </div>
         <div class="col-5">
-            <h2 class="fw-bolder mt-3 mb-3 text-danger text-end" id="cart-total-money" style="padding-right: 1rem;">0 원</h2>
+            <h2 class="fw-bolder mt-3 mb-3 text-danger text-end" id="cart-total-money" style="padding-right: 1rem;">{{total_price}} 원</h2>
         </div>
     </div>
     <div class="payment">
@@ -150,7 +158,7 @@
         </div>
 
         <!-- 카드 결제 -->
-        <div id="card-pay" class="py-5 mt-3" style="cursor:pointer; float:left;" OnClick="location.href ='#'" data-bs-toggle="modal" data-bs-target="#portfolioModal_card">
+        <div id="card-pay" class="py-5 mt-3" style="cursor:pointer; float:left;" OnClick="go_pay();" data-bs-toggle="modal" data-bs-target="#portfolioModal_card">
             <h1 class="fw-bolder text-center display-5">
                 <i class="bi bi-credit-card"></i> 카드 결제
             </h1>
@@ -158,66 +166,70 @@
         
 
         <!-- 간편 결제 -->
-        <div id="app-pay" class="py-5 mt-3" style="cursor:pointer; float:left;" data-bs-toggle="modal" data-bs-target="#portfolioModal_coupon">
-            <h1 class="fw-bolder text-center  display-5">
+        <div id="app-pay" class="py-5 mt-3" style="cursor:pointer; float:left;" OnClick="go_pay();" data-bs-toggle="modal" data-bs-target="#portfolioModal_coupon">
+            <h1 class="fw-bolder text-center display-5">
                 <i class="bi bi-upc-scan"></i> 간편 결제
             </h1>
         </div>
-        
+        <form id="confirmed_order_submission" action="{% url 'cafe:old_pay' %}" method="POST" enctype="multipart/form-data" style="display: none;">
+            {% csrf_token %}
+        </form>
 
-    </div>		
+    </div>
+    		
 </section>
-</section>
+
 
 <div class="portfolio-modal modal fade" id="portfolioModal_card" tabindex="-1" aria-labelledby="portfolioModal_card" aria-hidden="true">
-<div class="modal-dialog modal-xl">
-    <div class="modal-content">
-        <div class="modal-header border-0"></div>
-        <div class="modal-body text-center pb-5">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-8">
-                        <!-- Portfolio Modal - Title-->
-                        <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0">신용카드 결제</h2>
-                        <br>
-                        <span class="mb-4" style="font-size: 1.2em;">신용카드를 투입구에 넣어주세요</span>
-                        <br>
-                        <!-- Portfolio Modal - Image-->
-                        <img class="img-fluid rounded mb-5" src="/static/assets/img/card_example.PNG" alt="..." />
-                        <!-- Portfolio Modal - Text-->
-                        <button class="btn btn-secondary btn-lg" data-bs-dismiss="modal">
-                            <i class="fas fa-xmark fa-fw"></i> 결제 취소 </button>
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header border-0"></div>
+            <div class="modal-body text-center pb-5">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8">
+                            <!-- Portfolio Modal - Title-->
+                            <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0">신용카드 결제</h2>
+                            <br>
+                            <span class="mb-4" style="font-size: 1.2em;">신용카드를 투입구에 넣어주세요</span>
+                            <br>
+                            <!-- Portfolio Modal - Image-->
+                            <img class="img-fluid rounded mb-5" src="/static/assets/img/card_example.PNG" alt="..." />
+                            <!-- Portfolio Modal - Text-->
+                            <button class="btn btn-secondary btn-lg" data-bs-dismiss="modal">
+                                <i class="fas fa-xmark fa-fw"></i> 결제 취소 </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 </div>
 
 <div class="portfolio-modal modal fade" id="portfolioModal_coupon" tabindex="-1" aria-labelledby="portfolioModal_coupon" aria-hidden="true">
-<div class="modal-dialog modal-xl">
-    <div class="modal-content">
-        <div class="modal-header border-0"></div>
-        <div class="modal-body text-center pb-5">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-8">
-                        <!-- Portfolio Modal - Title-->
-                        <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0">모바일 쿠폰</h2>
-                        <br>
-                        <span class="mb-4" style="font-size: 1.2em;">모바일 쿠폰을 스캔해주세요</span>
-                        <br>
-                        <!-- Portfolio Modal - Image-->
-                        <img class="img-fluid rounded mb-5" src="/static/assets/img/coupon_example.PNG" alt="..." />
-                        <!-- Portfolio Modal - Text-->
-                        <button class="btn btn-secondary btn-lg" data-bs-dismiss="modal">
-                            <i class="fas fa-xmark fa-fw"></i> 결제 취소 </button>
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header border-0"></div>
+            <div class="modal-body text-center pb-5">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8">
+                            <!-- Portfolio Modal - Title-->
+                            <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0">모바일 쿠폰</h2>
+                            <br>
+                            <span class="mb-4" style="font-size: 1.2em;">모바일 쿠폰을 스캔해주세요</span>
+                            <br>
+                            <!-- Portfolio Modal - Image-->
+                            <img class="img-fluid rounded mb-5" src="/static/assets/img/coupon_example.PNG" alt="..." />
+                            <!-- Portfolio Modal - Text-->
+                            <button class="btn btn-secondary btn-lg" data-bs-dismiss="modal">
+                                <i class="fas fa-xmark fa-fw"></i> 결제 취소 </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-</div>
+
 {% endblock content %}

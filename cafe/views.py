@@ -45,18 +45,21 @@ def old_order(request, age_group="50대"):
     
     best_menu_all= Menu.objects.filter(id__in=sub_menu_ids)
     
-    hot_cf_list = Menu.objects.filter(type__icontains="hot")
-    ice_cf_list = Menu.objects.filter(type__icontains="ice")
-    non_cf_list = Menu.objects.filter(type__icontains="non")
-    smoothie_list = Menu.objects.filter(type__icontains="smoothie")
+    hot_cf_list = Menu.objects.filter(type__icontains="hot" and "ice")
+    
+    # ice_cf_list = Menu.objects.filter(type__icontains="ice")
+    
+    non_cf_list = Menu.objects.filter(type__icontains="non" and "smoothie")
+    
+    # smoothie_list = Menu.objects.filter(type__icontains="smoothie")
     bread_list = Menu.objects.filter(type__icontains="bread")
 
     page_url = "cafe/old_order.html"
     
     return render(request, page_url, {'hot_coffee_all':hot_cf_list,
-                                              'ice_coffee_all' : ice_cf_list,
+                                              # 'ice_coffee_all' : ice_cf_list,
                                               'non_coffee_all' : non_cf_list,
-                                              'smoothie_all' : smoothie_list,
+                                              # 'smoothie_all' : smoothie_list,
                                               'bread_all' : bread_list,
                                               'best_menu_all' : best_menu_all,
                                               })

@@ -105,9 +105,9 @@
 	<div class="container px-1">
         <div class="payment1">
             <div class="row">
-                <h1 class="fw-bolder mb-3 text-start text-danger" style="padding-top: 2rem;">
-                    <i class="bi bi-chevron-left"></i>뒤로 가기</h1><br>
-                <h1 class="fw-bolder mt-4 mb-3 text-start" style="padding-left: 4rem;">주문 내역</h1><br>
+                <h1 class="fw-bolder mb-3 text-start text-danger" onclick="location.href='{% url 'cafe:old_order' %}'" style="padding-top: 2rem;">
+                    <i class="bi bi-chevron-left"></i> 취소하기</h1><br>
+                <h1 class="fw-bolder mt-3 text-start" style="padding-left: 4rem; padding-bottom: 2rem;">주문 내역</h1><br>
             </div>
         </div>
         
@@ -120,11 +120,11 @@
                                 <img class='card-img-top' src={{item.menu.image|fix_route|default:'https://dummyimage.com/600x400/403f40/d4d4d4.png'}} />
                                 <div class='card-body'>
                                     <a class='text-decoration-none link-dark stretched-link text-center'>
-                                        <h5 class='card-title mb-3'>
+                                        <h3 class='card-title mb-3'>
                                             <strong>{{item.menu.title}} </strong>
-                                        </h5>
+                                        </h3>
                                     </a>
-                                    <p class='card-text mb-0 text-center'>수량 : {{item.count}}</p>
+                                    <h4 class='card-text mb-0 text-center'>수량 : {{item.count}}</h4>
                                 </div>
                             </div>
                         </div> 
@@ -138,20 +138,20 @@
 <section class="bottombar">
     <div class="row gx-9 mt-3 mb-3" id="totalPrice">
         <div class="col-7">
-            <h3 class="fw-bolder mt-3 mb-3 text-start" style="padding-left: 0.9rem;">총 주문 금액</h3>
+            <h2 class="fw-bolder mt-3 mb-3 text-start" style="padding-left: 0.9rem;">총 주문 금액</h2>
         </div>
         <div class="col-5">
-            <h3 class="fw-bolder mt-3 mb-3 text-danger text-end" id="cart-total-money" style="padding-right: 1rem;">0 원</h3>
+            <h2 class="fw-bolder mt-3 mb-3 text-danger text-end" id="cart-total-money" style="padding-right: 1rem;">0 원</h2>
         </div>
     </div>
     <div class="payment">
         <div class="row">
-            <h3 class="fw-bolder mt-3 mb-3 text-start" style="padding-left: 5.5rem;">결제 수단선택</h3>
+            <h2 class="fw-bolder mt-3 mb-3 text-start" style="padding-left: 5.5rem;">결제 수단선택</h2>
         </div>
 
         <!-- 카드 결제 -->
         <div id="card-pay" class="py-5 mt-3" style="cursor:pointer; float:left;" OnClick="location.href ='#'" data-bs-toggle="modal" data-bs-target="#portfolioModal_card">
-            <h1 class="fw-bolder text-center">
+            <h1 class="fw-bolder text-center display-5">
                 <i class="bi bi-credit-card"></i> 카드 결제
             </h1>
         </div>
@@ -159,7 +159,7 @@
 
         <!-- 간편 결제 -->
         <div id="app-pay" class="py-5 mt-3" style="cursor:pointer; float:left;" data-bs-toggle="modal" data-bs-target="#portfolioModal_coupon">
-            <h1 class="fw-bolder text-center">
+            <h1 class="fw-bolder text-center  display-5">
                 <i class="bi bi-upc-scan"></i> 간편 결제
             </h1>
         </div>

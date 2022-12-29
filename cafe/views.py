@@ -81,14 +81,15 @@ def young_order(request):
         context['order_id'] = order_obj.id
         return check(request, context)
     
-    best_menu_all = {}
+    age = request.GET.get('age')
+    print(age)
+    
     qs = Order.objects.select_related('customer')
-    for i in range(1, 7):
-        sub_qs = qs.filter(customer__age_group=f"{i}0")
-        sub_menu_ids = list(sub_qs.values('menu_id').annotate(total=Count('menu_id')).order_by("count")[:5])
-        sub_menu_ids = list(map(lambda x: x['menu_id'], sub_menu_ids))
-        best_menu_all[f"{i}0"] = Menu.objects.filter(id__in=sub_menu_ids)
-        print(best_menu_all[f"{i}0"])
+    sub_qs = qs.filter(customer__age_group=f"{age}")
+    sub_menu_ids = list(sub_qs.values('menu_id').annotate(total=Count('menu_id')).order_by("count")[:5])
+    sub_menu_ids = list(map(lambda x: x['menu_id'], sub_menu_ids))
+    best_menu_all= Menu.objects.filter(id__in=sub_menu_ids)
+    print(best_menu_all)
                             
     context = {'hot_coffee_all': Menu.objects.filter(type__icontains="hot"),
                 'ice_coffee_all' : Menu.objects.filter(type__icontains="ice"),

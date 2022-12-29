@@ -126,7 +126,7 @@ for(let i=0;i<breadTabButton.length;i++){
 
 
 function go_pay() {
-    setTimeout(pay_now, 8000);
+    setTimeout(pay_now, 5000);
 };
 function pay_now() { 
     var form = document.getElementById("order_submission");

@@ -348,6 +348,7 @@ def get_post(request):
         gray_img = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2GRAY)
         age_group = classify(gray_img)
         print(age_group)
+        return HttpResponse(age_group)
     return render(request, 'cafe\parameter.html', data)
         
 

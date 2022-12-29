@@ -45,11 +45,14 @@ def old_order(request, age_group="50대"):
     
     best_menu_all= Menu.objects.filter(id__in=sub_menu_ids)
     
-    hot_cf_list = Menu.objects.filter(type__icontains="hot" and "ice")
+    # type_in=["hot", "ice"]
+    hot_cf_list = Menu.objects.filter(type__in=['hot_coffee', 'ice_coffee'])
+    # hot_cf_list = Menu.objects.filter(type__icontains=['hot_coffee', 'ice_coffee'])
     
     # ice_cf_list = Menu.objects.filter(type__icontains="ice")
     
-    non_cf_list = Menu.objects.filter(type__icontains="non" and "smoothie")
+
+    non_cf_list = Menu.objects.filter(type__in=['non_coffee', 'smoothie'])
     
     # smoothie_list = Menu.objects.filter(type__icontains="smoothie")
     bread_list = Menu.objects.filter(type__icontains="bread")

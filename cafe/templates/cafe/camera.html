@@ -126,7 +126,7 @@
                 if (xhr.status == 200) {
                     let customer_id = xhr.response;
                     var page_url = "";
-                    if (avg_age <= 40){
+                    if (avg_age < 40){
                         page_url = "{% url 'cafe:young_order' %}";               
                     }else{
                         page_url = "{% url 'cafe:old_order' %}";

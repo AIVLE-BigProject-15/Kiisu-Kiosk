@@ -36,6 +36,15 @@ def home(request):
 
 
 def old_order(request, age_group="50대"):
+    age = request.GET.get('age')
+    
+    qs = Order.objects.select_related('customer')
+    sub_qs = qs.filter(customer__age_group=f"{age}")
+    sub_menu_ids = list(sub_qs.values('menu_id').annotate(total=Count('menu_id')).order_by("count")[:5])
+    sub_menu_ids = list(map(lambda x: x['menu_id'], sub_menu_ids))
+    
+    best_menu_all= Menu.objects.filter(id__in=sub_menu_ids)
+    
     hot_cf_list = Menu.objects.filter(type__icontains="hot")
     ice_cf_list = Menu.objects.filter(type__icontains="ice")
     non_cf_list = Menu.objects.filter(type__icontains="non")
@@ -49,6 +58,7 @@ def old_order(request, age_group="50대"):
                                               'non_coffee_all' : non_cf_list,
                                               'smoothie_all' : smoothie_list,
                                               'bread_all' : bread_list,
+                                              'best_menu_all' : best_menu_all,
                                               })
 
 

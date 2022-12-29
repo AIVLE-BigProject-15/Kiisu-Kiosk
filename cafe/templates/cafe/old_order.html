@@ -214,10 +214,10 @@
     <div class="row justify-content-center">            
         <!-- Portfolio Grid Items-->
         <ul class="tab_title topbar" style="text-align:center;">
-            <li id="menu_type--bestmenu">
+            <li class="on" id="menu_type--bestmenu">
                 <h3 class="masthead-heading text-center text-uppercase text-white mb-0" style="pointer-events: none; ">추천 메뉴</h3>
             </li>
-            <li class="on" id="menu_type--hotcoffee">
+            <li id="menu_type--hotcoffee">
                 <h3 class="masthead-heading text-center text-uppercase text-white mb-0" style="pointer-events: none; ">뜨거운 커피</h3>
             </li>
             <li id="menu_type--icecoffee">
@@ -242,7 +242,7 @@
 
     <div class="row justify-content-center"> 
         <div class="row justify-content-center" id="menu_content--bestmenu" style="display: auto;">
-            {% for menu in hot_coffee_all %}
+            {% for menu in best_menu_all %}
                 <div class="col-md-4 col mb-5">
                     
                     <div class="btn btn-outline-primary btn-lg btn-payment box3">

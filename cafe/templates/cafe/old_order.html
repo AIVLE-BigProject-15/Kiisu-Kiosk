@@ -148,14 +148,13 @@
     }
 
     .box3 {
-        width: 400px;
-        height: 400px;
+        width: 260px;
+        height: 340px;
         position: relative; 
         top: 50%; 
         left: 50%; 
         transform: translate(-50%, -50%);
-        border: 3px solid #E51937;
-        border-radius: 2rem;
+
     }
 
     .top_box {
@@ -198,36 +197,25 @@
 </style>
 <body class="background py-5">
 
-    <div class="container px-4 px-lg-5 my-5">
-        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center" id="box">
-            <div class="btn btn-lg col-5 box1" style="background-color:#E51937;" id="btnCash">
-                <div class="container px-5 px-lg-5 my-5">
-                    <div class="text-center">
-                        <h1 class="fw-bolder font_t"><i class="bi"></i>음료</h1>
-                    </div>
-                </div>
-            </div>
+    <div class="row justify-content-center mb-2"> 
 
-            <div class="btn btn-lg col-6 box2" style="background-color:#f59c02;" id="btnCoupon">
-                <div class="container px-5 px-lg-5 my-5 ">
-                    <div class="text-center">
-                        <h1 class="fw-bolder font_t"><i class="bi bi-qr-code-scan"></i>빵</h1>
-                    </div>
-                </div>
-            </div>
-        </div>
+</div>    
 
-    </div>
-
+    
 </body>
 
 <nav class="topbar navbar-expand-lg navbar-light py-2 top_box">
+
     <div class="container px-4 px-lg-5">
 
+<!-- Drink Tab -->        
 <section class="my-md-5">
     <div class="row justify-content-center">            
         <!-- Portfolio Grid Items-->
         <ul class="tab_title topbar" style="text-align:center;">
+            <li id="menu_type--icecoffee">
+                <h3 class="masthead-heading text-center text-uppercase text-white mb-0" style="pointer-events: none; ">추천 메뉴</h3>
+            </li>
             <li class="on" id="menu_type--hotcoffee">
                 <h3 class="masthead-heading text-center text-uppercase text-white mb-0" style="pointer-events: none; ">뜨거운 커피</h3>
             </li>
@@ -240,8 +228,9 @@
             <li id="menu_type--smoothie">
                 <h3 class="masthead-heading text-center text-uppercase text-white mb-0" style="pointer-events: none; ">스무디</h3>
             </li>
-
-            <!-- 빵 넣을거면 id 등 수정, 추가해야함-->
+            <li id="menu_type--bread">
+                <h3 class="masthead-heading text-center text-uppercase text-white mb-0" style="pointer-events: none; ">빵</h3>
+            </li>
 
         </ul>    
         
@@ -437,6 +426,7 @@
                 </div>
             {% endfor %}
         </div>
+
         <div class="row justify-content-center" id="menu_content--smoothie" style="display: none;">
             {% for menu in smoothie_all %}
                 <div class="col-md-4 col mb-5">
@@ -497,9 +487,8 @@
             {% endfor %}
         </div>
 
-        <!-- id 부분 bread로 바꿔야함-->
-        <div class="row justify-content-center" id="menu_content--smoothie" style="display: none;">
-            {% for menu in smoothie_all %}
+        <div class="row justify-content-center" id="bread_content--bread" style="display: none;">
+            {% for menu in bread_all %}
                 <div class="col-md-4 col mb-5">
                     <div class="btn btn-outline-primary btn-lg btn-payment box3">
                         <div class="container px-5 px-lg-5 my-5">
@@ -557,7 +546,6 @@
                 </div>
             {% endfor %}
         </div>
-        
 
     </div>
 

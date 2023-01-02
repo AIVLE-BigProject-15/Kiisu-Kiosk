@@ -89,8 +89,8 @@
             sum += parseInt( nums[i], 10 );
         }
         var avg = sum/(nums.length - 1);
-
-        return avg;
+        
+        return Math.round(avg / 10) * 10;
     }
 
     function page_move(avg_age, avg_conf, customer_id){
@@ -131,7 +131,7 @@
                     }else{
                         page_url = "{% url 'cafe:old_order' %}";
                     }
-                    window.location.href = page_url + "?usage_type=" + $.getUrlVar('usage_type') + "&age=" + Math.round(avg_age / 10) * 10 + "&confidence=" + (avg_conf).toFixed(2) + "&customer_id=" + customer_id;
+                    window.location.href = page_url + "?usage_type=" + $.getUrlVar('usage_type') + "&age=" + avg_age + "&confidence=" + (avg_conf).toFixed(2) + "&customer_id=" + customer_id;
                 
                 } else {
                     alert("ERROR LOADING FILE!" + this.status);

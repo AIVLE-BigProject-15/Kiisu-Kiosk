@@ -26,7 +26,7 @@ from keras.models import load_model
 import numpy as np
 
 
-MODEL_NAME = "face_10s2.h5" # 모델명 쓰는 곳
+MODEL_NAME = "face_10s4.h5" # 모델명 쓰는 곳
 MODEL_TYPE = "CNN"
 
 classifier = Classifier(model_name=MODEL_NAME, model_type=MODEL_TYPE)
@@ -239,7 +239,7 @@ def classify(face_img):
     features = features / 255.0
 
     # 불러온 모델의 경로로 예측
-    model_path = settings.MODEL_DIR + '/face_10s2.h5'
+    model_path = settings.MODEL_DIR + '/face_10s4.h5'
     # model_path = predicting_model()
     model = load_model(model_path)
     

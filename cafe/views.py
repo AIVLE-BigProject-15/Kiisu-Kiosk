@@ -103,13 +103,6 @@ def young_order(request):
                 'best_menu_all' : best_menu_all,
             }
     return render(request, "cafe/young_order.html", context)
-
-def page_classify(request ,age_group):
-    
-    if int(age_group[0]) < 4:
-        return young_order(request, age_group=age_group)
-    else:
-        return old_order(request, age_group=age_group)
     
 def old_confirm(request):
     context = {}
@@ -191,30 +184,6 @@ def get_face(image):
         
     return
 
-# def get_face():
-    # file_path = settings.MODEL_DIR + '/haarcascade_frontalface_default.xml'
-    # faceCascade = cv2.CascadeClassifier(file_path)
-
-    # # 비디오의 setting을 준비함.
-    # cap = MyCamera.instance()
-    # print("Start")
-    
-    # while True:
-    #     frame = cap.get_frame()
-    #     faces = faceCascade.detectMultiScale(
-    #         frame, #grayscale로 이미지 변환한 원본.
-    #         scaleFactor=1.2, #이미지 피라미드에 사용하는 scalefactor
-    #         minNeighbors=3, #최소 가질 수 있는 이웃으로 3~6사이의 값을 넣어야 detect가 더 잘된다고 한다
-    #         minSize=(20, 20)
-    #     )
-
-    #     if not faces == ():
-    #         x, y, w, h = faces[0]
-    #         cur_img = frame[y:y+h, x:x + w]
-    #         cv2.rectangle(frame,(x,y),(x+w,y+h),(255,255,255),2)
-    #         return cur_img
-        
-    # return 
 
 # 모델의 경로를 불러온다.
 def predicting_model():

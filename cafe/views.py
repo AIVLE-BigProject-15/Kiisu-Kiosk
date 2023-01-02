@@ -18,9 +18,7 @@ from django.http import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.csrf import csrf_exempt
 
-from .estimation import MyEstimations
 from .videocap import MyCamera
-from .classify import Classifier
 from PIL import Image
 from keras.models import load_model
 import numpy as np
@@ -29,13 +27,11 @@ import numpy as np
 MODEL_NAME = "face_10s4.h5" # 모델명 쓰는 곳
 MODEL_TYPE = "CNN"
 
-classifier = Classifier(model_name=MODEL_NAME, model_type=MODEL_TYPE)
-
 def home(request):
     return render(request, 'cafe/home.html')
 
 
-def old_order(request, age_group="50대"):
+def old_order(request):
     age = request.GET.get('age')
     
     qs = Order.objects.select_related('customer')
@@ -45,24 +41,15 @@ def old_order(request, age_group="50대"):
     
     best_menu_all= Menu.objects.filter(id__in=sub_menu_ids)
     
-    # type_in=["hot", "ice"]
-    hot_cf_list = Menu.objects.filter(type__in=['hot_coffee', 'ice_coffee'])
-    # hot_cf_list = Menu.objects.filter(type__icontains=['hot_coffee', 'ice_coffee'])
-    
-    # ice_cf_list = Menu.objects.filter(type__icontains="ice")
-    
-
+    hot_cf_list = Menu.objects.filter(type__in=['hot_coffee', 'ice_coffee'])    
     non_cf_list = Menu.objects.filter(type__in=['non_coffee', 'smoothie'])
     
-    # smoothie_list = Menu.objects.filter(type__icontains="smoothie")
     bread_list = Menu.objects.filter(type__icontains="bread")
 
     page_url = "cafe/old_order.html"
     
     return render(request, page_url, {'hot_coffee_all':hot_cf_list,
-                                              # 'ice_coffee_all' : ice_cf_list,
                                               'non_coffee_all' : non_cf_list,
-                                              # 'smoothie_all' : smoothie_list,
                                               'bread_all' : bread_list,
                                               'best_menu_all' : best_menu_all,
                                               })
@@ -182,8 +169,28 @@ def old_pay(request):
                 
         return render(request, "cafe/check.html", context)         
 
+def get_face(image):
+    file_path = settings.MODEL_DIR + '/haarcascade_frontalface_default.xml'
+    faceCascade = cv2.CascadeClassifier(file_path)
 
-def get_face():
+    
+    faces = faceCascade.detectMultiScale(
+        image, #grayscale로 이미지 변환한 원본.
+        scaleFactor=1.2, #이미지 피라미드에 사용하는 scalefactor
+        minNeighbors=3, #최소 가질 수 있는 이웃으로 3~6사이의 값을 넣어야 detect가 더 잘된다고 한다
+        minSize=(20, 20)
+    )
+
+    if not faces == ():
+        x, y, w, h = faces[0]
+        cur_img = faces[y:y+h, x:x + w]
+        cv2.rectangle(faces,(x,y),(x+w,y+h),(255,255,255),2)
+        cv2.imwrite('temp.jpg', cur_img)
+        return cur_img
+        
+    return
+
+# def get_face():
     file_path = settings.MODEL_DIR + '/haarcascade_frontalface_default.xml'
     faceCascade = cv2.CascadeClassifier(file_path)
 
@@ -204,7 +211,6 @@ def get_face():
             x, y, w, h = faces[0]
             cur_img = frame[y:y+h, x:x + w]
             cv2.rectangle(frame,(x,y),(x+w,y+h),(255,255,255),2)
-            cv2.imwrite('temp.jpg', cur_img)
             return cur_img
         
     return 
@@ -219,14 +225,7 @@ def classify(face_img):
     print(face_img.shape)
     features = []
     character = {0:'10대', 1:'20대', 2:'30대', 3:'40대', 4:'50대', 5:'60대 이상'}
-    
-    # 넘파이 형태 -> 이미지 형태로 전환
-    # img = Image.fromarray(face_img)
-    #######################################
-    
-    # img = img.astype(np.uint8).copy()
-    # img = cv2.imread(face_img, cv2.IMREAD_GRAYSCALE)
-    
+        
     img = cv2.resize(face_img, (128, 128), Image.ANTIALIAS)
     
     
@@ -239,8 +238,7 @@ def classify(face_img):
     features = features / 255.0
 
     # 불러온 모델의 경로로 예측
-    model_path = settings.MODEL_DIR + '/face_10s4.h5'
-    # model_path = predicting_model()
+    model_path = pjoin(settings.MODEL_DIR + MODEL_NAME)
     model = load_model(model_path)
     
     pred = model.predict(features[0].reshape(-1, 128, 128, 1))
@@ -250,22 +248,9 @@ def classify(face_img):
 
     # 여기는 나이대랑 사진 보이는 코드
     print({character[pred_array[0].argmax()]})
-    #plt.axis('off')
-    #plt.imshow(features[0].reshape(128, 128), cmap='gray') 
-    
-    # model_path = pjoin(settings.MODEL_DIR, model_name)
-    # model_path = settings.MODEL_DIR + '/face_10s2.h5'
-    # model = load_model(model_path)
-    
-    # result = model.predict(face_img)
-    
+
     return character[pred_array[0].argmax()]
 
-def detect_age_group(request):
-    face = get_face()
-    age_group = classify(face) 
-
-    return page_classify(request, age_group=age_group)    
 
 from PIL import Image, ImageDraw
 
@@ -297,7 +282,9 @@ def get_post(request):
         
         img = Image.open(data['image'].file)
         gray_img = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2GRAY)
-        age_group = classify(gray_img)
+        
+        face_img = get_face(gray_img)
+        age_group = classify(face_img)
         print(age_group)
         return HttpResponse(age_group)
     return render(request, 'cafe\parameter.html', data)

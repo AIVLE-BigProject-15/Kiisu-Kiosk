@@ -181,9 +181,10 @@ def get_face(image):
         minSize=(20, 20)
     )
 
+    print(faces)
     if not faces == ():
         x, y, w, h = faces[0]
-        cur_img = faces[y:y+h, x:x + w]
+        cur_img = image[y:y+h, x:x + w]
         cv2.rectangle(faces,(x,y),(x+w,y+h),(255,255,255),2)
         cv2.imwrite('temp.jpg', cur_img)
         return cur_img
@@ -191,29 +192,29 @@ def get_face(image):
     return
 
 # def get_face():
-    file_path = settings.MODEL_DIR + '/haarcascade_frontalface_default.xml'
-    faceCascade = cv2.CascadeClassifier(file_path)
+    # file_path = settings.MODEL_DIR + '/haarcascade_frontalface_default.xml'
+    # faceCascade = cv2.CascadeClassifier(file_path)
 
-    # 비디오의 setting을 준비함.
-    cap = MyCamera.instance()
-    print("Start")
+    # # 비디오의 setting을 준비함.
+    # cap = MyCamera.instance()
+    # print("Start")
     
-    while True:
-        frame = cap.get_frame()
-        faces = faceCascade.detectMultiScale(
-            frame, #grayscale로 이미지 변환한 원본.
-            scaleFactor=1.2, #이미지 피라미드에 사용하는 scalefactor
-            minNeighbors=3, #최소 가질 수 있는 이웃으로 3~6사이의 값을 넣어야 detect가 더 잘된다고 한다
-            minSize=(20, 20)
-        )
+    # while True:
+    #     frame = cap.get_frame()
+    #     faces = faceCascade.detectMultiScale(
+    #         frame, #grayscale로 이미지 변환한 원본.
+    #         scaleFactor=1.2, #이미지 피라미드에 사용하는 scalefactor
+    #         minNeighbors=3, #최소 가질 수 있는 이웃으로 3~6사이의 값을 넣어야 detect가 더 잘된다고 한다
+    #         minSize=(20, 20)
+    #     )
 
-        if not faces == ():
-            x, y, w, h = faces[0]
-            cur_img = frame[y:y+h, x:x + w]
-            cv2.rectangle(frame,(x,y),(x+w,y+h),(255,255,255),2)
-            return cur_img
+    #     if not faces == ():
+    #         x, y, w, h = faces[0]
+    #         cur_img = frame[y:y+h, x:x + w]
+    #         cv2.rectangle(frame,(x,y),(x+w,y+h),(255,255,255),2)
+    #         return cur_img
         
-    return 
+    # return 
 
 # 모델의 경로를 불러온다.
 def predicting_model():
@@ -238,7 +239,8 @@ def classify(face_img):
     features = features / 255.0
 
     # 불러온 모델의 경로로 예측
-    model_path = pjoin(settings.MODEL_DIR + MODEL_NAME)
+    model_path = settings.MODEL_DIR + f"/{MODEL_NAME}"
+    print(model_path)
     model = load_model(model_path)
     
     pred = model.predict(features[0].reshape(-1, 128, 128, 1))

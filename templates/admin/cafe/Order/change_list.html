@@ -1,0 +1,160 @@
+{% extends "admin/change_list.html" %}
+{% load static %}
+
+<!-- Override extrahead to add Chart.js -->
+{% block extrahead %}
+
+
+{% comment %} <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css" /> {% endcomment %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+<link href="/static/css/styles.css" rel="stylesheet" />
+
+
+{% endblock %}
+
+{% block content %}
+<!-- Render our chart -->
+<section class="py-5">
+    <div class="row" style="padding-bottom: 2rem;">
+        <div class="col-lg-6 col-6">
+            <h4 style="font-weight: 700;">10대 선호 메뉴 TOP 5</h4>
+            <canvas id="BarChart--10"></canvas>
+        </div>
+        <div class="col-lg-6 col-6">
+            <h4 style="font-weight: 700;">20대 선호 메뉴 TOP 5</h4>
+            <canvas id="BarChart--20"></canvas>
+        </div>
+    </div>
+    <div class="row" style="padding-bottom: 2rem;">
+        <div class="col-lg-6 col-6">
+            <h4 style="font-weight: 700;">30대 선호 메뉴 TOP 5</h4>
+
+            <canvas id="BarChart--30"></canvas>
+        </div>
+        <div class="col-lg-6 col-6">
+            <h4 style="font-weight: 700;">40대 선호 메뉴 TOP 5</h4>
+
+            <canvas id="BarChart--40"></canvas>
+        </div>
+    </div>
+    <div class="row" style="padding-bottom: 2rem;">
+        <div class="col-lg-6 col-6">
+            <h4 style="font-weight: 700;">50대 선호 메뉴 TOP 5</h4>
+
+            <canvas id="BarChart--50"></canvas>
+        </div>
+        <div class="col-lg-6 col-6">
+            <h4 style="font-weight: 700;">60대 이상 선호 메뉴 TOP 5</h4>
+
+            <canvas id="BarChart--60"></canvas>
+        </div>
+    </div>
+
+</div>
+<!-- Render the rest of the ChangeList view -->
+
+ <script>
+    function drawChart(age){
+        const ctx = document.getElementById('BarChart--' + age).getContext('2d');
+        var context = {{ context | safe }}
+        console.log(context)
+        context = context['' + age]
+      
+        var labels = new Array();
+        var values = new Array();
+        for(let i=0;i<context.length;i++){
+            labels.push(context[i]['label']);
+            values.push(context[i]['value']);
+          
+        }
+    
+        var myBarChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+            labels: labels,
+            datasets: [{
+                label: "판매량",
+                backgroundColor: "#9e9e9e",
+                hoverBackgroundColor: "#e51937",
+                borderColor: "#4e73df",
+                data: values,
+            }],
+            },
+            options: {
+            maintainAspectRatio: false,
+            layout: {
+                padding: {
+                left: 10,
+                right: 25,
+                top: 25,
+                bottom: 0
+                }
+            },
+            scales: {
+                xAxes: [{
+                gridLines: {
+                    display: true,
+                },
+                ticks: {
+                    maxTicksLimit: labels.length,
+                    callback: function(label, index, values) {
+                        return label + '';
+                    }
+                },
+                maxBarThickness: 50,
+                }],
+                yAxes: [{
+                    ticks: {
+                        min: 0,
+                        maxTicksLimit: 10,
+                        padding: 20,
+                        callback: function(value, index, values) {
+                            return value + '개'+'';
+                        }
+                    },
+                    gridLines: {
+                        display: true,
+                    }
+                }],
+            },
+            legend: {
+                display: false
+            },
+            tooltips: {
+                titleMarginBottom: 10,
+                titleFontColor: '#6e707e',
+                titleFontSize: 14,
+                backgroundColor: "rgb(255,255,255)",
+                bodyFontColor: "#858796",
+                borderColor: '#dddfeb',
+                borderWidth: 1,
+                xPadding: 15,
+                yPadding: 15,
+                displayColors: false,
+                caretPadding: 10,
+                callbacks: {
+                label: function(tooltipItem, chart) {
+                    var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                    return datasetLabel + ': ' + tooltipItem.yLabel + "";
+                }
+                }
+            },
+            }
+      });
+      myBarChart.render(); 
+    
+    }
+    for(let i=1; i <= 6; i++){
+      document.addEventListener('DOMContentLoaded', function(){drawChart(i + '0')});
+    }
+    
+</script> 
+  
+
+
+{% endblock %}
+

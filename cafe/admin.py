@@ -17,23 +17,52 @@ class MenuAdmin(admin.ModelAdmin):
             return response
 
         context = []
-        # print("queryset", qs)
         for v in qs.values('id').distinct():
-            title = Menu.objects.get(id__exact=v['id']).title
-            # print(len(Order.objects.filter(menu__exact=v['id'])))            
-            # if v.count() > 0:
-            
+            title = Menu.objects.get(id__exact=v['id']).title            
             context += [{"label" : title, "value" : len(Order.objects.filter(menu__exact=v['id']))}]
         
+        context = sorted(context, key=lambda x: x['value'], reverse=True)
         response.context_data['context'] = context
         print(context)
         return response
     
 class CustomerAdmin(admin.ModelAdmin):
     list_display=['age_group', 'created']
+        
     
 class OrderAdmin(admin.ModelAdmin):
     list_display=['id', 'menu', 'created']
+    def changelist_view(self, request, extra_context=None):
+        response = super(OrderAdmin, self).changelist_view(
+            request,
+            extra_context=extra_context,
+        )
+        try:
+            qs = response.context_data['cl'].queryset
+        except (AttributeError, KeyError):
+            return response
+
+        context = {}
+        
+        qs = Order.objects.select_related('customer')
+
+        for age in [f'{i}0' for i in range(1, 7)]:
+            sub_qs = qs.filter(customer__age_group=f"{age}")
+            sub_menu_ids = list(sub_qs.values('menu_id').annotate(total=Count('menu_id')).order_by("count")[:5])
+            
+            sub_ctx = []
+            for x in sub_menu_ids:
+                print(x)
+                menu = Menu.objects.get(id__exact=x['menu_id']).title
+                sub_ctx += [{'label' : menu, 'value': x['total']}]
+                
+            sub_ctx = sorted(sub_ctx, key=lambda x: x['value'], reverse=True)
+            
+            context[f'{age}'] = sub_ctx
+            
+        response.context_data['context'] = context
+        print(context)
+        return response
     
 class ModelAdmin(admin.ModelAdmin):
     list_display=['version', 'pub_date', 'is_active']

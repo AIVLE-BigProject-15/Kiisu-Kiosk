@@ -24,6 +24,8 @@ class Menu(models.Model):
         ordering = ['-id']
         
     title = models.CharField('메뉴명', max_length=250, unique=True)
+    en_title = models.CharField(max_length=250, default="")
+    
     price = models.IntegerField('가격', default='0')
     image = models.ImageField(upload_to='menu/images/', null=False)
     
